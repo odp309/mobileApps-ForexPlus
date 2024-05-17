@@ -3,7 +3,8 @@ import React from 'react'
 import { Button } from '@rneui/themed'
 import colors from '../../theme/colors'
 
-const StyledButton = ({mode,title,onPress}) => {
+
+const StyledButton = ({mode,title,onPress}) => { 
   return ( 
     mode === "primary" ? (
     <Button 
@@ -11,16 +12,19 @@ const StyledButton = ({mode,title,onPress}) => {
       radius='lg' 
       size='lg' 
       buttonStyle = {styles.bgPrimary}
+      titleStyle ={{fontSize:20}}
       onPress={onPress}
+      containerStyle={{width:'100%'}}
     /> 
     )
     :
     mode === "secondary" ? (
-    <Button 
+    <Button
       title={title} 
       radius={'lg'} 
       size='lg' 
       buttonStyle = {styles.bgSecondary}
+      containerStyle={{width:'100%'}}
     /> 
     )
 
@@ -31,8 +35,9 @@ const StyledButton = ({mode,title,onPress}) => {
       type='outline' 
       radius={'lg'} 
       size='lg' 
-      buttonStyle = {styles.bgPrimaryOutlined}
+      buttonStyle = {styles.borderPrimary}
       titleStyle = {styles.labelPrimary}
+      containerStyle={{width:'100%'}}
     /> 
     )
     :
@@ -42,8 +47,8 @@ const StyledButton = ({mode,title,onPress}) => {
       type='outline' 
       radius={'lg'} 
       size='lg' 
-      buttonStyle ={styles}
-      
+      buttonStyle ={styles.borderSecondary} 
+      containerStyle={{width:'100%'}}
     />
     )
     : (
@@ -64,10 +69,10 @@ const styles = StyleSheet.create({
     }, 
 
 
-    bgPrimaryOutlined : {
+    borderPrimary : {
       borderColor : colors.color.primary,
     },
-    bgSecondaryOutlined : {
+    borderSecondary : {
       borderColor : colors.color.secondary,
     },
 
@@ -84,5 +89,6 @@ const styles = StyleSheet.create({
     },
     labelSecondary : {
       color : colors.color.secondary,
-    }
+    },
+    
 })
