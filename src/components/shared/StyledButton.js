@@ -46,7 +46,31 @@ const StyledButton = ({mode,title,onPress}) => {
       
     />
     )
-    : (
+    : 
+    mode === "primary-disabled" ? (
+    <Button 
+      title={title} 
+      type='outline' 
+      radius={'lg'} 
+      size='lg' 
+      buttonStyle = {styles.bgPrimarydDisabled}
+      titleStyle = {styles.labelDisabled}
+    /> 
+    )
+    :
+    mode === "secondary-disabled" ? (
+    <Button 
+      title={title} 
+      type='outline' 
+      radius={'lg'} 
+      size='lg' 
+      buttonStyle ={styles.bgSecondarydDisabled}
+      titleStyle = {styles.labelDisabled}
+      
+    />
+    )
+    : 
+    (
       <Text>Mode :{title}</Text>
     )
   )
@@ -57,32 +81,35 @@ export default StyledButton
 const styles = StyleSheet.create({
 
     bgPrimary: {
-      backgroundColor : colors.color.primary
+      backgroundColor : colors.primary.primaryOne
     },
     bgSecondary: {
-      backgroundColor : colors.color.secondary
+      backgroundColor : colors.secondary.secondaryOne
     }, 
 
 
     bgPrimaryOutlined : {
-      borderColor : colors.color.primary,
+      borderColor : colors.primary.primaryOne
     },
     bgSecondaryOutlined : {
-      borderColor : colors.color.secondary,
+      borderColor : colors.secondary.secondaryOne
     },
 
 
     bgPrimarydDisabled : {
-      backgroundColor : colors.color.primary_disabled
+      backgroundColor : colors.primary.primaryThree
     },
     bgSecondarydDisabled : {
-      backgroundColor : colors.color.secondary_disabled
+      backgroundColor : colors.secondary.secondaryThree
     },
 
     labelPrimary: {
-      color:colors.color.primary,
+      color:colors.primary.primaryOne
     },
     labelSecondary : {
-      color : colors.color.secondary,
+      color : colors.secondary.secondaryOne
+    },
+    labelDisabled:{
+      color:colors.color.white
     }
 })
