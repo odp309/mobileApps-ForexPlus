@@ -9,7 +9,7 @@ const StyledButton = ({mode,title,onPress}) => {
     mode === "primary" ? (
     <Button 
       title={title} 
-      radius='lg' 
+      radius='xl' 
       size='lg' 
       buttonStyle = {styles.bgPrimary}
       titleStyle ={{fontSize:20}}
