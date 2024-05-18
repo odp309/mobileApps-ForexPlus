@@ -99,10 +99,16 @@ const styles = StyleSheet.create({
     bgSecondaryOutlined : {
       borderColor : colors.secondary.secondaryOne
     },
-
-
+    borderPrimary:{
+      borderColor:  colors.primary.primaryOne,
+      borderWidth: 2
+    },
+    borderSecondary:{
+      borderColor:  colors.secondary.secondaryOne,
+      borderWidth: 2
+    },
     bgPrimarydDisabled : {
-      backgroundColor : colors.primary.primaryThree
+      backgroundColor : colors.primary.primaryTwo
     },
     bgSecondarydDisabled : {
       backgroundColor : colors.secondary.secondaryThree

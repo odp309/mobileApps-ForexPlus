@@ -1,13 +1,14 @@
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import StyledButton from "./src/components/shared/StyledButton";
-import RadioButton from "./src/components/shared/RadioButton"; 
-import Router from "./src/navigation/Router";
- 
+import * as Font from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import { useCallback, useEffect, useState } from "react";
+
 export default function App() {
 
   return (
-     <Router />
+    <View style={styles.container} onLayout={onLayoutRootView}>
+      
+    </View>
   );
 }
 
@@ -18,5 +19,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
- 
+  poppinsText: {
+    fontFamily: "poppins-regular",
+  },
+  poppinsBoldText: {
+    fontFamily: "poppins-regular",
+    fontWeight: "bold",
+  },
 });
