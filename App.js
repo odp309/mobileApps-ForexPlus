@@ -1,29 +1,7 @@
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import StyledButton from "./src/components/shared/StyledButton";
-import RadioButton from "./src/components/shared/RadioButton";
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useState } from "react";
-
-const dummyDataForRadioButton = [
-  {
-    id: 1,
-    option: "JavaScript",
-  },
-  {
-    id: 2,
-    option: "HTML",
-  },
-  {
-    id: 3,
-    option: "CSS",
-  },
-  {
-    id: 4,
-    option: "React",
-  },
-];
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -63,40 +41,7 @@ export default function App() {
 
   return (
     <View style={styles.container} onLayout={onLayoutRootView}>
-      <StyledButton
-        mode="primary"
-        title="Primary"
-        onPress={() => console.log("Test")}
-      />
-      <StyledButton
-        mode="secondary"
-        title="Secondary"
-        onPress={() => console.log("Test")}
-      />
-      <StyledButton
-        mode="primary-outlined"
-        title="Primary Outlined"
-        onPress={() => console.log("Test")}
-      />
-      <StyledButton
-        mode="secondary-outlined"
-        title="Secondary Outlined"
-        onPress={() => console.log("Test")}
-      />
-
-      <StyledButton
-        mode="primary-disabled"
-        title="Primary Disabled"
-        onPress={() => console.log("Test")}
-      />
-      <StyledButton
-        mode="secondary-disabled"
-        title="Secondary Disabled"
-        onPress={() => console.log("Test")}
-      />
-      <Text style={styles.poppinsText}>Poppins Font Style</Text>
-      <Text>Normal Font Style</Text>
-      <RadioButton options={dummyDataForRadioButton} />
+      
     </View>
   );
 }
@@ -110,5 +55,9 @@ const styles = StyleSheet.create({
   },
   poppinsText: {
     fontFamily: "poppins-regular",
+  },
+  poppinsBoldText: {
+    fontFamily: "poppins-regular",
+    fontWeight: "bold",
   },
 });
