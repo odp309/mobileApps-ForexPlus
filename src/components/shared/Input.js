@@ -2,33 +2,43 @@ import { StyleSheet, Text, TextInput, View } from "react-native";
 import React, { useState } from "react";
 import colors from "../../theme/colors";
 import sizes from "../../theme/sizes";
+import { Icon } from "@rneui/themed";
 
-const Input = ({ mode, placeholder, errorState }) => {
-  const [inputText, setInputText] = useState("");
-
+const Input = ({ mode, placeholder, value,onChangeText, errorState, hasIcon, style }) => { 
 
   return mode === "active" ? (
     <View style={styles.activeContainer}>
+      {hasIcon && (
+        <View style={{ position: "absolute", marginLeft: "5%" }}>
+          <Icon name="comment" size={24} color="black" />
+        </View>
+      )}
       <TextInput
         placeholder={placeholder}
-        style={styles.activeStyle}
+        value={value}
+        style={[styles.activeStyle, style]}
         placeholderTextColor={colors.primary.primaryOne}
-        onChangeText={setInputText}
+        onChangeText={onChangeText}
       />
     </View>
   ) : mode === "disabled" ? (
     <View style={styles.disabledContainer}>
       <TextInput
         placeholder={placeholder}
-        style={styles.disabledStyle}
+        value={value}
+        style={[styles.disabledStyle, style]}
         placeholderTextColor={colors.secondary.secondaryOne}
-        onChangeText={setInputText}
+        onChangeText={onChangeText}
       />
     </View>
   ) : mode === "error" ? (
     <View>
       <View style={styles.errorContainer}>
-        <TextInput style={styles.errorStyle} onChangeText={setInputText} />
+        <TextInput
+          style={[styles.errorStyle, style]}
+          value={value}
+          onChangeText={onChangeText}
+        />
       </View>
       <Text style={styles.errorText}>{errorState}</Text>
     </View>
@@ -44,7 +54,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   activeStyle: {
-    width: 200,
     padding: 10,
     paddingLeft: 20,
     borderWidth: 1,
@@ -54,7 +63,6 @@ const styles = StyleSheet.create({
     fontFamily: "poppins-regular",
   },
   disabledStyle: {
-    width: 200,
     padding: 10,
     paddingLeft: 20,
     borderWidth: 1,
@@ -64,7 +72,6 @@ const styles = StyleSheet.create({
     fontFamily: "poppins-regular",
   },
   errorStyle: {
-    width: 200,
     padding: 10,
     paddingLeft: 20,
     borderWidth: 1,
@@ -76,12 +83,14 @@ const styles = StyleSheet.create({
     color: colors.color.error,
     fontFamily: "poppins-regular",
     fontSize: sizes.font.small,
-    position:'relative',
-    top:-20,
-    left:18
+    position: "relative",
+    top: -20,
+    left: 18,
   },
   activeContainer: {
-    marginVertical: 20,
+    justifyContent: "center",
+    marginVertical: 10,
+    width: "100%",
     color: colors.primary.primaryOne,
     borderRadius: 100, // Adjust the border radius as needed
     backgroundColor: "#FFFFFF",
@@ -95,7 +104,7 @@ const styles = StyleSheet.create({
     elevation: 5, // Android elevation for shadow
   },
   disabledContainer: {
-    marginVertical: 20,
+    marginVertical: 10,
     color: colors.secondary.secondaryOne,
     borderRadius: 100, // Adjust the border radius as needed
     backgroundColor: "#FFFFFF",
@@ -109,7 +118,7 @@ const styles = StyleSheet.create({
     elevation: 5, // Android elevation for shadow
   },
   errorContainer: {
-    marginVertical: 20,
+    marginVertical: 10,
     color: colors.color.error,
     borderRadius: 100, // Adjust the border radius as needed
     backgroundColor: "#FFFFFF",

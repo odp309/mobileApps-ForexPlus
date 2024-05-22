@@ -5,7 +5,7 @@ import ScreenNavigator from './ScreenNavigator';
 
 const Router = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer >
         <ScreenNavigator />
     </NavigationContainer>
   )

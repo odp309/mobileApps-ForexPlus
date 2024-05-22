@@ -5,6 +5,7 @@ import RadioButton from "../components/shared/RadioButton";
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useState } from "react";
+import { BodyRegularText, BodySmallText } from "../components/shared/StyledText";
 
 const dummyDataForRadioButton = [
   {
@@ -30,19 +31,16 @@ export default function DummyTest() {
 
   useEffect(() => {
     async function prepare() {
-      try {
-        // Keep the splash screen visible while we fetch resources
-        await SplashScreen.preventAutoHideAsync();
-        // Pre-load fonts
+      try { 
+        await SplashScreen.preventAutoHideAsync(); 
         await Font.loadAsync({
-          "poppins-regular": require("./assets/fonts/Poppins-Regular.ttf"),
-        });
-        // Artificially delay for two seconds to simulate a slow loading
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+          "poppins-regular": require("./../../assets/fonts/Poppins-Regular.ttf"),
+          "poppins-bold": require("./../../assets/fonts/Poppins-Bold.ttf"),
+        }); 
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       } catch (e) {
         console.warn(e);
-      } finally {
-        // Tell the application to render
+      } finally { 
         setFontLoaded(true);
       }
     }
@@ -94,7 +92,7 @@ export default function DummyTest() {
         title="Secondary Disabled"
         onPress={() => console.log("Test")}
       />
-      <Text style={styles.poppinsText}>Poppins Font Style</Text>
+      <BodySmallText>Poppins Font Style</BodySmallText>
       <Text>Normal Font Style</Text>
       <RadioButton options={dummyDataForRadioButton} />
     </View>

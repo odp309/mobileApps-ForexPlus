@@ -1,29 +1,39 @@
-import { StyleSheet, Text, View } from "react-native";
-import * as Font from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
-import { useCallback, useEffect, useState } from "react";
+import { StyleSheet, Text, View } from "react-native"; 
+import Router from "./src/navigation/Router"; 
+import DummyTest from "./src/dummy/DummyTest";
+import { useEffect, useState } from "react"; 
+
+import * as Font from "expo-font"; 
 
 export default function App() {
 
+  const [fontLoaded, setFontLoaded] = useState(false);
+  async function prepare() {
+    try {  
+      await Font.loadAsync({
+        "poppins-regular": require("./assets/fonts/Poppins-Regular.ttf"),
+        "poppins-semibold": require("./assets/fonts/Poppins-SemiBold.ttf"),
+      });  
+    } catch (e) {
+      console.warn(e);
+    } finally { 
+      setFontLoaded(true);
+    }
+  }
+  useEffect(() => {
+    prepare();
+  }, []); 
+
+  if (!fontLoaded) {
+    return null;
+  }
+
   return (
-    <View style={styles.container} onLayout={onLayoutRootView}>
-      
-    </View>
+    <Router />
+    // <DummyTest />
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  poppinsText: {
-    fontFamily: "poppins-regular",
-  },
-  poppinsBoldText: {
-    fontFamily: "poppins-regular",
-    fontWeight: "bold",
-  },
+  
 });
