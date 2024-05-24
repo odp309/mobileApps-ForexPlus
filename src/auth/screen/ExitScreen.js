@@ -34,6 +34,13 @@ const ExitScreen = () => {
             onPress={handleLogout}
             style={{ marginVertical: "5%" }}
           />
+          <StyledButton
+            mode={"primary-outlined"}
+            title={"Cancel"}
+            size={"lg"}
+            onPress={() =>{}}
+            style={{ marginVertical: "5%" }}
+          />
         </View>
       </View> 
     </View>
