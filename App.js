@@ -13,6 +13,7 @@ export default function App() {
       await Font.loadAsync({
         "poppins-regular": require("./assets/fonts/Poppins-Regular.ttf"),
         "poppins-semibold": require("./assets/fonts/Poppins-SemiBold.ttf"),
+        "poppins-medium": require("./assets/fonts/Poppins-Medium.ttf"),
       });  
     } catch (e) {
       console.warn(e);

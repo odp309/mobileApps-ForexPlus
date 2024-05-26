@@ -17,50 +17,31 @@ import {
   BodySmallText,
   HeadingFiveText,
 } from "../../components/shared/StyledText";
-import Input from "../../components/shared/Input";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import Input from "../../components/shared/Input";  
+import { cleanupToken, login } from "../service/AuthService";
 
 const LoginScreen = () => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const handleLogin = async () => {
-    try {
-      setModalVisible(!modalVisible);
-      const response = await axios.post(
-        "http://156.67.214.127:8080/api/v1/public/user/login",
-        { email, password }
-      );
-      const { token } = response.data;
-
-      await AsyncStorage.setItem("jwt_token", token);
-      console.log(response.data.token);
-      navigation.navigate("HomeScreen");
-    } catch (error) {
-      Alert.alert("Login failed", "Invalid email or password");
-      console.error(error);
-    }
-  };
-
-  const openHomePage = () => {
-    setModalVisible(!modalVisible);
-    navigation.navigate("HomeScreen");
-  };
-
+ 
+   
+  useEffect(()=>{
+    cleanupToken();
+  },[])
   return (
+    
     <View style={styles.container}>
       <ImageBackground
         style={{ flex: 1 }}
-        source={require("../../../assets/bg_login.png")}
+        source={require("../../../assets/bg-login.png")}
       >
         <View style={styles.topContainer}>
           <Image
             style={{ width: "40%", marginBottom: "20%" }}
             resizeMode="contain"
-            source={require("../../../assets/icon_bni.png")}
+            source={require("../../../assets/icon-bni.png")}
           />
         </View>
         <View style={styles.bottomContainer}>
@@ -78,21 +59,21 @@ const LoginScreen = () => {
             <View style={styles.contentStyle}>
               <Image
                 style={styles.shortcutImage}
-                source={require("../../../assets/e-wallet.png")}
+                source={require("../../../assets/icon-e-wallet.png")}
               />
               <BodySmallText style={{ marginTop: 5 }}>E-Wallet</BodySmallText>
             </View>
             <View style={styles.contentStyle}>
               <Image
                 style={styles.shortcutImage}
-                source={require("../../../assets/qris.png")}
+                source={require("../../../assets/icon-qris.png")}
               />
               <BodySmallText style={{ marginTop: 5 }}>QRIS</BodySmallText>
             </View>
             <View style={styles.contentStyle}>
               <Image
                 style={styles.shortcutImage}
-                source={require("../../../assets/menu-lain.png")}
+                source={require("../../../assets/icon-menu-lain.png")}
               />
               <BodySmallText style={{ marginTop: 5 }}>Menu Lain</BodySmallText>
             </View>
@@ -117,7 +98,7 @@ const LoginScreen = () => {
             <Image
               style={{ width: "35%", marginVertical: "5%" }}
               resizeMode="contain"
-              source={require("../../../assets/icon_bni.png")}
+              source={require("../../../assets/icon-bni.png")}
             />
             <Input
               mode={"active"}
@@ -135,7 +116,7 @@ const LoginScreen = () => {
               mode={"primary"}
               title={"Login"}
               size={"lg"}
-              onPress={handleLogin}
+              onPress={() => login(email,password,setModalVisible,modalVisible,navigation)}
               style={{ marginVertical: "5%" }}
             />
           </View>

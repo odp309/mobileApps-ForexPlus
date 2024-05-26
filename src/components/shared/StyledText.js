@@ -44,6 +44,15 @@ const HeadingTwoText = ({ children, style }) => {
 const HeadingOneText = ({ children, style }) => {
   return <Text style={[styles.headingone, style]}>{children}</Text>;
 };
+// Body Regular Semi Bold Text
+const BodyRegularTextSemiBold = ({ children, style }) => {
+  return <Text style={[styles.bodyregularBold, style]}>{children}</Text>;
+};
+
+// Body Medium Text
+const BodyMediumText = ({ children, style }) => {
+  return <Text style={[styles.bodymedium, style]}>{children}</Text>;
+};
 
 // Styles for each custom text component
 const styles = StyleSheet.create({
@@ -97,6 +106,16 @@ const styles = StyleSheet.create({
     fontSize: sizes.font.xl6,
     lineHeight: sizes.lineHeight.xl5,
   },
+  bodyregularBold: {
+    fontFamily: 'poppins-semibold',
+    fontSize: sizes.font.medium,
+    lineHeight: sizes.lineHeight.small,
+  },
+  bodymedium: {
+    fontFamily: 'poppins-medium',
+    fontSize: sizes.font.medium,
+    lineHeight: sizes.lineHeight.medium, 
+  },
 });
 
 export {
@@ -104,10 +123,12 @@ export {
   BodySmallText,
   BodyRegularText,
   BodyLargeText,
+  BodyRegularTextSemiBold,
   HeadingSixText,
   HeadingFiveText,
   HeadingFourText,
   HeadingThreeText,
   HeadingTwoText,
   HeadingOneText,
+  BodyMediumText,
 };

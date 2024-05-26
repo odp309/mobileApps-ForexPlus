@@ -4,20 +4,11 @@ import StyledButton from "../../components/shared/StyledButton";
 import Input from "../../components/shared/Input";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import { logout } from "../service/AuthService";
 
 const ExitScreen = () => {
   const [modalVisible, setModalVisible] = useState(true);
-
   const navigation = useNavigation();
-  const handleLogout = async () => {
-    try { 
-      await AsyncStorage.removeItem("jwt_token"); 
-      navigation.navigate("Login");
-    } catch (error) {
-      console.error("Error clearing user token:", error);
-    }
-  };
-  
   const exitApp = () => {
     BackHandler.exitApp();
   };
@@ -31,7 +22,7 @@ const ExitScreen = () => {
             mode={"primary"}
             title={"Logout"}
             size={"lg"}
-            onPress={handleLogout}
+            onPress={()=> logout(navigation)}
             style={{ marginVertical: "5%" }}
           />
         </View>
