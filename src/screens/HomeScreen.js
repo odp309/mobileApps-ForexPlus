@@ -1,6 +1,7 @@
 import {StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { BodyRegularText } from '../components/shared/StyledText' 
+import ValasButton from '../components/shared/ValasButton'
 
 const HomeScreen = () => {
    
