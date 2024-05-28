@@ -1,8 +1,7 @@
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "../screens/HomeScreen";
-import ExitScreen from "../auth/screen/ExitScreen";
+import HomeScreen from "../screens/HomeScreen"; 
 import { useNavigation } from "@react-navigation/native";
 import RiwayatScreen from "../screens/RiwayatScreen";
 import SettingsScreen from "../screens/SettingsScreen";
@@ -23,7 +22,7 @@ const BottomNavigator = () => {
       >
         <Ionicons
           name={iconName}
-          size={28}
+          size={24}
           color={focused ? colors.primary.primaryOne : "grey"}
         />
       </View>

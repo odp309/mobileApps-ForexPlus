@@ -1,8 +1,11 @@
 import {
   Alert,
+  Dimensions,
   Image,
   ImageBackground,
+  KeyboardAvoidingView,
   Modal,
+  Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -17,22 +20,25 @@ import {
   BodySmallText,
   HeadingFiveText,
 } from "../../components/shared/StyledText";
-import Input from "../../components/shared/Input";  
+import Input from "../../components/shared/Input";
 import { cleanupToken, login } from "../service/AuthService";
+
+const screenHeight = Dimensions.get("screen").height;
+const screenWidth = Dimensions.get("screen").width;
 
 const LoginScreen = () => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
- 
-   
-  useEffect(()=>{
+
+  useEffect(() => {
     cleanupToken();
-  },[])
+  }, []);
+
   return (
     
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ImageBackground
         style={{ flex: 1 }}
         source={require("../../../assets/bg-login.png")}
@@ -87,42 +93,55 @@ const LoginScreen = () => {
 
       <Modal
         visible={modalVisible}
-        animationType="slide"
+        animationType="fade"
         transparent={true}
+        statusBarTranslucent={true}
         onRequestClose={() => {
           setModalVisible(!modalVisible);
         }}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalView}>
-            <Image
-              style={{ width: "35%", marginVertical: "5%" }}
-              resizeMode="contain"
-              source={require("../../../assets/icon-bni.png")}
-            />
-            <Input
-              mode={"active"}
-              value={email}
-              placeholder={"Email"}
-              onChangeText={setEmail}
-            />
-            <Input
-              mode={"active"}
-              value={password}
-              placeholder={"password"}
-              onChangeText={setPassword}
-            />
-            <StyledButton
-              mode={"primary"}
-              title={"Login"}
-              size={"lg"}
-              onPress={() => login(email,password,setModalVisible,modalVisible,navigation)}
-              style={{ marginVertical: "5%" }}
-            />
-          </View>
-        </View>
+      > 
+          <KeyboardAvoidingView
+            style={styles.modalContainer}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+          >
+            <View style={styles.modalView}>
+              <Image
+                style={{ width: "35%", marginVertical: "5%" }}
+                resizeMode="contain"
+                source={require("../../../assets/icon-bni.png")}
+              />
+              <Input
+                mode={"active"}
+                value={email}
+                placeholder={"Email"}
+                onChangeText={setEmail}
+              />
+              <Input
+                mode={"active"}
+                value={password}
+                placeholder={"password"}
+                onChangeText={setPassword}
+              />
+              <StyledButton
+                mode={"primary"}
+                title={"Login"}
+                size={"lg"}
+                onPress={() =>
+                  login(
+                    email,
+                    password,
+                    setModalVisible,
+                    modalVisible,
+                    navigation
+                  )
+                }
+                style={{ marginVertical: "5%" }}
+              />
+            </View>
+          </KeyboardAvoidingView> 
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -130,19 +149,19 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: "center",
+    height: screenHeight,
   },
   topContainer: {
     // backgroundColor: colors.color.primary,
-    flex: 0.6,
+    height: screenHeight * 0.6,
     paddingVertical: "10%",
     width: "100%",
     alignItems: "center",
     justifyContent: "flex-end",
   },
   bottomContainer: {
-    flex: 0.4,
+    height: screenHeight * 0.4,
     justifyContent: "space-evenly",
     paddingHorizontal: "10%",
     // borderColor: colors.color.primary,
@@ -167,8 +186,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flex: 1,
     alignItems: "center",
+    width:'100%',
     backgroundColor: "rgba(0,0,0,0.5)",
   },
+
   modalView: {
     margin: "8%",
     width: "90%",

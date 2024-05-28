@@ -5,6 +5,7 @@ import LoginScreen from "../auth/screen/LoginScreen";
 import HomeScreen from "../screens/HomeScreen";
 import ForexSaleScreen from "../screens/ForexSaleScreen";
 import BottomNavigator from "./BottomNavigator";  
+import ValasHomeScreen from "../screens/ValasHomeScreen";
 
 const Stack = createNativeStackNavigator();
 const ScreenNavigator = () => { 
@@ -14,8 +15,13 @@ const ScreenNavigator = () => {
     <Stack.Navigator initialRouteName="Login">
       <Stack.Screen
         name="Login"
-        options={{ headerShown: false }}
+        options={{ headerShown: false,headerStyle:{}}}
         component={LoginScreen}
+      />
+      <Stack.Screen
+        name="ValasHome"
+        options={{ headerShown: false,headerStyle:{}}}
+        component={ValasHomeScreen}
       />
       <Stack.Screen
         name="HomeScreen"

@@ -1,8 +1,20 @@
 import { Image, StyleSheet, Text, View } from "react-native";
-import React from "react";
-import { BodyMediumText, BodyRegularText, BodyRegularTextBold, BodyRegularTextSemiBold } from "../shared/StyledText";
+import React, { useState } from "react";
+import {
+  BodyMediumText,
+  BodyRegularText,
+  BodyRegularTextBold,
+  BodyRegularTextSemiBold,
+} from "../shared/StyledText";
+import { userData } from "../../auth/service/AuthService";
 
-const HeaderProfile = () => {
+const HeaderProfile = () => { 
+  const [user,setUser] = useState(null);
+  const [fullName,setFullName] = useState("");
+  useState(()=>{
+    setUser(userData);
+    setFullName(userData.firstName+" "+userData.lastName);
+  },[])
   return (
     <View style={styles.container}>
       <Image
@@ -15,9 +27,11 @@ const HeaderProfile = () => {
         resizeMode="contain"
         source={require("../../../assets/me.jpg")}
       />
-      <View style={{marginLeft:25,justifyContent:'center'}}>
+      <View style={{ marginLeft: 25, justifyContent: "center"}}>
         <BodyRegularText>Selamat Datang</BodyRegularText>
-        <BodyMediumText>Arfiandi Wijatmiko</BodyMediumText>
+        <BodyMediumText>
+          {user === null ? "Reloading..." : fullName}
+        </BodyMediumText>
       </View>
     </View>
   );
@@ -31,7 +45,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     width: "100%",
     margin: "2%",
-    marginHorizontal:'5%'
+    marginHorizontal: "5%",
   },
   logoStyle: {},
 });
