@@ -12,8 +12,10 @@ import React, { useState } from "react";
 import { BodyMediumText, BodySmallText } from "../shared/StyledText";
 import { Ionicons } from "@expo/vector-icons";
 import colors from "../../theme/colors";
+import { useNavigation } from "@react-navigation/native";
 
 const Feature = () => {
+  const navigation = useNavigation();
   const dataFitur = [
     {
       id: "1",
@@ -91,7 +93,7 @@ const Feature = () => {
         marginVertical: 5,
       }}
     >
-      <TouchableOpacity>
+      <TouchableOpacity onPress={()=> navigation.navigate("ValasHome")}>
         <Image
           style={{ width: 60, height: 60, marginBottom: 5 }}
           source={item.icon}

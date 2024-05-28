@@ -50,7 +50,7 @@ const login = async (
       password,
     });
     const { token } = response.data;
-    const expiredTime = 10 * 1000; 
+    const expiredTime = 10 *60 * 1000; 
     const tokenExpiry = Date.now() + expiredTime; //1 menit
     console.log("Token:", token);
     console.log("Token Expiry:", tokenExpiry);

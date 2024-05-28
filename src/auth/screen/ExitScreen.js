@@ -25,6 +25,13 @@ const ExitScreen = () => {
             onPress={()=> logout(navigation)}
             style={{ marginVertical: "5%" }}
           />
+          <StyledButton
+            mode={"primary-outlined"}
+            title={"Cancel"}
+            size={"lg"}
+            onPress={() =>{}}
+            style={{ marginVertical: "5%" }}
+          />
         </View>
       </View> 
     </View>

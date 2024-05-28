@@ -28,7 +28,7 @@ const ScreenNavigator = () => {
         options={{ headerShown: false }}
         component={BottomNavigator}
       />
-      <Stack.Screen name="JualBeliValas" component={ForexSaleScreen} />
+      <Stack.Screen name="JualBeliValas" options={{ headerShown: true }} component={ForexSaleScreen} />
     </Stack.Navigator>
   );
 };

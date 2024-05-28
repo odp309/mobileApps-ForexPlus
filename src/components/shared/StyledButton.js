@@ -17,6 +17,7 @@ const StyledButton = ({ mode, title, onPress,size, style}) => {
     <Button
       title={title} 
       size={size}
+      onPress={onPress}
       buttonStyle={[styles.bgSecondary,style]}
       containerStyle={{ width: "100%" }}
     />
@@ -25,7 +26,8 @@ const StyledButton = ({ mode, title, onPress,size, style}) => {
       title={title}
       type="outline" 
       size={size}
-      buttonStyle={[styles.borderPrimary,style]}
+      onPress={onPress}
+      buttonStyle={[styles.bgPrimaryOutlined,style]}
       titleStyle={styles.labelPrimary}
       containerStyle={{ width: "100%" }}
     />
@@ -34,6 +36,7 @@ const StyledButton = ({ mode, title, onPress,size, style}) => {
       title={title}
       type="outline" 
       size={size}
+      onPress={onPress}
       buttonStyle={[styles.bgSecondaryOutlined,style]}
       containerStyle={{ width: "100%" }}
     />
@@ -42,6 +45,7 @@ const StyledButton = ({ mode, title, onPress,size, style}) => {
       title={title}
       type="outline" 
       size={size}
+      onPress={onPress}
       buttonStyle={[styles.bgPrimarydDisabled,style]}
       titleStyle={styles.labelDisabled}
     />
@@ -50,6 +54,7 @@ const StyledButton = ({ mode, title, onPress,size, style}) => {
       title={title}
       type="outline" 
       size={size}
+      onPress={onPress}
       buttonStyle={[styles.bgSecondarydDisabled,style]}
       titleStyle={styles.labelDisabled}
     />
@@ -99,7 +104,6 @@ const styles = StyleSheet.create({
   },
 
   titleStyle: {
-    fontSize: 20, 
     fontFamily: "poppins-semibold",
   },
 });
