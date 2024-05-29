@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native"; 
 import Router from "./src/navigation/Router"; 
-import DummyTest from "./src/dummy/DummyTest";
+// import DummyTest from "./src/dummy/DummyTest";
 import { useEffect, useState } from "react"; 
 
 import * as Font from "expo-font"; 
