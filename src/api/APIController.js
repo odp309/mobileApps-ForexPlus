@@ -1,1 +1,0 @@
-const URL_Rate = 'https://api.frankfurter.app/latest';

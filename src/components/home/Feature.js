@@ -12,9 +12,10 @@ import React, { useState } from "react";
 import { BodyMediumText, BodySmallText } from "../shared/StyledText";
 import { Ionicons } from "@expo/vector-icons";
 import colors from "../../theme/colors";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native"; 
+import { Skeleton } from "@rneui/themed";
 
-const Feature = () => {
+const Feature = ({user}) => {
   const navigation = useNavigation();
   const dataFitur = [
     {
@@ -85,7 +86,7 @@ const Feature = () => {
     return dataFitur;
   };
 
-  const isiElement = ({ item }) => (
+  const isiElement = ({item}) => (
     <View
       style={{
         alignItems: "center",
@@ -93,14 +94,20 @@ const Feature = () => {
         marginVertical: 5,
       }}
     >
-      <TouchableOpacity onPress={()=> navigation.navigate("ValasHome")}>
-        <Image
-          style={{ width: 60, height: 60, marginBottom: 5 }}
-          source={item.icon}
-        />
-      </TouchableOpacity>
+      {user === null ? (
+        <Skeleton style={{ width: 60, height: 60, marginBottom: 5 }} />
+      ) : (
+        <>
+          <TouchableOpacity onPress={() => navigation.navigate("ValasHome")}>
+            <Image
+              style={{ width: 60, height: 60, marginBottom: 5 }}
+              source={item.icon}
+            />
+          </TouchableOpacity>
 
-      <BodySmallText style={{ fontSize: 13 }}>{item.title}</BodySmallText>
+          <BodySmallText style={{ fontSize: 13 }}>{item.title}</BodySmallText>
+        </>
+      )}
     </View>
   );
 
@@ -125,16 +132,34 @@ const Feature = () => {
           marginVertical: 10,
         }}
       >
-        <View style={styles.borderedObject}>
-          <BodySmallText>
-            <BodySmallText style={styles.textOrange}>POIN</BodySmallText>
-            {"  "}500
-          </BodySmallText>
-        </View>
-        <View style={[styles.borderedObject, { borderWidth: 2 , paddingHorizontal:10}]}>
-          <Ionicons name="pencil" size={16} color={colors.primary.primaryOne} />
-          <BodySmallText style={styles.textOrange}>Atur Menu</BodySmallText>
-        </View>
+        {user === null ? (
+          <Skeleton width={80} height={30}/>
+        ) : (
+          <View style={styles.borderedObject}>
+            <BodySmallText>
+              <BodySmallText style={styles.textOrange}>POIN</BodySmallText>
+              {"  "}500
+            </BodySmallText>
+          </View>
+        )}
+
+        {user === null ? (
+          <Skeleton width={100} height={30} />
+        ) : (
+          <View
+            style={[
+              styles.borderedObject,
+              { borderWidth: 2, paddingHorizontal: 10 },
+            ]}
+          >
+            <Ionicons
+              name="pencil"
+              size={16}
+              color={colors.primary.primaryOne}
+            />
+            <BodySmallText style={styles.textOrange}>Atur Menu</BodySmallText>
+          </View>
+        )}
       </View>
       <View style={{ width: "100%" }}>
         <FlatList
@@ -146,11 +171,12 @@ const Feature = () => {
           }
           renderItem={isiElement}
           keyExtractor={(item) => item.id}
+          extraData={user}
           columnWrapperStyle={{ justifyContent: "space-around" }}
         />
         <View style={{ width: "100%", height: 1, backgroundColor: "orange" }} />
         <View>
-          <TouchableOpacity
+          {user===null ? <Skeleton style={{alignSelf:'center'}} width={100} height={20} /> :<TouchableOpacity
             onPress={handlePress}
             style={{
               flexDirection: "row",
@@ -168,7 +194,7 @@ const Feature = () => {
               color={"#000"}
               style={{ marginLeft: 5, height: "100%" }}
             />
-          </TouchableOpacity>
+          </TouchableOpacity>}
         </View>
       </View>
     </View>

@@ -1,50 +1,61 @@
 import { Dimensions, FlatList, StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { ImageComponent } from "react-native";
 import { ImageBackground } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { BodyMediumText, BodyRegularText, BodyRegularTextSemiBold } from "../shared/StyledText";
+import {
+  BodyMediumText,
+  BodyRegularText,
+  BodyRegularTextSemiBold,
+} from "../shared/StyledText";
+import { Skeleton } from "@rneui/base";
 
-
-const { width } = Dimensions.get('window');
-const dataPromo = [
-  {
-    id: "1",
-    imgResource: require("../../../assets/iklan1.png"), 
-  },
-  {
-    id: "2",
-    imgResource: require("../../../assets/iklan2.png"), 
-  },
-];
-
-const ListPromoInformasi = ({ item }) => (
+const PromoInformasi = ({ user }) => {
+  const { width } = Dimensions.get("window");
+  const dataPromo = [
+    {
+      id: "1",
+      imgResource: require("../../../assets/iklan1.png"),
+    },
+    {
+      id: "2",
+      imgResource: require("../../../assets/iklan2.png"),
+    },
+  ];
+  const ListPromoInformasi = ({ item }) => (
     <View>
-      <ImageBackground
-        resizeMode="stretch"
-        source={item.imgResource}
-        style={styles.cardContainer}
-      > 
-      </ImageBackground>
+      {user === null ? (
+        <Skeleton style={styles.cardContainer} />
+      ) : (
+        <ImageBackground
+          resizeMode="stretch"
+          source={item.imgResource}
+          style={styles.cardContainer}
+        />
+      )}
     </View>
   );
-const PromoInformasi = () => {
+
   return (
     <View style={styles.container}>
-        <View style={{marginBottom:10}}>
-            <BodyRegularTextSemiBold> Promo & Informasi</BodyRegularTextSemiBold>
-        </View>
+      <View style={{ marginBottom: 10 }}>
+        {user === null ? (
+          <Skeleton width={150} height={20} />
+        ) : (
+          <BodyRegularTextSemiBold> Promo & Informasi</BodyRegularTextSemiBold>
+        )}
+      </View>
       <FlatList
         data={dataPromo}
-        renderItem={({ item }) => <ListPromoInformasi item={item} />}
+        renderItem={({ item }) => (
+          <ListPromoInformasi item={item} user={user} />
+        )}
         keyExtractor={(item) => item.id}
+        extraData={user}
         horizontal={true}
         pagingEnabled
         snapToInterval={width}
         snapToAlignment="start"
         decelerationRate="fast"
-        showsHorizontalScrollIndicator={false} 
-        
+        showsHorizontalScrollIndicator={false}
       />
     </View>
   );
@@ -59,9 +70,9 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     height: 150,
-    width:Dimensions.get('window').width * 0.9, 
+    width: Dimensions.get("window").width * 0.9,
     paddingTop: "10%",
     paddingHorizontal: "5%",
-    paddingBottom: "5%",  
+    paddingBottom: "5%",
   },
 });

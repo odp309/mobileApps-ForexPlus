@@ -6,8 +6,8 @@ import { useNavigation } from "@react-navigation/native";
 import RiwayatScreen from "../screens/RiwayatScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import colors from "../theme/colors";
-import { Ionicons } from "@expo/vector-icons";
-import { logout } from "../auth/service/AuthService";
+import { Ionicons } from "@expo/vector-icons"; 
+import { logout } from "../config/AuthConfig";
 
 const BottomNavigator = () => {
   const navigation = useNavigation();

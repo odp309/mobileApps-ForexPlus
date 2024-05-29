@@ -1,9 +1,10 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { url } from "./ApiManager";
 
 // Create an Axios instance
 const axiosInstance = axios.create({
-  baseURL: "http://156.67.214.127:8080/api/v1/public/user",
+  baseURL: url,
   headers: {
     "Content-Type": "application/json",
   },
@@ -11,16 +12,13 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(async (config) => {
   try {
-    const token = await AsyncStorage.getItem("token");
-    const tokenExpiry = parseInt(await AsyncStorage.getItem("tokenExpiry"), 10);
+    const accessToken = await AsyncStorage.getItem("accessToken"); ;
     // console.log("Token AxiosConfig : "+token);
-    if (token && Date.now() < tokenExpiry) {
-      config.headers.Authorization = `Bearer ${token}`;
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
       console.log( "Bearer : " + config.headers.Authorization);
-    } else {
-      // console.log("Ini token exp : "+tokenExpiry);
-      await AsyncStorage.removeItem("token");
-      await AsyncStorage.removeItem("tokenExpiry");
+    } else { 
+      await AsyncStorage.removeItem("accessToken"); 
     }
   } catch (error) {
     console.error('AsyncStorage error:', error);

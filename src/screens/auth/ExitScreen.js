@@ -1,10 +1,8 @@
 import { View, Text, Alert, BackHandler,StyleSheet,Modal } from "react-native";
 import React, { useEffect, useState } from "react";
-import StyledButton from "../../components/shared/StyledButton"; 
-import Input from "../../components/shared/Input";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
-import { logout } from "../service/AuthService";
+import StyledButton from "../../components/shared/StyledButton";  
+import { useNavigation } from "@react-navigation/native"; 
+import { logout } from "../../config/AuthConfig";
 
 const ExitScreen = () => {
   const [modalVisible, setModalVisible] = useState(true);

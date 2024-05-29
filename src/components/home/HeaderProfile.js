@@ -6,32 +6,30 @@ import {
   BodyRegularTextBold,
   BodyRegularTextSemiBold,
 } from "../shared/StyledText";
-import { userData } from "../../auth/service/AuthService";
+import { Ionicons } from "@expo/vector-icons"; 
+import { Skeleton } from "@rneui/themed";
 
-const HeaderProfile = () => { 
-  const [user,setUser] = useState(null);
-  const [fullName,setFullName] = useState("");
-  useState(()=>{
-    setUser(userData);
-    setFullName(userData.firstName+" "+userData.lastName);
-  },[])
+const HeaderProfile = ({user,fullName}) => {
+
   return (
     <View style={styles.container}>
-      <Image
-        style={{
-          width: 60,
-          height: 60,
-          borderRadius: 100,
-          alignSelf: "center",
-        }}
-        resizeMode="contain"
-        source={require("../../../assets/me.jpg")}
-      />
-      <View style={{ marginLeft: 25, justifyContent: "center"}}>
-        <BodyRegularText>Selamat Datang</BodyRegularText>
-        <BodyMediumText>
-          {user === null ? "Reloading..." : fullName}
-        </BodyMediumText>
+      {user === null ? (
+        <Skeleton variant="circular" style={{borderRadius:99,height:60,width:60,backgroundColor:'lightGrey'}} />
+      ) : (
+        <Ionicons name="person-circle-outline" size={60} color={"grey"} />
+      )}
+      <View style={{ marginLeft: 25, justifyContent: "center" }}>
+        {user === null ? (
+          <View>
+            <Skeleton style={{ backgroundColor: 'lightGrey' }} variant="circular" width={120} height={20} />
+            <Skeleton style={{ backgroundColor: 'lightGrey' }} variant="rectangular" width={150} height={25} />
+          </View>
+        ) : (
+          <>
+            <BodyRegularText>Selamat Datang</BodyRegularText>
+            <BodyMediumText>{fullName}</BodyMediumText>
+          </>
+        )}
       </View>
     </View>
   );
