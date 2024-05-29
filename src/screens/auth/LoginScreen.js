@@ -29,8 +29,8 @@ const screenWidth = Dimensions.get("screen").width;
 const LoginScreen = () => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
-  const [email, setEmail] = useState("arfiandiw62@gmail.com");
-  const [password, setPassword] = useState("123456");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     cleanupToken();
