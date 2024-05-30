@@ -31,7 +31,7 @@ const LoginScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [passwordVisible,setPasswordVisible] = useState(false);
   useEffect(() => {
     cleanupToken();
   }, []);
@@ -113,14 +113,24 @@ const LoginScreen = () => {
             <Input
               mode={"active"}
               value={email}
+              hasLeftIcon={true}
+              leftIconName={"person"}
               placeholder={"Email"}
               onChangeText={setEmail}
+              style={{paddingLeft:50}}
             />
             <Input
               mode={"active"}
               value={password}
+              hasLeftIcon={true}
+              hasRightIcon={true}
+              secureTextEntry={!passwordVisible}
+              leftIconName={"lock"}
+              rightIconName={passwordVisible ? "eye" : "eye-off"}
               placeholder={"password"}
               onChangeText={setPassword}
+              onPress={()=>setPasswordVisible(!passwordVisible)}
+              style={{paddingLeft:50,paddingRight:50}}
             />
             <StyledButton
               mode={"primary"}
