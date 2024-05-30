@@ -1,7 +1,7 @@
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "../screens/HomeScreen"; 
+import HomeScreen from "../screens/home/HomeScreen"; 
 import { useNavigation } from "@react-navigation/native";
 import RiwayatScreen from "../screens/RiwayatScreen";
 import SettingsScreen from "../screens/SettingsScreen";

@@ -33,7 +33,7 @@ const login = async (
     });
     const { accessToken } = response.data;
     console.log(response.data);
-    const expiredTime = 60 * 15* 1000;
+    const expiredTime = 60 * 15 * 1000;
     await AsyncStorage.setItem("accessToken", accessToken);
 
     userData = JwtDecoder(accessToken);
@@ -42,16 +42,17 @@ const login = async (
     if (userData) {
       setModalVisible(!modalVisible);
       navigation.navigate("HomePage");
-    }
+    } 
 
     setTimeout(() => {
-      cleanupToken(); 
+      cleanupToken();
       Alert.alert("Token expired", "Your session has expired.", [
         { onPress: () => navigation.navigate("Login") },
       ]);
     }, expiredTime);
   } catch (error) {
-    Alert.alert("Login failed", "" + error);
+    console.log(error);
+    Alert.alert("Login failed", "Username / Password salah, mohon periksa kembali");
   }
 };
 const cleanupToken = async () => {
@@ -60,14 +61,14 @@ const cleanupToken = async () => {
     if (accessToken) {
       console.log("Token sebelum dihapus :", accessToken);
       await AsyncStorage.removeItem("accessToken");
-      console.log("Token Removed:  "+accessToken); 
-    } 
+      console.log("Token Removed:  " + accessToken);
+    }
   } catch (error) {
     console.error("Error cleaning uptoken", error);
   }
 };
 const logout = async (navigation) => {
-  await cleanupToken(); 
+  await cleanupToken();
   navigation.navigate("Login");
 };
 

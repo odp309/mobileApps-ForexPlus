@@ -1,12 +1,12 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import { BodyRegularText } from "../components/shared/StyledText";
-import Header from "../components/home/Header";
-import HeaderProfile from "../components/home/HeaderProfile";
-import Pocket from "../components/home/Pocket";
-import Feature from "../components/home/Feature";
-import PromoInformasi from "../components/home/PromoInformasi";
-import { userData } from "../config/AuthConfig";
+import { BodyRegularText } from "../../components/shared/StyledText";
+import Header from "../../components/home/Header";
+import HeaderProfile from "../../components/home/HeaderProfile";
+import Pocket from "../../components/home/Pocket";
+import Feature from "../../components/home/Feature";
+import PromoInformasi from "../../components/home/PromoInformasi";
+import { userData } from "../../config/AuthConfig";
 
 
 const renderedView = ({ item }) => <View>{item.view()}</View>;

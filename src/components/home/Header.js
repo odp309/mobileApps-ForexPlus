@@ -36,7 +36,7 @@ const Header = ({user}) => {
           <Image
             style={{ width: 22, alignSelf: "center" }}
             resizeMode="center"
-            source={require("../../../assets/icon-notif.png")}
+            source={{uri: 'https://photos.app.goo.gl/T8HNHeMERsU2Yqqj8'}}
           />
         </>
       )}
