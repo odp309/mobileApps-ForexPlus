@@ -4,7 +4,8 @@ const colors = {
         black: '#000000',
         grey: '#666666',
         error: '#F24538',
-        success: '#00B14A'
+        success: '#00B14A',
+        lightGrey: "#CCCCCC"
     },
     primary:{
         primaryOne: "#EF5C26",

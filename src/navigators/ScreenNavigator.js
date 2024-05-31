@@ -11,7 +11,7 @@ import colors from "../theme/colors";
 const Stack = createNativeStackNavigator();
 const ScreenNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="ValasJual">
+    <Stack.Navigator initialRouteName="Login">
       <Stack.Screen
         name="Login"
         options={{ headerShown: false, headerStyle: {} }}
@@ -32,7 +32,7 @@ const ScreenNavigator = () => {
         component={ValasJualScreen}
 
         options={{
-          headerSHown: true,
+          headerShown: false,
           headerTitle: "Masukkan Jumlah Penjualan",
           headerTitleAlign: "center",
           headerShadowVisible: false, // Set to false to remove the shadow
