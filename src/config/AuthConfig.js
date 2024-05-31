@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axiosInstance from "../connectivity/AxiosConfig.js";
+import axiosInstance from "../connectivity/AxiosConfigManager.js";
 import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { jwtDecode } from "jwt-decode";
@@ -72,4 +72,11 @@ const logout = async (navigation) => {
   navigation.navigate("Login");
 };
 
-export { login, logout, cleanupToken, userData };
+const handleLogout = (navigation) => {
+  Alert.alert("Keluar", "Apakah anda yakin ingin keluar aplikasi ini?", [
+    { text: 'Ya', onPress :() => logout(navigation) }, 
+    { text: 'Tidak' }, 
+  ]);
+};
+
+export { login, logout, cleanupToken, userData, handleLogout };

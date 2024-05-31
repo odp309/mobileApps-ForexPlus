@@ -9,6 +9,7 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import BackgroundBNI from "./BackgroundBNI";
+import BackButton from "../shared/BackButton";
 
 const RiwayatButton = () => {
   return (
@@ -39,10 +40,14 @@ function ValasHeader() {
   return (
     <View style={styles.container}>
       <BackgroundBNI />
-      <TouchableOpacity style={styles.topHeader} onPress={backToHome}>
-        <Ionicons name="arrow-back" size={24} color={colors.color.white} />
+      <View style={styles.topHeader}>
+        <BackButton
+          onPress={() => navigation.goBack()}
+          color={colors.color.white}
+        />
         <RiwayatButton />
-      </TouchableOpacity>
+      </View>
+
       <View
         style={{
           flexDirection: "row",
@@ -81,10 +86,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingTop: 50,
     paddingBottom: 26,
-    top:-32,
-    
-    zIndex:1,
-    position:'absolute'
+    top: -32,
+
+    zIndex: 1,
+    position: "absolute",
   },
   topHeader: {
     flexDirection: "row",

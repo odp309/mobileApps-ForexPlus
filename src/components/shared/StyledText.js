@@ -45,8 +45,21 @@ const HeadingOneText = ({ children, style }) => {
   return <Text style={[styles.headingone, style]}>{children}</Text>;
 };
 // Body Regular Semi Bold Text
-const BodyRegularTextSemiBold = ({ children, style }) => {
-  return <Text style={[styles.bodyregularBold, style]}>{children}</Text>;
+const BodySmallTextSemiBold = ({ children, style }) => {
+  return <Text style={[styles.bodySmallSemiBold, style]}>{children}</Text>;
+};
+const BodyMediumTextSemiBold = ({ children, style }) => {
+  return <Text style={[styles.bodyMediumSemiBold, style]}>{children}</Text>;
+};
+const BodyLargeTextSemiBold = ({ children, style }) => {
+  return <Text style={[styles.bodyLargeSemiBold, style]}>{children}</Text>;
+};
+const BodyXLTextSemiBold = ({ children, style }) => {
+  return <Text style={[styles.bodyXLSemiBold, style]}>{children}</Text>;
+};
+
+const BodyXLTextBold = ({ children, style }) => {
+  return <Text style={[styles.bodyXLBold, style]}>{children}</Text>;
 };
 
 // Body Medium Text
@@ -106,10 +119,30 @@ const styles = StyleSheet.create({
     fontSize: sizes.font.xl6,
     lineHeight: sizes.lineHeight.xl5,
   },
-  bodyregularBold: {
+  bodySmallSemiBold: {
+    fontFamily: 'poppins-semibold',
+    fontSize: sizes.font.small,
+    lineHeight: sizes.lineHeight.small,
+  },
+  bodyMediumSemiBold: {
     fontFamily: 'poppins-semibold',
     fontSize: sizes.font.medium,
-    lineHeight: sizes.lineHeight.small,
+    lineHeight: sizes.lineHeight.medium,
+  },
+  bodyLargeSemiBold: {
+    fontFamily: 'poppins-semibold',
+    fontSize: sizes.font.large,
+    lineHeight: sizes.lineHeight.large,
+  },
+  bodyXLSemiBold: {
+    fontFamily: 'poppins-semibold',
+    fontSize: sizes.font.xl,
+    lineHeight: sizes.lineHeight.xl,
+  },
+  bodyXLBold: {
+    fontFamily: 'poppins-bold',
+    fontSize: sizes.font.xl,
+    lineHeight: sizes.lineHeight.xl,
   },
   bodymedium: {
     fontFamily: 'poppins-medium',
@@ -123,7 +156,11 @@ export {
   BodySmallText,
   BodyRegularText,
   BodyLargeText,
-  BodyRegularTextSemiBold,
+  BodySmallTextSemiBold,
+  BodyMediumTextSemiBold,
+  BodyLargeTextSemiBold,
+  BodyXLTextSemiBold,
+  BodyXLTextBold,
   HeadingSixText,
   HeadingFiveText,
   HeadingFourText,

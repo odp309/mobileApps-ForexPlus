@@ -6,6 +6,7 @@ const prepare = async () => {
       "poppins-regular": require("../../assets/fonts/Poppins-Regular.ttf"),
       "poppins-semibold": require("../../assets/fonts/Poppins-SemiBold.ttf"),
       "poppins-medium": require("../../assets/fonts/Poppins-Medium.ttf"),
+      "poppins-bold": require("../../assets/fonts/Poppins-Bold.ttf"),
     }); 
   } catch (e) {
     console.warn(e); 

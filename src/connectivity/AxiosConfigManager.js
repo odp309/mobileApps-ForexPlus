@@ -1,8 +1,7 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { url } from "./ApiManager";
-
-// Create an Axios instance
+ 
 const axiosInstance = axios.create({
   baseURL: url,
   headers: {

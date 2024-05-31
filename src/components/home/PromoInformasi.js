@@ -1,10 +1,8 @@
 import { Dimensions, FlatList, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { ImageBackground } from "react-native";
-import {
-  BodyMediumText,
-  BodyRegularText,
-  BodyRegularTextSemiBold,
+import { 
+  BodySmallTextSemiBold,
 } from "../shared/StyledText";
 import { Skeleton } from "@rneui/base";
 
@@ -40,7 +38,7 @@ const PromoInformasi = ({ user }) => {
         {user === null ? (
           <Skeleton width={150} height={20} />
         ) : (
-          <BodyRegularTextSemiBold> Promo & Informasi</BodyRegularTextSemiBold>
+          <BodySmallTextSemiBold> Promo & Informasi</BodySmallTextSemiBold>
         )}
       </View>
       <FlatList

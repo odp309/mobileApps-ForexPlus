@@ -2,10 +2,11 @@ import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
 import { BodySmallText } from "../shared/StyledText";
 import colors from "../../theme/colors";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
-const FeatureButton = ({ namaFitur }) => {
+const FeatureButton = ({ namaFitur, onPress }) => {
   return (
-    <TouchableOpacity style={{alignItems:'center'}} onPress={() => {}}>
+    <TouchableOpacity style={{ alignItems: "center" }} onPress={onPress}>
       <View
         style={{
           backgroundColor: colors.primary.primaryTwo,
@@ -17,9 +18,17 @@ const FeatureButton = ({ namaFitur }) => {
         }}
       >
         {namaFitur === "Beli" ? (
-          <Ionicons name="bag-handle-outline" size={24} color={colors.color.white} />
+          <Ionicons
+            name="bag-handle-outline"
+            size={24}
+            color={colors.color.white}
+          />
         ) : namaFitur === "Jual" ? (
-          <Ionicons name="pricetag-outline" size={24} color={colors.color.white} />
+          <Ionicons
+            name="pricetag-outline"
+            size={24}
+            color={colors.color.white}
+          />
         ) : namaFitur === "Transfer" ? (
           <MaterialCommunityIcons
             name="account-switch-outline"
@@ -27,22 +36,32 @@ const FeatureButton = ({ namaFitur }) => {
             color={colors.color.white}
           />
         ) : namaFitur === "Tarik" ? (
-          <MaterialCommunityIcons name="bank" size={24} color={colors.color.white}/>
+          <MaterialCommunityIcons
+            name="bank"
+            size={24}
+            color={colors.color.white}
+          />
         ) : (
           <Text>namaFitur salah value</Text>
         )}
       </View>
-      <BodySmallText style={{color:colors.primary.primaryOne}}>{namaFitur}</BodySmallText>
+      <BodySmallText style={{ color: colors.primary.primaryOne }}>
+        {namaFitur}
+      </BodySmallText>
     </TouchableOpacity>
   );
 };
 
 const ValasFeatures = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <FeatureButton namaFitur="Beli" />
       <FeatureButton namaFitur="Jual" />
-      <FeatureButton namaFitur="Transfer" />
+      <FeatureButton
+        namaFitur="Transfer"
+        onPress={() => navigation.navigate("TransferValas")}
+      />
       <FeatureButton namaFitur="Tarik" />
     </View>
   );
@@ -52,8 +71,8 @@ export default ValasFeatures;
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    justifyContent: 'space-evenly',
+    width: "100%",
+    justifyContent: "space-evenly",
     flexDirection: "row",
     paddingBottom: 10,
   },
