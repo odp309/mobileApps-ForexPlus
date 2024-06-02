@@ -5,13 +5,13 @@ import LoginScreen from "../screens/auth/LoginScreen";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import BottomNavigator from "./BottomNavigator";
 import ValasHomeScreen from "../screens/ValasHomeScreen";
-import ValasJualScreen from "../screens/ValasJualScreen";
+import JualValasScreen from "../screens/JualValasScreen";
 import colors from "../theme/colors";
 
 const Stack = createNativeStackNavigator();
 const ScreenNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="Login">
+    <Stack.Navigator initialRouteName="JualValas">
       <Stack.Screen
         name="Login"
         options={{ headerShown: false, headerStyle: {} }}
@@ -28,8 +28,8 @@ const ScreenNavigator = () => {
         component={BottomNavigator}
       />
       <Stack.Screen
-        name="ValasJual"
-        component={ValasJualScreen}
+        name="JualValas"
+        component={JualValasScreen}
 
         options={{
           headerShown: false,

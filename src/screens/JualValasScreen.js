@@ -11,13 +11,17 @@ import { FontAwesome } from "@expo/vector-icons";
 import ExchangeResult from "../components/valasJual/ExchangeResult";
 import StyledButton from "../components/shared/StyledButton";
 import WalletSource from "../components/valasJual/WalletSource";
+import ConfirmationModal from "../components/valasJual/ConfirmationModal";
+import { useNavigation } from "@react-navigation/native";
 
 const DIMENSION_HEIGHT = Dimensions.get("window").height;
 
-const ValasJualScreen = () => {
+const JualValasScreen = () => {
   const [exchange, setExchange] = useState("");
   const [kurs, setKurs] = useState("160");
   const [valas, setValas] = useState("JPY");
+  const [showModal, setShowModal] = useState(false);
+  const navigation = useNavigation();
 
   const kursCalculation = (data) => {
     data === ""
@@ -26,9 +30,17 @@ const ValasJualScreen = () => {
   };
 
   const acceptInputCurrency = (data) => {
-    console.log(data);
     kursCalculation(data);
   };
+
+  const onContinue = () => {
+    setShowModal(true);
+  };
+
+  // Handle the Modal visibility when Close is press in the Modal
+  const handleVisibility = (data) =>{
+    setShowModal(data);
+  }
 
   return (
     <View style={styles.container}>
@@ -71,18 +83,19 @@ const ValasJualScreen = () => {
         </View>
       </View>
       <WalletSource />
-
+      <ConfirmationModal navigation={navigation} modalVisibility={showModal} onDataReceived={handleVisibility} />
       <StyledButton
         mode="primary"
         title="Lanjut"
         size={"lg"}
+        onPress={onContinue}
         style={{ marginBottom: 20, marginHorizontal: 20 }}
       />
     </View>
   );
 };
 
-export default ValasJualScreen;
+export default JualValasScreen;
 
 const styles = StyleSheet.create({
   container: {

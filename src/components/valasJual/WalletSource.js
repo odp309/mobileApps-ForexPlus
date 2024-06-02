@@ -45,7 +45,7 @@ export default WalletSource;
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    paddingTop: 20,
+    paddingTop: "5%",
     paddingHorizontal: 20,
     height: DIMENSION_HEIGHT / 4,
     backgroundColor: "#F0EBEB",
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   textContainer: {
     width: "100%",
     paddingTop: 10,
-    paddingBottom: 20,
+    paddingBottom: "10%",
     paddingLeft: 20,
     backgroundColor: colors.color.white,
     borderBottomLeftRadius: 20,
