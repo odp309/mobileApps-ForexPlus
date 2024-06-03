@@ -5,7 +5,9 @@ const colors = {
         grey: '#666666',
         error: '#F24538',
         success: '#00B14A',
-        lightGrey: "#CCCCCC"
+        lightGrey: "#CCCCCC",
+        successTransparent : '#BFEBD2',
+        errorTransparent : '#FFC4BF'
     },
     primary:{
         primaryOne: "#EF5C26",

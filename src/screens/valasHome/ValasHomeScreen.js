@@ -5,14 +5,14 @@ import {
   Dimensions,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import colors from "../theme/colors";
-import ValasHeader from "../components/valasHome/ValasHeader";
-import { BodyMediumText, BodySmallText } from "../components/shared/StyledText";
-import ValasFeatures from "../components/valasHome/ValasFeatures";
-import ValasReservation from "../components/valasHome/ValasReservation";
-import WalletCard from "../components/valasHome/WalletCard";
-import ValasWalletNavigation from "../components/valasHome/ValasWalletNavigation";
-import DaftarRekening from "../components/valasHome/DaftarRekening";
+import colors from "../../theme/colors";
+import ValasHeader from "../../components/valasHome/ValasHeader";
+import { BodyMediumText, BodySmallText } from "../../components/shared/StyledText";
+import ValasFeatures from "../../components/valasHome/ValasFeatures";
+import ValasReservation from "../../components/valasHome/ValasReservation";
+import WalletCard from "../../components/valasHome/WalletCard";
+import ValasWalletNavigation from "../../components/valasHome/ValasWalletNavigation";
+import DaftarRekening from "../../components/valasHome/DaftarRekening";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height;
 

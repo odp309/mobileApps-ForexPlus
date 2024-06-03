@@ -2,6 +2,10 @@ import { AppState, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "../screens/auth/LoginScreen";
+import BottomNavigator from "./BottomNavigator";
+import ValasHomeScreen from "../screens/valasHome/ValasHomeScreen";
+import TransferValasScreen from "../screens/transferValas/TransferValasScreen";
+import LoginScreen from "../screens/auth/LoginScreen";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import BottomNavigator from "./BottomNavigator";
 import ValasHomeScreen from "../screens/ValasHomeScreen";
@@ -26,6 +30,15 @@ const ScreenNavigator = () => {
         name="HomePage"
         options={{ headerShown: false }}
         component={BottomNavigator}
+      />
+      <Stack.Screen
+        name="TransferValas"
+        component={TransferValasScreen}
+        options={{ 
+          headerShown:false
+          
+        }}
+      />
       />
       <Stack.Screen
         name="JualValas"

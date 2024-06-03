@@ -7,7 +7,7 @@ import RiwayatScreen from "../screens/RiwayatScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import colors from "../theme/colors";
 import { Ionicons } from "@expo/vector-icons"; 
-import { logout } from "../config/AuthConfig";
+import { handleLogout, logout } from "../config/AuthConfig";
 
 const BottomNavigator = () => {
   const navigation = useNavigation();
@@ -33,12 +33,7 @@ const BottomNavigator = () => {
   const handleTabPress = () => {
     Alert.alert("Alert", "You clicked on the navigation bar item.");
   };
-  const handleLogout = () => {
-    Alert.alert("Keluar", "Apakah anda yakin ingin keluar aplikasi ini?", [
-      { text: 'Ya', onPress :() => logout(navigation) }, 
-      { text: 'Tidak' }, 
-    ]);
-  };
+
   return (
     <Tab.Navigator
       initialRouteName="Beranda"
@@ -122,7 +117,7 @@ const BottomNavigator = () => {
           tabBarButton: (props) => (
             <TouchableOpacity
               {...props}
-              onPress={() => handleLogout()}
+              onPress={() => handleLogout(navigation)}
               activeOpacity={0.7}
             />
           ),
