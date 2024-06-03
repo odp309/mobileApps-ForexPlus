@@ -14,7 +14,7 @@ import WalletCard from "../../components/valasHome/WalletCard";
 import ValasWalletNavigation from "../../components/valasHome/ValasWalletNavigation";
 import DaftarRekening from "../../components/valasHome/DaftarRekening";
 
-const WINDOW_HEIGHT = Dimensions.get("window").height;
+const WINDOW_HEIGHT = Dimensions.get("screen").height;
 
 const ValasHomeScreen = () => {
   const dummyData = [

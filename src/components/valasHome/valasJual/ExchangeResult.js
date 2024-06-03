@@ -1,14 +1,14 @@
 import { StyleSheet, View,Image } from "react-native";
 import React from "react";
-import { BodyRegularText,BodyMediumText } from "../shared/StyledText";
-import colors from "../../theme/colors";
+import { BodyRegularText,BodyMediumText } from "../../shared/StyledText";
+import colors from "../../../theme/colors";
 
 const ExchangeResult = ({value}) => {
   return (
     <View style={styles.container}>
       <View style={styles.countryContainer}>
         <Image
-          source={require("../../../assets/icons/flags/Indonesia.png")}
+          source={require("../../../../assets/icons/flags/Indonesia.png")}
           style={{ width: 20, height: 20, marginRight: 10 }}
         />
         <BodyMediumText

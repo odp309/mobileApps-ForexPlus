@@ -27,7 +27,7 @@ const login = async (
   navigation
 ) => {
   try {
-    const response = await axiosInstance.post("/user/login", {
+    const response = await axiosInstance.post("/public/user/login", {
       email,
       password,
     });
