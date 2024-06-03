@@ -19,8 +19,10 @@ import InputCurrency from "../../../components/valasHome/shared/InputCurrency";
 import { FontAwesome } from "@expo/vector-icons";
 import ExchangeResult from "../../../components/valasHome/shared/ExchangeResult";
 import StyledButton from "../../../components/shared/StyledButton";
-import WalletSource from "../../../components/valasHome/shared/WalletSource";
+import WalletSource from "../../../components/valasHome/valasJual/WalletSource";
+import BackButton from "../../../components/shared/BackButton";
 import { useNavigation } from "@react-navigation/core";
+import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
 
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
 import ConfirmationModal from "./ConfirmationModal";
@@ -52,9 +54,9 @@ const ValasJualScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container}> 
       <View style={styles.topContainer}>
-        <ContentHeader title={"Jual Valas"} />
+        <ContentHeader title={"Penjualan Valas"} />
       </View>
 
       <View style={[styles.middleContainer]}>

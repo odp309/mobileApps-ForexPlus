@@ -56,7 +56,10 @@ const ValasFeatures = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <FeatureButton namaFitur="Beli" />
+      <FeatureButton
+        namaFitur="Beli"
+        onPress={() => navigation.navigate("ValasBeli")}
+      />
       <FeatureButton
         namaFitur="Jual"
         onPress={() => navigation.navigate("JualValas")}
