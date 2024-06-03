@@ -7,13 +7,14 @@ import {
   BodyXLTextSemiBold,
 } from "../../../components/shared/StyledText";
 import colors from "../../../theme/colors";
-import InputCurrency from "../../../components/valasHome/valasJual/InputCurrency";
+import InputCurrency from "../../../components/valasHome/shared/InputCurrency";
 import { FontAwesome } from "@expo/vector-icons";
-import ExchangeResult from "../../../components/valasHome/valasJual/ExchangeResult";
+import ExchangeResult from "../../../components/valasHome/shared/ExchangeResult";
 import StyledButton from "../../../components/shared/StyledButton";
-import WalletSource from "../../../components/valasHome/valasJual/WalletSource";
+import WalletSource from "../../../components/valasHome/shared/WalletSource";
 import BackButton from "../../../components/shared/BackButton";
 import { useNavigation } from "@react-navigation/core";
+import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
 
 const DIMENSION_HEIGHT = Dimensions.get("screen").height;
 
@@ -35,16 +36,9 @@ const ValasJualScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <BackButton
-        style={{ width: 50,marginLeft:'5%' }}
-        onPress={() => navigation.goBack()}
-        color={colors.color.black}
-      />
+    <View style={styles.container}> 
       <View style={styles.topContainer}>
-        <BodyXLTextSemiBold style={{ textAlign: "center" }}>
-          Jual Valas
-        </BodyXLTextSemiBold>
+        <ContentHeader title={"Penjualan Valas"} />
       </View>
       <View style={{ paddingHorizontal: 20 }}>
         <View>

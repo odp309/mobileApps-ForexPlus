@@ -7,19 +7,19 @@ import {
 
 const DIMENSION_HEIGHT = Dimensions.get("window").height;
 
-const WalletSource = () => {
+const WalletSource = ({judul,isi,saldo,style}) => {
   return (
-      <View style={styles.container}> 
+      <View style={[styles.container,style]}> 
         <BodyMediumText>Dompet Sumber</BodyMediumText>
         <View style={styles.cardContainer}>
           <View style={styles.borderContainer}>
             <View style={styles.textContainer}>
               <BodyMediumText style={{ fontWeight: "bold" }}>
-                Dompet Valas
+                {judul}
               </BodyMediumText>
-              <BodySmallText>Dolar Australia</BodySmallText>
+              <BodySmallText>{isi}</BodySmallText>
               <BodyMediumText style={{ fontWeight: "bold" }}>
-                AUD 20
+                {saldo}
               </BodyMediumText>
             </View>
           </View>
