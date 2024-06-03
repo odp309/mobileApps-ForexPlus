@@ -44,6 +44,28 @@ const HeadingTwoText = ({ children, style }) => {
 const HeadingOneText = ({ children, style }) => {
   return <Text style={[styles.headingone, style]}>{children}</Text>;
 };
+// Body Regular Semi Bold Text
+const BodySmallTextSemiBold = ({ children, style }) => {
+  return <Text style={[styles.bodySmallSemiBold, style]}>{children}</Text>;
+};
+const BodyMediumTextSemiBold = ({ children, style }) => {
+  return <Text style={[styles.bodyMediumSemiBold, style]}>{children}</Text>;
+};
+const BodyLargeTextSemiBold = ({ children, style }) => {
+  return <Text style={[styles.bodyLargeSemiBold, style]}>{children}</Text>;
+};
+const BodyXLTextSemiBold = ({ children, style }) => {
+  return <Text style={[styles.bodyXLSemiBold, style]}>{children}</Text>;
+};
+
+const BodyXLTextBold = ({ children, style }) => {
+  return <Text style={[styles.bodyXLBold, style]}>{children}</Text>;
+};
+
+// Body Medium Text
+const BodyMediumText = ({ children, style }) => {
+  return <Text style={[styles.bodymedium, style]}>{children}</Text>;
+};
 
 // Styles for each custom text component
 const styles = StyleSheet.create({
@@ -97,6 +119,36 @@ const styles = StyleSheet.create({
     fontSize: sizes.font.xl6,
     lineHeight: sizes.lineHeight.xl5,
   },
+  bodySmallSemiBold: {
+    fontFamily: 'poppins-semibold',
+    fontSize: sizes.font.small,
+    lineHeight: sizes.lineHeight.small,
+  },
+  bodyMediumSemiBold: {
+    fontFamily: 'poppins-semibold',
+    fontSize: sizes.font.medium,
+    lineHeight: sizes.lineHeight.medium,
+  },
+  bodyLargeSemiBold: {
+    fontFamily: 'poppins-semibold',
+    fontSize: sizes.font.large,
+    lineHeight: sizes.lineHeight.large,
+  },
+  bodyXLSemiBold: {
+    fontFamily: 'poppins-semibold',
+    fontSize: sizes.font.xl,
+    lineHeight: sizes.lineHeight.xl,
+  },
+  bodyXLBold: {
+    fontFamily: 'poppins-bold',
+    fontSize: sizes.font.xl,
+    lineHeight: sizes.lineHeight.xl,
+  },
+  bodymedium: {
+    fontFamily: 'poppins-medium',
+    fontSize: sizes.font.medium,
+    lineHeight: sizes.lineHeight.medium, 
+  },
 });
 
 export {
@@ -104,10 +156,16 @@ export {
   BodySmallText,
   BodyRegularText,
   BodyLargeText,
+  BodySmallTextSemiBold,
+  BodyMediumTextSemiBold,
+  BodyLargeTextSemiBold,
+  BodyXLTextSemiBold,
+  BodyXLTextBold,
   HeadingSixText,
   HeadingFiveText,
   HeadingFourText,
   HeadingThreeText,
   HeadingTwoText,
   HeadingOneText,
+  BodyMediumText,
 };

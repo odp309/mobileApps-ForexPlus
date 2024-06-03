@@ -1,43 +1,93 @@
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useState } from "react";
 import colors from "../../theme/colors";
 import sizes from "../../theme/sizes";
 import { Icon } from "@rneui/themed";
 
-const Input = ({ mode, placeholder, value,onChangeText, errorState, hasIcon, style }) => { 
-
+const Input = ({
+  mode,
+  placeholder,
+  value,
+  onChangeText,
+  onPress,
+  errorState,
+  secureTextEntry,
+  hasLeftIcon,
+  hasRightIcon,
+  style,
+  leftIconName,
+  rightIconName,
+  keyboardType
+}) => {
   return mode === "active" ? (
     <View style={styles.activeContainer}>
-      {hasIcon && (
+      {hasLeftIcon && (
         <View style={{ position: "absolute", marginLeft: "5%" }}>
-          <Icon name="comment" size={24} color="black" />
+          <Icon
+            name={leftIconName}
+            size={24}
+            color={colors.primary.primaryOne}
+          />
         </View>
       )}
+
       <TextInput
         placeholder={placeholder}
         value={value}
+        secureTextEntry={secureTextEntry}
         style={[styles.activeStyle, style]}
         placeholderTextColor={colors.primary.primaryOne}
         onChangeText={onChangeText}
+        keyboardType={keyboardType}
       />
+      {hasRightIcon && (
+        <View style={{ position: "absolute", marginLeft: "87%" }}>
+          <TouchableOpacity onPress={onPress}>
+            <Icon
+              name={rightIconName}
+              type="ionicon"
+              size={24}
+              color={colors.primary.primaryOne}
+            />
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   ) : mode === "disabled" ? (
     <View style={styles.disabledContainer}>
+      {hasLeftIcon && (
+        <View style={{ position: "absolute", marginLeft: "5%" }}>
+          <Icon name={iconName} size={24} color="black" />
+        </View>
+      )}
       <TextInput
         placeholder={placeholder}
         value={value}
         style={[styles.disabledStyle, style]}
         placeholderTextColor={colors.secondary.secondaryOne}
         onChangeText={onChangeText}
+        keyboardType={keyboardType}
       />
     </View>
   ) : mode === "error" ? (
     <View>
       <View style={styles.errorContainer}>
+        {hasLeftIcon && (
+          <View style={{ position: "absolute", marginLeft: "5%" }}>
+            <Icon name={iconName} size={24} color="black" />
+          </View>
+        )}
         <TextInput
           style={[styles.errorStyle, style]}
           value={value}
           onChangeText={onChangeText}
+          keyboardType={keyboardType}
         />
       </View>
       <Text style={styles.errorText}>{errorState}</Text>

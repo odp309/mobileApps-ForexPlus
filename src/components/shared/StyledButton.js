@@ -17,6 +17,8 @@ const StyledButton = ({ mode, title, onPress,size, style}) => {
     <Button
       title={title} 
       size={size}
+      onPress={onPress}
+      titleStyle={styles.titleStyle}
       buttonStyle={[styles.bgSecondary,style]}
       containerStyle={{ width: "100%" }}
     />
@@ -25,7 +27,8 @@ const StyledButton = ({ mode, title, onPress,size, style}) => {
       title={title}
       type="outline" 
       size={size}
-      buttonStyle={[styles.borderPrimary,style]}
+      onPress={onPress}
+      buttonStyle={[styles.bgPrimaryOutlined,style]}
       titleStyle={styles.labelPrimary}
       containerStyle={{ width: "100%" }}
     />
@@ -34,24 +37,25 @@ const StyledButton = ({ mode, title, onPress,size, style}) => {
       title={title}
       type="outline" 
       size={size}
+      onPress={onPress}
+      titleStyle={styles.titleStyle}
       buttonStyle={[styles.bgSecondaryOutlined,style]}
       containerStyle={{ width: "100%" }}
     />
   ) : mode === "primary-disabled" ? (
     <Button
-      title={title}
-      type="outline" 
-      size={size}
+      title={title} 
+      size={size} 
       buttonStyle={[styles.bgPrimarydDisabled,style]}
-      titleStyle={styles.labelDisabled}
+      titleStyle={[styles.labelDisabled,styles,styles.titleStyle]}
     />
   ) : mode === "secondary-disabled" ? (
     <Button
-      title={title}
-      type="outline" 
-      size={size}
+      title={title} 
+      size={size} 
       buttonStyle={[styles.bgSecondarydDisabled,style]}
-      titleStyle={styles.labelDisabled}
+      titleStyle={[styles.labelDisabled,styles.titleStyle]}
+      containerStyle={{ width: "100%" }}
     />
   ) : (
     <Text>Mode :{title}</Text>
@@ -80,7 +84,7 @@ const styles = StyleSheet.create({
   },
 
   bgPrimarydDisabled: {
-    backgroundColor: colors.primary.primaryThree,
+    backgroundColor: "grey",
     borderRadius :100,
   },
   bgSecondarydDisabled: {
@@ -99,7 +103,6 @@ const styles = StyleSheet.create({
   },
 
   titleStyle: {
-    fontSize: 20, 
     fontFamily: "poppins-semibold",
   },
 });

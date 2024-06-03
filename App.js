@@ -1,39 +1,18 @@
-import { StyleSheet, Text, View } from "react-native"; 
-import Router from "./src/navigation/Router"; 
-import DummyTest from "./src/dummy/DummyTest";
-import { useEffect, useState } from "react"; 
+import { StyleSheet, Text, View } from "react-native";
+import { useEffect, useState } from "react";
 
-import * as Font from "expo-font"; 
+import * as Font from "expo-font";
+import Router from "./src/navigators/Router";
+import { loadFont, prepare } from "./src/config/FontConfig";
 
 export default function App() {
-
   const [fontLoaded, setFontLoaded] = useState(false);
-  async function prepare() {
-    try {  
-      await Font.loadAsync({
-        "poppins-regular": require("./assets/fonts/Poppins-Regular.ttf"),
-        "poppins-semibold": require("./assets/fonts/Poppins-SemiBold.ttf"),
-      });  
-    } catch (e) {
-      console.warn(e);
-    } finally { 
-      setFontLoaded(true);
-    }
-  }
+
   useEffect(() => {
-    prepare();
-  }, []); 
+    loadFont(setFontLoaded);
+  }, []);
 
-  if (!fontLoaded) {
-    return null;
-  }
-
-  return (
-    <Router />
-    // <DummyTest />
-  );
+  return fontLoaded ? <Router /> : null;
 }
 
-const styles = StyleSheet.create({
-  
-});
+const styles = StyleSheet.create({});
