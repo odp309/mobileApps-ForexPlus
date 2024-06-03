@@ -37,7 +37,7 @@ const TransactionResultScreen = ({ tipeTransaksi, date }) => {
             7 Mei 2024 - 11.03
           </BodySmallText>
         </View>
-        <View style={{ paddingHorizontal: 70, marginTop:60}}>
+        <View style={{ paddingHorizontal: 70, marginTop: 60 }}>
           {/* Summary Result Card Component */}
             <View style={styles.summaryResult}>
               <ImageBackground
