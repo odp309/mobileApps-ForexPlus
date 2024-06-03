@@ -142,6 +142,9 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginBottom: 0,
   },
+  inputContainer: {
+    marginHorizontal: 20,
+  },
   kursBeliContainer: {
     marginTop: 15,
     marginBottom: 20,
