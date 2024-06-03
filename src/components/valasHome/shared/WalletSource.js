@@ -7,9 +7,9 @@ import {
 
 const DIMENSION_HEIGHT = Dimensions.get("window").height;
 
-const WalletSource = () => {
+const WalletSource = ({style}) => {
   return (
-      <View style={styles.container}> 
+      <View style={[styles.container,style]}> 
         <BodyMediumText>Dompet Sumber</BodyMediumText>
         <View style={styles.cardContainer}>
           <View style={styles.borderContainer}>
@@ -77,5 +77,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.color.white,
     borderBottomLeftRadius: 20,
     borderTopLeftRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.5, // Adjust the opacity for desired effect
+    shadowRadius: 5, // Adjust the radius for desired effect
+    elevation: 5, // Android shadow
   },
 });

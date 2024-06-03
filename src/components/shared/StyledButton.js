@@ -48,6 +48,7 @@ const StyledButton = ({ mode, title, onPress,size, style}) => {
       size={size} 
       buttonStyle={[styles.bgPrimarydDisabled,style]}
       titleStyle={[styles.labelDisabled,styles,styles.titleStyle]}
+      disabled={true}
     />
   ) : mode === "secondary-disabled" ? (
     <Button
@@ -56,6 +57,7 @@ const StyledButton = ({ mode, title, onPress,size, style}) => {
       buttonStyle={[styles.bgSecondarydDisabled,style]}
       titleStyle={[styles.labelDisabled,styles.titleStyle]}
       containerStyle={{ width: "100%" }}
+      disabled={true}
     />
   ) : (
     <Text>Mode :{title}</Text>

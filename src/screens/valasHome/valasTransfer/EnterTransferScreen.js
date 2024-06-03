@@ -9,8 +9,8 @@ import {
 import colors from "../../../theme/colors";
 import StyledButton from "../../../components/shared/StyledButton";
 import { Image } from "react-native";
-import InputCurrency from "../../../components/valasHome/valasJual/InputCurrency";
-import WalletSource from "../../../components/valasHome/valasJual/WalletSource";
+import InputCurrency from "../../../components/valasHome/shared/InputCurrency";
+import WalletSource from "../../../components/valasHome/shared/WalletSource";
 import ModalTransferConfirmation from "./ModalTransferConfirmation";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
