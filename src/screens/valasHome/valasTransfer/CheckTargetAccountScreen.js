@@ -1,29 +1,31 @@
 import {
   ActivityIndicator,
+  Animated,
   Dimensions,
+  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import {
-  BodyMediumText,
-  BodySmallText,
-  BodyXLTextBold,
-  BodyXLTextSemiBold,
-} from "../../components/shared/StyledText";
-import colors from "../../theme/colors";
-import Input from "../../components/shared/Input";
-import StyledButton from "../../components/shared/StyledButton";
+import React, { useEffect, useRef, useState } from "react";
+import { 
+  BodyMediumTextSemiBold,
+  BodySmallText, 
+  BodyXLTextBold, 
+} from "../../../components/shared/StyledText";
+import colors from "../../../theme/colors";
+import Input from "../../../components/shared/Input";
+import StyledButton from "../../../components/shared/StyledButton";
 import { useNavigation } from "@react-navigation/native";
-import BackButton from "../../components/shared/BackButton";
-import { fetchSaldo } from "../../config/ValasConfig";
-const TransferValasScreen = () => {
+import BackButton from "../../../components/shared/BackButton"; 
+import { Ionicons } from "@expo/vector-icons";
+import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
+const CheckTargetAccountScreen = () => {
   const dataRekening = [
-    { id: "1", noRek: "12345", nama: "Arfiandi Wijatmiko" },
-    { id: "2", noRek: "14122", nama: "Mikiimim" },
-    { id: "3", noRek: "14312", nama: "Es teh" },
+    { id: "1", noRek: "123456789", nama: "Arfiandi Wijatmiko" },
+    { id: "2", noRek: "191919191", nama: "Muhammad Daffa F.A" },
+    { id: "3", noRek: "131313131", nama: "Farrel haridhi" },
   ];
   const navigation = useNavigation();
   const [inputRekening, setInputRekening] = useState("");
@@ -31,6 +33,10 @@ const TransferValasScreen = () => {
   const [hasChecked, setHasChecked] = useState(false);
   const [accountCheckStatus, setAccountCheckStatus] = useState("loading");
   const [messageStatus, setMessageStatus] = useState("");
+  const [accountFind, setAccountFind] = useState(null);
+
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const translateYAnim = useRef(new Animated.Value(50)).current;
 
   const findNoRek = (noRek) => {
     return dataRekening.find((item) => item.noRek === noRek);
@@ -38,36 +44,48 @@ const TransferValasScreen = () => {
 
   const handleFindNoRek = () => {
     setHasChecked(true);
+    setMessageStatus("Mengecek Nomor rekening tujuan...");
+    setAccountCheckStatus("loading");
+    setIsCheckingAccount(true);
 
     setTimeout(() => {
       const findResult = findNoRek(inputRekening);
       if (findResult) {
+        setAccountFind(findResult);
         setMessageStatus("Berhasil Menemukan");
         setAccountCheckStatus("success");
+        animatedCardAccount();
       } else {
         setMessageStatus(
           "Nomor rekening tidak valid / rekening tidak memiliki wallet valas tujuan. \nPastikan nomor rekening yang dimasukkan sudah benar."
         );
         setAccountCheckStatus("fail");
+        setAccountFind(null);
       }
       setIsCheckingAccount(false);
     }, 500);
-    setMessageStatus("Mengecek Nomor rekening tujuan...");
-    setAccountCheckStatus("loading");
-    setIsCheckingAccount(true);
   };
 
+  const animatedCardAccount = () => {
+    fadeAnim.setValue(0);
+    translateYAnim.setValue(50);
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+      Animated.timing(translateYAnim, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
   return (
     <View style={styles.container}>
-      <BackButton
-        style={{ width: 50 }}
-        onPress={() => navigation.goBack()}
-        color={colors.color.black}
-      />
       <View style={styles.topContainer}>
-        <BodyXLTextSemiBold style={{ textAlign: "center" }}>
-          Transfer Valas
-        </BodyXLTextSemiBold>
+        <ContentHeader title={"Transfer Valas"} />
       </View>
 
       <View style={styles.middleContainer}>
@@ -84,6 +102,7 @@ const TransferValasScreen = () => {
           mode={"active"}
           value={inputRekening}
           hasLeftIcon={true}
+          keyboardType="numeric"
           leftIconName={""}
           onChangeText={setInputRekening}
           placeholder={"Masukkan nomor rekening"}
@@ -103,13 +122,25 @@ const TransferValasScreen = () => {
               },
             ]}
           >
-            {isCheckingAccount && (
+            {isCheckingAccount ? (
               <ActivityIndicator
                 style={{ marginRight: 10 }}
                 size="small"
                 color="grey"
               />
+            ) : (
+              <Ionicons
+                name={
+                  accountCheckStatus === "success"
+                    ? "checkmark-circle-outline"
+                    : "alert-circle-outline"
+                }
+                size={16}
+                style={{ marginTop: 1, marginRight: 5 }}
+                color={accountCheckStatus === "success" ? "green" : "red"}
+              />
             )}
+
             <BodySmallText
               style={{
                 color:
@@ -124,6 +155,44 @@ const TransferValasScreen = () => {
             </BodySmallText>
           </View>
         )}
+        {accountFind && (
+          <Animated.View
+            style={{
+              opacity: fadeAnim,
+              transform: [{ translateY: translateYAnim }],
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => navigation.navigate("EnterTransfer",{data:accountFind})}
+            >
+              <View
+                style={{
+                  minHeight: 50,
+                  width: "100%",
+                  backgroundColor: colors.color.successTransparent,
+                  borderRadius: 20,
+                  padding: 20,
+                  paddingVertical: 40,
+                  marginTop: 30,
+                  flexDirection: "row",
+                }}
+              >
+                <View>
+                  <Image
+                    source={require("../../../../assets/icon-user-he.png")}
+                    style={{ width: 70, height: 70 }}
+                  />
+                </View>
+                <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                  <BodyMediumTextSemiBold>
+                    {accountFind.nama}
+                  </BodyMediumTextSemiBold>
+                  <BodySmallText>{accountFind.noRek}</BodySmallText>
+                </View>
+              </View>
+            </TouchableOpacity>
+          </Animated.View>
+        )}
       </View>
       <View style={styles.bottomContainer}>
         <StyledButton
@@ -137,30 +206,30 @@ const TransferValasScreen = () => {
   );
 };
 
-export default TransferValasScreen;
+export default CheckTargetAccountScreen;
 
 const styles = StyleSheet.create({
   container: {
     height: Dimensions.get("screen").height * 1,
     justifyContent: "flex-start",
     backgroundColor: "white",
-    paddingTop: "15%",
-    padding: "5%",
   },
   topContainer: {
     width: "100%",
-    flex: 0.05,
+    flex: 0.1, 
+    marginTop: "15%",
+    paddingHorizontal:20
   },
   middleContainer: {
     width: "100%",
-    marginTop: 20,
-    flex: 0.45,
+    flex: 0.75, 
+    paddingHorizontal:20
   },
-  bottomContainer: {
+  bottomContainer: { 
     width: "100%",
-    justifyContent: "flex-end",
-    flex: 0.5,
-    marginBottom: 20,
+    justifyContent: "center",
+    flex: 0.15,
+    paddingHorizontal:20
   },
   accountCheckerContainer: {
     width: "100%",

@@ -1,15 +1,15 @@
 import { Dimensions, Image, StyleSheet,  View } from "react-native";
-import colors from "../../theme/colors";
+import colors from "../../../theme/colors";
 import {
   BodyMediumText,
   BodySmallText,
-} from "../shared/StyledText";
+} from "../../shared/StyledText";
 
 const DIMENSION_HEIGHT = Dimensions.get("window").height;
 
 const WalletSource = () => {
   return (
-      <View style={styles.container}>
+      <View style={styles.container}> 
         <BodyMediumText>Dompet Sumber</BodyMediumText>
         <View style={styles.cardContainer}>
           <View style={styles.borderContainer}>
@@ -32,7 +32,7 @@ const WalletSource = () => {
                 borderBottomRightRadius: 50,
                 borderTopRightRadius: 50,
               }}
-              source={require("../../../assets/Intersect.png")}
+              source={require("../../../../assets/Intersect.png")}
             />
           </View>
         </View>
@@ -46,17 +46,17 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     paddingTop: 20,
-    paddingHorizontal: 20,
-    height: DIMENSION_HEIGHT / 4,
-    backgroundColor: "#F0EBEB",
+    paddingBottom: 30,
+    paddingHorizontal: 20, 
+    backgroundColor: "#E8E8E8",
+    
   },
-  cardContainer: {
-    justifyContent: "space-between",
-    height: "56%",
-
+  cardContainer: { 
+    height: 100, 
     borderRadius: 20,
     backgroundColor: colors.color.white,
-    flexDirection: "row",
+    flexDirection: "row", 
+    marginTop:5,
   },
   borderContainer: {
     width: "60%",
@@ -67,12 +67,10 @@ const styles = StyleSheet.create({
   imageContainer: {
     borderTopRightRadius: 20,
     borderBottomRightRadius: 20,
-    width: "40%",
-    height: "100%",
+    width: "40%", 
     backgroundColor: colors.primary.primaryOne,
   },
-  textContainer: {
-    width: "100%",
+  textContainer: { 
     paddingTop: 10,
     paddingBottom: 20,
     paddingLeft: 20,

@@ -23,6 +23,7 @@ const Input = ({
   style,
   leftIconName,
   rightIconName,
+  keyboardType
 }) => {
   return mode === "active" ? (
     <View style={styles.activeContainer}>
@@ -43,6 +44,7 @@ const Input = ({
         style={[styles.activeStyle, style]}
         placeholderTextColor={colors.primary.primaryOne}
         onChangeText={onChangeText}
+        keyboardType={keyboardType}
       />
       {hasRightIcon && (
         <View style={{ position: "absolute", marginLeft: "87%" }}>
@@ -70,6 +72,7 @@ const Input = ({
         style={[styles.disabledStyle, style]}
         placeholderTextColor={colors.secondary.secondaryOne}
         onChangeText={onChangeText}
+        keyboardType={keyboardType}
       />
     </View>
   ) : mode === "error" ? (
@@ -84,6 +87,7 @@ const Input = ({
           style={[styles.errorStyle, style]}
           value={value}
           onChangeText={onChangeText}
+          keyboardType={keyboardType}
         />
       </View>
       <Text style={styles.errorText}>{errorState}</Text>

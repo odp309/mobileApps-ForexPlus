@@ -1,9 +1,9 @@
 import axios from "axios";
 import axiosInstance from "../connectivity/AxiosConfigManager";
 
-const fetchSaldo = async () => {
+const fetchNomorRekening = async (accountNumber) => { 
   try {
-    const response = await axiosInstance.get("/bank_account/saldo");
+    const response = await axiosInstance.post("/private/bank_account/get",{accountNumber});
     console.log(response.data);
   } catch (err) {
     console.log(err);
@@ -12,4 +12,4 @@ const fetchSaldo = async () => {
   }
 };
 
-export {fetchSaldo}
+export {fetchNomorRekening}

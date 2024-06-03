@@ -3,10 +3,13 @@ import React, { useEffect, useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "../screens/auth/LoginScreen";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import BottomNavigator from "./BottomNavigator";
-import ValasHomeScreen from "../screens/ValasHomeScreen";
-import ValasJualScreen from "../screens/ValasJualScreen";
+import BottomNavigator from "./BottomNavigator"; 
 import colors from "../theme/colors";
+import ValasHomeScreen from "../screens/valasHome/ValasHomeScreen";
+import CheckTargetAccountScreen from "../screens/valasHome/valasTransfer/CheckTargetAccountScreen";
+import ValasJualScreen from "../screens/valasHome/valasJual/ValasJualScreen";
+import EnterTransferScreen from "../screens/valasHome/valasTransfer/EnterTransferScreen"; 
+import PinConfirmationScreen from "../screens/valasHome/PinConfirmationScreen";
 
 const Stack = createNativeStackNavigator();
 const ScreenNavigator = () => {
@@ -28,21 +31,26 @@ const ScreenNavigator = () => {
         component={BottomNavigator}
       />
       <Stack.Screen
-        name="ValasJual"
+        name="JualValas"
         component={ValasJualScreen}
-
         options={{
           headerShown: false,
-          headerTitle: "Masukkan Jumlah Penjualan",
-          headerTitleAlign: "center",
-          headerShadowVisible: false, // Set to false to remove the shadow
-          headerTitleStyle: {
-            color: colors.color.black, // Change the color to your desired color
-          },
-          headerLeft: () => (
-            <Ionicons name="arrow-back" size={24} color={colors.color.black} />
-          ),
         }}
+      />
+      <Stack.Screen
+        name="TransferValas"
+        component={CheckTargetAccountScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="EnterTransfer"
+        component={EnterTransferScreen}
+        options={{ headerShown: false }} 
+      />
+      <Stack.Screen
+        name="PinConfirmationTransfer"
+        component={PinConfirmationScreen}
+        options={{ headerShown: false }} 
       />
     </Stack.Navigator>
   );

@@ -4,17 +4,21 @@ import {
   BodyRegularText,
   BodyMediumText,
   BodyLargeText,
-} from "../components/shared/StyledText";
-import colors from "../theme/colors";
-import InputCurrency from "../components/valasJual/InputCurrency";
+  BodyXLTextSemiBold,
+} from "../../../components/shared/StyledText";
+import colors from "../../../theme/colors";
+import InputCurrency from "../../../components/valasHome/valasJual/InputCurrency";
 import { FontAwesome } from "@expo/vector-icons";
-import ExchangeResult from "../components/valasJual/ExchangeResult";
-import StyledButton from "../components/shared/StyledButton";
-import WalletSource from "../components/valasJual/WalletSource";
+import ExchangeResult from "../../../components/valasHome/valasJual/ExchangeResult";
+import StyledButton from "../../../components/shared/StyledButton";
+import WalletSource from "../../../components/valasHome/valasJual/WalletSource";
+import BackButton from "../../../components/shared/BackButton";
+import { useNavigation } from "@react-navigation/core";
 
-const DIMENSION_HEIGHT = Dimensions.get("window").height;
+const DIMENSION_HEIGHT = Dimensions.get("screen").height;
 
 const ValasJualScreen = () => {
+  const navigation = useNavigation();
   const [exchange, setExchange] = useState("");
   const [kurs, setKurs] = useState("160");
   const [valas, setValas] = useState("JPY");
@@ -32,6 +36,16 @@ const ValasJualScreen = () => {
 
   return (
     <View style={styles.container}>
+      <BackButton
+        style={{ width: 50,marginLeft:'5%' }}
+        onPress={() => navigation.goBack()}
+        color={colors.color.black}
+      />
+      <View style={styles.topContainer}>
+        <BodyXLTextSemiBold style={{ textAlign: "center" }}>
+          Jual Valas
+        </BodyXLTextSemiBold>
+      </View>
       <View style={{ paddingHorizontal: 20 }}>
         <View>
           <BodyRegularText
@@ -50,7 +64,7 @@ const ValasJualScreen = () => {
           />
         </View>
 
-        <View>
+        <View style={{ alignItems: "center", marginVertical: 10 }}>
           <BodyRegularText
             style={{ color: colors.color.grey, fontWeight: "bold" }}
           >
@@ -72,12 +86,14 @@ const ValasJualScreen = () => {
       </View>
       <WalletSource />
 
-      <StyledButton
-        mode="primary"
-        title="Lanjut"
-        size={"lg"}
-        style={{ marginBottom: 20, marginHorizontal: 20 }}
-      />
+      <View style={styles.bottomContainer}>
+        <StyledButton
+          mode="primary"
+          title="Lanjut"
+          size={"lg"}
+          style={{ marginBottom: 20, marginHorizontal: 20 }}
+        />
+      </View>
     </View>
   );
 };
@@ -86,9 +102,9 @@ export default ValasJualScreen;
 
 const styles = StyleSheet.create({
   container: {
-    height: DIMENSION_HEIGHT * 0.95,
-    paddingVertical: "5%",
-    justifyContent: "space-between",
+    height: DIMENSION_HEIGHT * 1,
+    paddingTop: "15%",
+    backgroundColor: colors.color.white,
   },
   textStyle: {
     color: colors.primary.primaryOne,
@@ -99,5 +115,10 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "flex-start",
     alignItems: "flex-start",
+  },
+  bottomContainer: {
+    width: "100%",
+    height:'25%',
+    justifyContent: "flex-end", 
   },
 });

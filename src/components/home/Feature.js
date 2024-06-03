@@ -9,13 +9,17 @@ import {
   View,
 } from "react-native";
 import React, { useState } from "react";
-import { BodyMediumText, BodySmallText } from "../shared/StyledText";
+import {
+  BodyMediumText,
+  BodyRegularText,
+  BodySmallText,
+} from "../shared/StyledText";
 import { Ionicons } from "@expo/vector-icons";
 import colors from "../../theme/colors";
-import { useNavigation } from "@react-navigation/native"; 
+import { useNavigation } from "@react-navigation/native";
 import { Skeleton } from "@rneui/themed";
 
-const Feature = ({user}) => {
+const Feature = ({ user }) => {
   const navigation = useNavigation();
   const dataFitur = [
     {
@@ -35,7 +39,7 @@ const Feature = ({user}) => {
     },
     {
       id: "4",
-      title: "Valas Plus",
+      title: "Valas⁺",
       icon: require("../../../assets/icon-valas-plus.png"),
     },
     {
@@ -86,7 +90,7 @@ const Feature = ({user}) => {
     return dataFitur;
   };
 
-  const isiElement = ({item}) => (
+  const isiElement = ({ item }) => (
     <View
       style={{
         alignItems: "center",
@@ -133,7 +137,7 @@ const Feature = ({user}) => {
         }}
       >
         {user === null ? (
-          <Skeleton width={80} height={30}/>
+          <Skeleton width={80} height={30} />
         ) : (
           <View style={styles.borderedObject}>
             <BodySmallText>
@@ -176,25 +180,29 @@ const Feature = ({user}) => {
         />
         <View style={{ width: "100%", height: 1, backgroundColor: "orange" }} />
         <View>
-          {user===null ? <Skeleton style={{alignSelf:'center'}} width={100} height={20} /> :<TouchableOpacity
-            onPress={handlePress}
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-              paddingVertical: 10,
-            }}
-          >
-            <BodyMediumText>
-              {showAll ? "View Less" : "View All"}
-            </BodyMediumText>
-            <Ionicons
-              name={showAll ? "chevron-up-outline" : "chevron-down-outline"}
-              size={20}
-              color={"#000"}
-              style={{ marginLeft: 5, height: "100%" }}
-            />
-          </TouchableOpacity>}
+          {user === null ? (
+            <Skeleton style={{ alignSelf: "center" }} width={100} height={20} />
+          ) : (
+            <TouchableOpacity
+              onPress={handlePress}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                paddingVertical: 10,
+              }}
+            >
+              <BodyMediumText>
+                {showAll ? "View Less" : "View All"}
+              </BodyMediumText>
+              <Ionicons
+                name={showAll ? "chevron-up-outline" : "chevron-down-outline"}
+                size={20}
+                color={"#000"}
+                style={{ marginLeft: 5, height: "100%" }}
+              />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </View>

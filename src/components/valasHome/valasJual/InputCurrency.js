@@ -1,72 +1,65 @@
 import { Image, StyleSheet, View, TextInput } from "react-native";
 import React, { useState } from "react";
-import { BodyMediumText } from "../shared/StyledText";
-import colors from "../../theme/colors";
+import { BodyMediumText } from "../../shared/StyledText";
+import colors from "../../../theme/colors";
 
 const country = {
   // Add all your flag images here, where the keys are countryFlag values
   aud: {
-    pathImage: require("../../../assets/icons/flags/Australia.png"),
+    pathImage: require("../../../../assets/icons/flags/Australia.png"),
     code: "AUD",
   },
   sgd: {
-    pathImage: require("../../../assets/icons/flags/Singapore.png"),
+    pathImage: require("../../../../assets/icons/flags/Singapore.png"),
     code: "SGD",
   },
   jpy: {
-    pathImage: require("../../../assets/icons/flags/Japan.png"),
+    pathImage: require("../../../../assets/icons/flags/Japan.png"),
     code: "JPY",
   },
   krw: {
-    pathImage: require("../../../assets/icons/flags/South_Korea.png"),
+    pathImage: require("../../../../assets/icons/flags/South_Korea.png"),
     code: "KRW",
   },
   usd: {
-    pathImage: require("../../../assets/icons/flags/United_States.png"),
+    pathImage: require("../../../../assets/icons/flags/United_States.png"),
     code: "USD",
   },
   cny: {
-    pathImage: require("../../../assets/icons/flags/China.png"),
+    pathImage: require("../../../../assets/icons/flags/China.png"),
     code: "CNY",
   },
   myr: {
-    pathImage: require("../../../assets/icons/flags/Malaysia.png"),
+    pathImage: require("../../../../assets/icons/flags/Malaysia.png"),
     code: "MYR",
   },
   eur: {
-    pathImage: require("../../../assets/icons/flags/European_Union.png"),
+    pathImage: require("../../../../assets/icons/flags/European_Union.png"),
     code: "EUR",
   },
 };
 
-const InputCurrency = ({  style, countryCode,onChangeText }) => {
-  const [selectedCountry, setSelectedCountry] = useState(country);
-  const [inputedValue, setInputedValue] = useState("");
-
-  const handleChangeText = (text) =>{
-    setInputedValue(text);
-    onChangeText(text);
-  }
+const InputCurrency = ({  style, countryCode,onChangeText,value}) => {  
   return (
     <View style={styles.container}>
       <View style={styles.countryContainer}>
         <Image
-          source={selectedCountry[countryCode].pathImage}
+          source={country[countryCode].pathImage}
           style={{ width: 20, height: 20, marginRight: 10 }}
         />
         <BodyMediumText
           style={{ color: colors.primary.primaryOne, fontWeight: "bold" }}
         >
-          {selectedCountry[countryCode].code}
+          {country[countryCode].code}
         </BodyMediumText>
       </View>
       <TextInput
-        placeholder="Masukkan Nominal"
-        value={inputedValue}
+        placeholder="Masukkan Nominal" 
+        value={value}
         style={[styles.inputStyle, style]}
         keyboardType="numeric"
         placeholderTextColor={colors.primary.primaryThree}
-        onChangeText={(text)=>handleChangeText(text)}
+        onChangeText={onChangeText}
       />
     </View>
   );
@@ -102,6 +95,9 @@ const styles = StyleSheet.create({
     paddingLeft: 100,
     borderRadius: 100,
     borderColor: colors.primary.primaryOne,
-    fontFamily: "poppins-regular",
+    fontFamily: "poppins-semibold",
+    color:colors.primary.primaryOne,
+    fontSize:16,
+    paddingTop:5
   },
 });
