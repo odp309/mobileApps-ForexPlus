@@ -6,11 +6,9 @@ import BottomNavigator from "./BottomNavigator";
 import ValasHomeScreen from "../screens/valasHome/ValasHomeScreen";
 import TransferValasScreen from "../screens/transferValas/TransferValasScreen";
 import LoginScreen from "../screens/auth/LoginScreen";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import BottomNavigator from "./BottomNavigator";
 import ValasHomeScreen from "../screens/ValasHomeScreen";
 import JualValasScreen from "../screens/JualValasScreen";
-import colors from "../theme/colors";
 
 const Stack = createNativeStackNavigator();
 const ScreenNavigator = () => {
@@ -39,22 +37,12 @@ const ScreenNavigator = () => {
           
         }}
       />
-      />
       <Stack.Screen
         name="JualValas"
         component={JualValasScreen}
 
         options={{
           headerShown: false,
-          headerTitle: "Masukkan Jumlah Penjualan",
-          headerTitleAlign: "center",
-          headerShadowVisible: false, // Set to false to remove the shadow
-          headerTitleStyle: {
-            color: colors.color.black, // Change the color to your desired color
-          },
-          headerLeft: () => (
-            <Ionicons name="arrow-back" size={24} color={colors.color.black} />
-          ),
         }}
       />
     </Stack.Navigator>
