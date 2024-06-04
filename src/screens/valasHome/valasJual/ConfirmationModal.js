@@ -15,7 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 const ConfirmationModal = ({isVisible,toggleBottomSheet, pendapatan, kurs, inputSaldo }) => {
   const navigation = useNavigation();
   const toPinVerification = () => {
-    navigation.navigate("PinConfirmationTransfer");
+    navigation.navigate("PinConfirmation");
   }
   return (
     <BottomSheet isVisible={isVisible}>
@@ -117,9 +117,6 @@ export default ConfirmationModal;
 const styles = StyleSheet.create({
   container: {},
   modalContent: {
-    // width: "100%",
-    // height: "60%",
-    // justifyContent: "space-evenly",
     alignItems: "center",
     backgroundColor: "white",
     paddingVertical: 20,

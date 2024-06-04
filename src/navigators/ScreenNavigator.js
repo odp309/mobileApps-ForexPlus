@@ -16,7 +16,7 @@ import TransactionResultScreen from "../screens/valasHome/TransactionResultScree
 const Stack = createNativeStackNavigator();
 const ScreenNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="TransactionResult">
+    <Stack.Navigator initialRouteName="Login">
       <Stack.Screen
         name="Login"
         options={{ headerShown: false, headerStyle: {} }}
