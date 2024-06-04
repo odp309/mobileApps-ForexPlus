@@ -15,6 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 const ConfirmationModal = ({isVisible,toggleBottomSheet, pendapatan, kurs, inputSaldo }) => {
   const navigation = useNavigation();
   const toPinVerification = () => {
+    toggleBottomSheet();
     navigation.navigate("PinConfirmation");
   }
   return (
