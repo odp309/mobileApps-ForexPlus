@@ -18,7 +18,7 @@ import {
 import colors from "../../../theme/colors";
 import { FontAwesome } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
-import PullConfirmationModal from "./PullConfirmationModal";
+import PullConfirmationModal from "../../../components/valasHome/valasTarik/PullConfirmationModal";
 
 const branchDummy = [
   {
@@ -169,6 +169,7 @@ const ChooseBranchScreen = () => {
             renderItem={({ item }) => BranchItem(item)}
           />
         </View>
+        
         <PullConfirmationModal
           modalVisibility={modalVisibility}
           toggleBottomSheet={toggleBottomSheet}

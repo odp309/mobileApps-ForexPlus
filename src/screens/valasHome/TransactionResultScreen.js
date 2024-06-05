@@ -18,6 +18,7 @@ import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import { useEffect, useRef } from "react";
 import LottieView from "lottie-react-native";
+import ResultCard from "../../components/valasHome/ResultCard";
 
 const TransactionResultScreen = ({
   tipeTransaksi,
@@ -44,6 +45,7 @@ const TransactionResultScreen = ({
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}></View>
+
       <View style={styles.middleContainer}>
         {/* Success Icon Animation */}
         <View style={{ width: "100%", alignItems: "center" }}>
@@ -67,30 +69,11 @@ const TransactionResultScreen = ({
           </BodySmallText>
         </View>
         {/* Summary Result Card Component */}
-        <View style={{ paddingHorizontal: 70, marginTop: 60 }}>
-          <View style={styles.summaryResult}>
-            <ImageBackground
-              source={require("../../../assets/SummaryBackground.png")}
-              resizeMode="cover"
-              imageStyle={{ borderRadius: 20 }}
-              style={styles.imageContainer}
-            >
-              <Image
-                source={require("../../../assets/icons/flags/Japan.png")}
-                style={{ width: 40, height: 40, marginBottom: 10 }}
-              />
-              <BodyLargeText style={{ fontWeight: "bold" }}>
-                Yen Japan
-              </BodyLargeText>
-              <BodyLargeText>JPY</BodyLargeText>
-              <BodyMediumText>18901517618</BodyMediumText>
-              <BodyLargeText style={{ fontWeight: "bold", marginVertical: 20 }}>
-                JPY 11000
-              </BodyLargeText>
-            </ImageBackground>
-          </View>
+        <View style={{width:'100%',alignItems:'center',marginTop:'15%'}}>
+        <ResultCard />
         </View>
       </View>
+      
       {/* To Homepage Button */}
       <View style={styles.bottomContainer}>
         <StyledButton
@@ -110,11 +93,11 @@ const styles = StyleSheet.create({
   container: {
     height: Dimensions.get("screen").height,
     justifyContent: "flex-start",
-    backgroundColor: "white",
+    backgroundColor: colors.color.white,
   },
   topContainer: {
     width: "100%",
-    flex: 0.10,
+    flex: 0.1,
     marginTop: "15%",
     paddingHorizontal: 20,
   },
@@ -127,27 +110,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flex: 0.15,
     paddingHorizontal: 20,
-  },
-  summaryResult: {
-    width: "100%",
-    backgroundColor: "transparent",
-    borderRadius: 20,
-    // Shadow for iOS
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    // Shadow for Android
-    elevation: 8,
-    backgroundColor: "white",
-  },
-  image: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  imageContainer: {
-    width: "100%",
-    alignItems: "center",
-    paddingVertical: 20,
   },
 });

@@ -13,8 +13,10 @@ import PinConfirmationScreen from "../screens/valasHome/PinConfirmationScreen";
 import ValasBeliScreen from "../screens/valasHome/valasBeli/ValasBeliScreen";
 import TransactionResultScreen from "../screens/valasHome/TransactionResultScreen";
 import ChooseBranchScreen from "../screens/valasHome/valasTarik/ChooseBranchScreen";
+import ValasRiwayatScreen from "../screens/valasHome/riwayat/ValasRiwayatScreen";
 
 const Stack = createNativeStackNavigator();
+
 const ScreenNavigator = () => {
   return (
     <Stack.Navigator initialRouteName="Login">
@@ -58,7 +60,7 @@ const ScreenNavigator = () => {
       <Stack.Screen
         name="ValasBeli"
         component={ValasBeliScreen}
-        options={{ headerShown: false }} 
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="TransactionResult"
@@ -68,6 +70,11 @@ const ScreenNavigator = () => {
       <Stack.Screen
         name="ChooseBranch"
         component={ChooseBranchScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Riwayat"
+        component={ValasRiwayatScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

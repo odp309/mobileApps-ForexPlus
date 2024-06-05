@@ -22,9 +22,10 @@ import StyledButton from "../../../components/shared/StyledButton";
 import WalletSource from "../../../components/valasHome/shared/WalletSource";
 import BackButton from "../../../components/shared/BackButton";
 import { useNavigation } from "@react-navigation/core";
+import ValasConversion from "../../../components/valasHome/valasJual/ValasConversion";
 
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
-import ConfirmationModal from "./ConfirmationModal";
+import ConfirmationModal from "../../../components/valasHome/valasJual/ConfirmationModal";
 const DIMENSION_HEIGHT = Dimensions.get("screen").height;
 
 const ValasJualScreen = () => {
@@ -53,44 +54,15 @@ const ValasJualScreen = () => {
   };
 
   return (
-    <View style={styles.container}> 
+    <View style={styles.container}>
       <View style={styles.topContainer}>
         <ContentHeader title={"Penjualan Valas"} />
       </View>
 
       <View style={[styles.middleContainer]}>
         <View style={{ paddingHorizontal: 20 }}>
-          {/* Nominal Penjualan (InputCurrency) */}
-          <View>
-            <BodyRegularText
-              style={{ color: colors.color.grey, fontWeight: "bold" }}
-            >
-              Nominal Penjualan
-            </BodyRegularText>
-            <InputCurrency
-              countryCode="jpy"
-              onChangeText={acceptInputCurrency}
-            />
-          </View>
-
-          {/* DownArrowButton */}
-          <View style={{ alignItems: "center", marginVertical: 10 }}>
-            <FontAwesome
-              name="long-arrow-down"
-              size={24}
-              color={colors.primary.primaryOne}
-            />
-          </View>
-
-          {/* Nominal Pendaptan (ExchangeResult) */}
-          <View style={{ alignItems: "flex-start", marginVertical: 10 }}>
-            <BodyRegularText
-              style={{ color: colors.color.grey, fontWeight: "bold" }}
-            >
-              Nominal Pendapatan
-            </BodyRegularText>
-            <ExchangeResult value={exchange} />
-          </View>
+          {/* Konversi dari Valas ke IDR */}
+          <ValasConversion exchange={exchange} changeTextData={acceptInputCurrency} />
 
           {/* Kurs Jual */}
           <View style={styles.kursContainer}>
@@ -103,8 +75,11 @@ const ValasJualScreen = () => {
               {valas} 1.00 = Rp. {kurs}
             </BodyLargeText>
           </View>
+          
         </View>
+
         <WalletSource />
+
         <ConfirmationModal
           isVisible={isVisible}
           toggleBottomSheet={toggleBottomSheet}

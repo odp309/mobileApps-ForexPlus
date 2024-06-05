@@ -5,9 +5,9 @@ import {
   BodyRegularText,
   BodySmallText,
   HeadingSixText,
-} from "../../../components/shared/StyledText";
-import WalletSource from "../../../components/valasHome/shared/WalletSource";
-import StyledButton from "../../../components/shared/StyledButton";
+} from "../../shared/StyledText";
+import WalletSource from "../shared/WalletSource";
+import StyledButton from "../../shared/StyledButton";
 import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
