@@ -14,14 +14,18 @@ import { FontAwesome } from "@expo/vector-icons";
 import colors from "../../../theme/colors";
 import { useNavigation } from "@react-navigation/native";
 
-const PullConfirmationModal = ({ modalVisibility, toggleBottomSheet,branchData }) => {
-    const navigation = useNavigation();
+const PullConfirmationModal = ({
+  modalVisibility,
+  toggleBottomSheet,
+  branchData,
+}) => {
+  const navigation = useNavigation();
 
-    const toPinVerification = () => {
-        toggleBottomSheet();
-        navigation.navigate("PinConfirmation");
-    }
-    
+  const toPinVerification = () => {
+    toggleBottomSheet();
+    navigation.navigate("PinConfirmation");
+  };
+
   return (
     <BottomSheet isVisible={modalVisibility}>
       <View style={styles.modalContent}>
@@ -38,6 +42,7 @@ const PullConfirmationModal = ({ modalVisibility, toggleBottomSheet,branchData }
             Konfirmasi Tarik Valas
           </HeadingSixText>
         </View>
+
         {/* Middle Container */}
         <View style={styles.middleContainer}>
           {/* Info Sumber */}
@@ -55,6 +60,7 @@ const PullConfirmationModal = ({ modalVisibility, toggleBottomSheet,branchData }
               <BodyMediumText>JPY</BodyMediumText>
             </View>
           </View>
+
           {/* Kantor Tujuan */}
           <View style={styles.infoContainer}>
             <View style={styles.iconContainer}>
@@ -64,33 +70,35 @@ const PullConfirmationModal = ({ modalVisibility, toggleBottomSheet,branchData }
                 color={colors.secondary.secondaryOne}
               />
             </View>
-            <View style={{width:'70%'}}>
+            <View style={{ width: "70%" }}>
               <BodyLargeText style={{ fontWeight: "bold" }}>
                 {branchData.branchName}
               </BodyLargeText>
               <BodyMediumText>{branchData.alamat}</BodyMediumText>
             </View>
           </View>
+
           {/* Total Penarikan */}
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              paddingHorizontal: 20,
-              paddingBottom:20,
-              borderColor:colors.primary.primaryThree,
-              borderBottomWidth:5,
-            }}
-          >
+          <View style={styles.totalPenarikan}>
             <BodyRegularText>Total Penarikan</BodyRegularText>
             <BodyRegularText>JPY 500000</BodyRegularText>
           </View>
+
           {/* Dompet SUMBER */}
-          <WalletSource style={{backgroundColor:colors.color.white}}/>
+          <WalletSource
+            style={{ backgroundColor: colors.color.white }}
+            countryCode="jpy"
+            saldo="20000"
+          />
         </View>
+        
         {/* Bottom Container */}
         <View style={styles.bottomContainer}>
-          <StyledButton mode="primary" title="Tarik" onPress={toPinVerification}/>
+          <StyledButton
+            mode="primary"
+            title="Tarik"
+            onPress={toPinVerification}
+          />
         </View>
       </View>
     </BottomSheet>
@@ -115,13 +123,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   middleContainer: {
-    width: "100%",    
+    width: "100%",
   },
 
-  bottomContainer: { 
+  bottomContainer: {
     width: "100%",
     justifyContent: "center",
-    paddingHorizontal:20
+    paddingHorizontal: 20,
   },
 
   confirmationTextTitle: {
@@ -130,10 +138,18 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     flexDirection: "row",
-    alignItems:'center',
+    alignItems: "center",
     marginBottom: 20,
   },
   iconContainer: {
     marginHorizontal: 20,
+  },
+  totalPenarikan: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    borderColor: colors.primary.primaryThree,
+    borderBottomWidth: 5,
   },
 });

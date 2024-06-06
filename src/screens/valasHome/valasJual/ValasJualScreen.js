@@ -62,7 +62,10 @@ const ValasJualScreen = () => {
       <View style={[styles.middleContainer]}>
         <View style={{ paddingHorizontal: 20 }}>
           {/* Konversi dari Valas ke IDR */}
-          <ValasConversion exchange={exchange} changeTextData={acceptInputCurrency} />
+          <ValasConversion
+            exchange={exchange}
+            changeTextData={acceptInputCurrency}
+          />
 
           {/* Kurs Jual */}
           <View style={styles.kursContainer}>
@@ -75,10 +78,11 @@ const ValasJualScreen = () => {
               {valas} 1.00 = Rp. {kurs}
             </BodyLargeText>
           </View>
-          
         </View>
 
-        <WalletSource />
+        <View>
+          <WalletSource countryCode="aud" saldo="20000" />
+        </View>
 
         <ConfirmationModal
           isVisible={isVisible}
