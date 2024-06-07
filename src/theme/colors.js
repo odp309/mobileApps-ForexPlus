@@ -6,6 +6,7 @@ const colors = {
         lightGrey: "#CCCCCC",
         error: '#F24538',
         success: '#00B14A',
+        lightGrey: "#CCCCCC",
         successTransparent : '#BFEBD2',
         errorTransparent : '#FFC4BF'
     },

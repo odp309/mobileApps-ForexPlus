@@ -1,4 +1,12 @@
-import { Dimensions, StyleSheet, View } from "react-native";
+import {
+  Dimensions,
+  StyleSheet,
+  View,
+  Text,
+  Button,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import React, { useState } from "react";
 import {
   BodyRegularText,
@@ -14,15 +22,24 @@ import StyledButton from "../../../components/shared/StyledButton";
 import WalletSource from "../../../components/valasHome/shared/WalletSource";
 import BackButton from "../../../components/shared/BackButton";
 import { useNavigation } from "@react-navigation/core";
-import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
+import ValasConversion from "../../../components/valasHome/valasJual/ValasConversion";
 
+import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
+import ConfirmationModal from "../../../components/valasHome/valasJual/ConfirmationModal";
 const DIMENSION_HEIGHT = Dimensions.get("screen").height;
 
 const ValasJualScreen = () => {
   const navigation = useNavigation();
   const [exchange, setExchange] = useState("");
-  const [kurs, setKurs] = useState("160");
+  const [inputValue, setInputValue] = useState("");
+  const [kurs, setKurs] = useState("103");
   const [valas, setValas] = useState("JPY");
+  const [isVisible, setIsVisible] = useState(false); //Modal Visibility
+
+  const toggleBottomSheet = () => {
+    console.log(isVisible);
+    setIsVisible(!isVisible);
+  };
 
   const kursCalculation = (data) => {
     data === ""
@@ -32,61 +49,67 @@ const ValasJualScreen = () => {
 
   const acceptInputCurrency = (data) => {
     console.log(data);
+    setInputValue(data);
     kursCalculation(data);
   };
 
   return (
-    <View style={styles.container}> 
+    <View style={styles.container}>
       <View style={styles.topContainer}>
         <ContentHeader title={"Penjualan Valas"} />
       </View>
-      <View style={{ paddingHorizontal: 20 }}>
-        <View>
-          <BodyRegularText
-            style={{ color: colors.color.grey, fontWeight: "bold" }}
-          >
-            Nominal Penjualan
-          </BodyRegularText>
-          <InputCurrency countryCode="jpy" onChangeText={acceptInputCurrency} />
-        </View>
 
-        <View style={{ alignItems: "center", marginVertical: 10 }}>
-          <FontAwesome
-            name="long-arrow-down"
-            size={24}
-            color={colors.primary.primaryOne}
+      <View style={[styles.middleContainer]}>
+        <View style={{ paddingHorizontal: 20 }}>
+          {/* Konversi dari Valas ke IDR */}
+          <ValasConversion
+            exchange={exchange}
+            changeTextData={acceptInputCurrency}
           />
+
+          {/* Kurs Jual */}
+          <View style={styles.kursContainer}>
+            <BodyMediumText
+              style={{ color: colors.color.grey, fontWeight: "bold" }}
+            >
+              Kurs Jual
+            </BodyMediumText>
+            <BodyLargeText style={styles.textStyle}>
+              {valas} 1.00 = Rp. {kurs}
+            </BodyLargeText>
+          </View>
         </View>
 
-        <View style={{ alignItems: "center", marginVertical: 10 }}>
-          <BodyRegularText
-            style={{ color: colors.color.grey, fontWeight: "bold" }}
-          >
-            Nominal Pendapatan
-          </BodyRegularText>
-          <ExchangeResult value={exchange} />
+        <View>
+          <WalletSource countryCode="aud" saldo="20000" />
         </View>
 
-        <View style={styles.kursContainer}>
-          <BodyMediumText
-            style={{ color: colors.color.grey, fontWeight: "bold" }}
-          >
-            Kurs Jual
-          </BodyMediumText>
-          <BodyLargeText style={styles.textStyle}>
-            {valas} 1.00 = Rp. {kurs}
-          </BodyLargeText>
-        </View>
+        <ConfirmationModal
+          isVisible={isVisible}
+          toggleBottomSheet={toggleBottomSheet}
+          pendapatan={exchange}
+          kurs={kurs}
+          inputSaldo={inputValue}
+        />
       </View>
-      <WalletSource />
 
       <View style={styles.bottomContainer}>
-        <StyledButton
-          mode="primary"
-          title="Lanjut"
-          size={"lg"}
-          style={{ marginBottom: 20, marginHorizontal: 20 }}
-        />
+        {inputValue === "" ? (
+          <StyledButton
+            mode="primary-disabled"
+            title="Lanjut"
+            size={"lg"}
+            style={{ marginBottom: 20 }}
+          />
+        ) : (
+          <StyledButton
+            mode="primary"
+            title="Lanjut"
+            size={"lg"}
+            onPress={toggleBottomSheet}
+            style={{ marginBottom: 20 }}
+          />
+        )}
       </View>
     </View>
   );
@@ -97,8 +120,24 @@ export default ValasJualScreen;
 const styles = StyleSheet.create({
   container: {
     height: DIMENSION_HEIGHT * 1,
-    paddingTop: "10%",
+    justifyContent: "flex-start",
     backgroundColor: colors.color.white,
+  },
+  topContainer: {
+    width: "100%",
+    flex: 0.1,
+    marginTop: "15%",
+    paddingHorizontal: 20,
+  },
+  middleContainer: {
+    width: "100%",
+    flex: 0.75,
+  },
+  bottomContainer: {
+    width: "100%",
+    justifyContent: "center",
+    flex: 0.15,
+    paddingHorizontal: 20,
   },
   textStyle: {
     color: colors.primary.primaryOne,
@@ -109,10 +148,5 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "flex-start",
     alignItems: "flex-start",
-  },
-  bottomContainer: {
-    width: "100%",
-    height:'25%',
-    justifyContent: "flex-end", 
   },
 });

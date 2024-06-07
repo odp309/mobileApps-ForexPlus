@@ -17,9 +17,9 @@ const country = {
     pathImage: require("../../../../assets/icons/flags/Japan.png"),
     code: "JPY",
   },
-  krw: {
-    pathImage: require("../../../../assets/icons/flags/South_Korea.png"),
-    code: "KRW",
+  thb: {
+    pathImage: require("../../../../assets/icons/flags/Thailand.png"),
+    code: "THB",
   },
   usd: {
     pathImage: require("../../../../assets/icons/flags/United_States.png"),
@@ -36,6 +36,26 @@ const country = {
   eur: {
     pathImage: require("../../../../assets/icons/flags/European_Union.png"),
     code: "EUR",
+  },
+  cad: {
+    pathImage: require("../../../../assets/icons/flags/Canada.png"),
+    code: "CAD",  
+  },
+  chf: {
+    pathImage: require("../../../../assets/icons/flags/Franc_Swiss.png"),
+    code: "CHF",  
+  },
+  hkd: {
+    pathImage: require("../../../../assets/icons/flags/Hong_Kong.png"),
+    code: "HKD",  
+  },
+  nzd: {
+    pathImage: require("../../../../assets/icons/flags/New_Zealand.png"),
+    code: "NZD",  
+  },
+  gbp: {
+    pathImage: require("../../../../assets/icons/flags/United_Kingdom.png"),
+    code: "GBP",  
   },
 };
 
@@ -98,6 +118,6 @@ const styles = StyleSheet.create({
     fontFamily: "poppins-semibold",
     color:colors.primary.primaryOne,
     fontSize:16,
-    paddingTop:5
+    paddingTop:5,
   },
 });
