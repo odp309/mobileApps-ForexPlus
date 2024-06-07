@@ -14,7 +14,7 @@ const BackButton = ({style,onPress,color,hasConfirmation}) => {
         },
         {
           text: "Yes",
-          onPress: () => onPress
+          onPress : onPress
         }
       ],
       { cancelable: false }

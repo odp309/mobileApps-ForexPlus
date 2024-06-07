@@ -12,7 +12,7 @@ const ContentHeader = ({ title, ignoreBackButton,hasConfirmation }) => {
       {
         !ignoreBackButton && (
           <BackButton
-          hasConfirmation={hasConfirmation}
+            hasConfirmation={hasConfirmation}
             style={{ width: 50 }}
             onPress={() => navigation.goBack()}
             color={colors.color.black}
