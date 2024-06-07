@@ -11,7 +11,7 @@ import StyledButton from "../../../components/shared/StyledButton";
 import { Image } from "react-native";
 import InputCurrency from "../../../components/valasHome/shared/InputCurrency";
 import WalletSource from "../../../components/valasHome/shared/WalletSource";
-import ModalTransferConfirmation from "./ModalTransferConfirmation";
+import ModalTransferConfirmation from "../../../components/valasHome/valasTransfer/ModalTransferConfirmation";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 const EnterTransferScreen = () => { 
@@ -24,7 +24,7 @@ const EnterTransferScreen = () => {
 
   const handleMoveToPin = () =>{
     setModalVisible(false);
-    navigation.navigate("PinConfirmationTransfer");
+    navigation.navigate("PinConfirmation");
   }
   return (
     <View style={styles.container}>
@@ -56,7 +56,11 @@ const EnterTransferScreen = () => {
         </View>
 
         <View style={styles.walletContainer}>
-          <WalletSource />
+          <WalletSource
+          judul={"TAPLUS PEGAWAI"}
+          isi={"182182812"}
+          saldo={"AUD 500"}
+          />
         </View>
       </View>
       <View style={styles.bottomContainer}>

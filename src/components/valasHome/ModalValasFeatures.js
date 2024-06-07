@@ -9,7 +9,7 @@ const FeatureButton = ({ namaFitur, onPress }) => {
     <TouchableOpacity style={{ alignItems: "center" }} onPress={onPress}>
       <View
         style={{
-          backgroundColor: colors.primary.primaryTwo,
+          backgroundColor: colors.primary.primaryOne,
           borderRadius: 20,
           height: 50,
           width: 50,
@@ -32,6 +32,12 @@ const FeatureButton = ({ namaFitur, onPress }) => {
         ) : namaFitur === "Transfer" ? (
           <MaterialCommunityIcons
             name="account-switch-outline"
+            size={24}
+            color={colors.color.white}
+          />
+        ) : namaFitur === "Riwayat" ? (
+          <MaterialCommunityIcons
+            name="clipboard-outline"
             size={24}
             color={colors.color.white}
           />
@@ -68,8 +74,11 @@ const ValasFeatures = () => {
         namaFitur="Transfer"
         onPress={() => navigation.navigate("TransferValas")}
       />
-      <FeatureButton namaFitur="Tarik"
-      onPress={() => navigation.navigate("TarikValas")} />
+      <FeatureButton
+        namaFitur="Riwayat"
+        onPress={() => navigation.navigate("TransferValas")}
+      />
+      <FeatureButton namaFitur="Tarik" />
     </View>
   );
 };

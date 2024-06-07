@@ -23,7 +23,8 @@ const Input = ({
   style,
   leftIconName,
   rightIconName,
-  keyboardType
+  keyboardType,
+  iconColor
 }) => {
   return mode === "active" ? (
     <View style={styles.activeContainer}>
@@ -32,7 +33,7 @@ const Input = ({
           <Icon
             name={leftIconName}
             size={24}
-            color={colors.primary.primaryOne}
+            color={iconColor}
           />
         </View>
       )}
@@ -42,18 +43,19 @@ const Input = ({
         value={value}
         secureTextEntry={secureTextEntry}
         style={[styles.activeStyle, style]}
+        
         placeholderTextColor={colors.primary.primaryOne}
         onChangeText={onChangeText}
         keyboardType={keyboardType}
       />
       {hasRightIcon && (
-        <View style={{ position: "absolute", marginLeft: "87%" }}>
+        <View style={{ position: "absolute", marginLeft: "89%" }}>
           <TouchableOpacity onPress={onPress}>
             <Icon
               name={rightIconName}
               type="ionicon"
               size={24}
-              color={colors.primary.primaryOne}
+              color={iconColor}
             />
           </TouchableOpacity>
         </View>

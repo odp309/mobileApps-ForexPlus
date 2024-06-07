@@ -3,31 +3,33 @@ import {
   Animated,
   Dimensions,
   Image,
+  ImageBackground,
+  SafeAreaView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
-import { 
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import {
+  BodyLargeTextSemiBold,
   BodyMediumTextSemiBold,
-  BodySmallText, 
-  BodyXLTextBold, 
+  BodySmallText,
+  BodyXLTextBold,
 } from "../../../components/shared/StyledText";
 import colors from "../../../theme/colors";
 import Input from "../../../components/shared/Input";
 import StyledButton from "../../../components/shared/StyledButton";
-import { useNavigation } from "@react-navigation/native";
-import BackButton from "../../../components/shared/BackButton"; 
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
 
+const dataRekening = [
+  { id: "1", noRek: "123456789", nama: "Arfiandi Wijatmiko" },
+  { id: "2", noRek: "191919191", nama: "Muhammad Daffa F.A" },
+  { id: "3", noRek: "131313131", nama: "Farrel haridhi" },
+];
+
 const CheckTargetAccountScreen = () => {
-  const dataRekening = [
-    { id: "1", noRek: "123456789", nama: "Arfiandi Wijatmiko" },
-    { id: "2", noRek: "191919191", nama: "Muhammad Daffa F.A" },
-    { id: "3", noRek: "131313131", nama: "Farrel haridhi" },
-  ];
   const navigation = useNavigation();
   const [inputRekening, setInputRekening] = useState("");
   const [isCheckingAccount, setIsCheckingAccount] = useState(false);
@@ -35,39 +37,43 @@ const CheckTargetAccountScreen = () => {
   const [accountCheckStatus, setAccountCheckStatus] = useState("loading");
   const [messageStatus, setMessageStatus] = useState("");
   const [accountFind, setAccountFind] = useState(null);
+  const [buttonVisible, setButtonVisible] = useState(true);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const translateYAnim = useRef(new Animated.Value(50)).current;
 
-  const findNoRek = (noRek) => {
-    return dataRekening.find((item) => item.noRek === noRek);
-  };
+  const findNoRek = (noRek) =>
+    dataRekening.find((item) => item.noRek === noRek);
 
   const handleFindNoRek = () => {
     setHasChecked(true);
     setMessageStatus("Mengecek Nomor rekening tujuan...");
     setAccountCheckStatus("loading");
     setIsCheckingAccount(true);
-
+    setButtonVisible(false);
     setTimeout(() => {
       const findResult = findNoRek(inputRekening);
+      
       if (findResult) {
         setAccountFind(findResult);
         setMessageStatus("Berhasil Menemukan");
         setAccountCheckStatus("success");
-        animatedCardAccount();
+        animateCardAccount();
+        setButtonVisible(false);
       } else {
         setMessageStatus(
           "Nomor rekening tidak valid / rekening tidak memiliki wallet valas tujuan. \nPastikan nomor rekening yang dimasukkan sudah benar."
         );
         setAccountCheckStatus("fail");
         setAccountFind(null);
+        setButtonVisible(true);
       }
       setIsCheckingAccount(false);
+      
     }, 500);
   };
 
-  const animatedCardAccount = () => {
+  const animateCardAccount = () => {
     fadeAnim.setValue(0);
     translateYAnim.setValue(50);
     Animated.parallel([
@@ -83,10 +89,31 @@ const CheckTargetAccountScreen = () => {
       }),
     ]).start();
   };
+
+  useEffect(() => {
+    if (accountFind) {
+      const timer = setTimeout(() => {
+        navigation.navigate("EnterTransfer", { data: accountFind });
+      }, 800);
+
+      return () => clearTimeout(timer);
+    }
+  }, [accountFind, navigation]);
+
+  useFocusEffect(
+    useCallback(() => {
+      setHasChecked(false);
+      setAccountCheckStatus("loading");
+      setMessageStatus("");
+      setAccountFind(null);
+      setButtonVisible(true);
+    }, [])
+  );
+
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.topContainer}>
-        <ContentHeader title={"Transfer Valas"} />
+        <ContentHeader title={"Transfer Valas"} hasConfirmation={true} />
       </View>
 
       <View style={styles.middleContainer}>
@@ -102,11 +129,12 @@ const CheckTargetAccountScreen = () => {
         <Input
           mode={"active"}
           value={inputRekening}
-          hasLeftIcon={true}
+          hasRightIcon={true}
           keyboardType="numeric"
-          leftIconName={""}
+          rightIconName={"close-circle"}
           onChangeText={setInputRekening}
           placeholder={"Masukkan nomor rekening"}
+          iconColor={colors.color.lightGrey}
         />
 
         {hasChecked && (
@@ -162,48 +190,45 @@ const CheckTargetAccountScreen = () => {
               opacity: fadeAnim,
               transform: [{ translateY: translateYAnim }],
             }}
-          >
-            <TouchableOpacity
-              onPress={() => navigation.navigate("EnterTransfer",{data:accountFind})}
-            >
-              <View
-                style={{
-                  minHeight: 50,
-                  width: "100%",
-                  backgroundColor: colors.color.successTransparent,
-                  borderRadius: 20,
-                  padding: 20,
-                  paddingVertical: 40,
-                  marginTop: 30,
-                  flexDirection: "row",
-                }}
+          > 
+              <ImageBackground
+                resizeMode="stretch"
+                source={require("../../../../assets/card-account.png")}
+                style={styles.cardContainer}
               >
                 <View>
                   <Image
                     source={require("../../../../assets/icon-user-he.png")}
-                    style={{ width: 70, height: 70 }}
+                    style={{ width: 80, height: 80 }}
                   />
                 </View>
                 <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                  <BodyMediumTextSemiBold>
+                  <BodyLargeTextSemiBold
+                    style={{ color: colors.primary.primaryOne, fontSize: 20 }}
+                  >
                     {accountFind.nama}
+                  </BodyLargeTextSemiBold>
+                  <BodyMediumTextSemiBold
+                    style={{ color: colors.primary.primaryOne, fontSize: 18 }}
+                  >
+                    {accountFind.noRek}
                   </BodyMediumTextSemiBold>
-                  <BodySmallText>{accountFind.noRek}</BodySmallText>
                 </View>
-              </View>
-            </TouchableOpacity>
+              </ImageBackground> 
           </Animated.View>
         )}
       </View>
       <View style={styles.bottomContainer}>
-        <StyledButton
-          title={"Periksa"}
-          size={"lg"}
-          mode={inputRekening === "" ? "primary-disabled" : "primary"}
-          onPress={() => handleFindNoRek()}
-        />
+        {buttonVisible && (
+          <StyledButton
+            title={"Periksa"}
+            size={"lg"}
+            mode={inputRekening === "" ? "primary-disabled" : "primary"}
+            onPress={handleFindNoRek}
+          />
+        )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -217,20 +242,21 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     width: "100%",
-    flex: 0.1, 
-    marginTop: "15%",
-    paddingHorizontal:20
+    flex: 0.1,
+    marginTop: "10%",
+    paddingHorizontal: 20,
   },
   middleContainer: {
     width: "100%",
-    flex: 0.75, 
-    paddingHorizontal:20
+    flex: 0.75,
+    paddingHorizontal: 20,
   },
-  bottomContainer: { 
+  bottomContainer: {
     width: "100%",
     justifyContent: "center",
     flex: 0.15,
-    paddingHorizontal:20
+    paddingHorizontal: 20,
+    paddingBottom: "4%",
   },
   accountCheckerContainer: {
     width: "100%",
@@ -238,6 +264,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     marginTop: 15,
+    flexDirection: "row",
+  },
+  cardContainer: {
+    minHeight: 50,
+    borderRadius: 20,
+    padding: 20,
+    paddingVertical: 40,
+    marginTop: 30,
     flexDirection: "row",
   },
 });

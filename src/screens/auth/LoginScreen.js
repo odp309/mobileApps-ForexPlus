@@ -10,7 +10,9 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
+  Animated,
 } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import StyledButton from "../../components/shared/StyledButton";
@@ -22,6 +24,7 @@ import {
 } from "../../components/shared/StyledText";
 import Input from "../../components/shared/Input";
 import { cleanupToken, login } from "../../config/AuthConfig";
+import colors from "../../theme/colors";
 
 const screenHeight = Dimensions.get("screen").height;
 const screenWidth = Dimensions.get("screen").width;
@@ -31,10 +34,28 @@ const LoginScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordVisible,setPasswordVisible] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const slideAnim = useState(new Animated.Value(screenHeight))[0]; // Animation value for modal content
+
   useEffect(() => {
     cleanupToken();
   }, []);
+
+  useEffect(() => {
+    if (modalVisible) {
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(slideAnim, {
+        toValue: screenHeight,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [modalVisible, slideAnim]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -92,7 +113,7 @@ const LoginScreen = () => {
 
       <Modal
         visible={modalVisible}
-        animationType="fade"
+        animationType="none"
         transparent={true}
         statusBarTranslucent={true}
         onRequestClose={() => {
@@ -104,7 +125,8 @@ const LoginScreen = () => {
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
         >
-          <View style={styles.modalView}>
+          <TouchableOpacity style={styles.backgroundOverlay} onPress={() => setModalVisible(false)} />
+          <Animated.View style={[styles.modalView, { transform: [{ translateY: slideAnim }] }]}>
             <Image
               style={{ width: "35%", marginVertical: "5%" }}
               resizeMode="contain"
@@ -112,6 +134,7 @@ const LoginScreen = () => {
             />
             <Input
               mode={"active"}
+              iconColor={colors.primary.primaryOne}
               value={email}
               hasLeftIcon={true}
               leftIconName={"person"}
@@ -121,13 +144,14 @@ const LoginScreen = () => {
             />
             <Input
               mode={"active"}
+              iconColor={colors.primary.primaryOne}
               value={password}
               hasLeftIcon={true}
               hasRightIcon={true}
               secureTextEntry={!passwordVisible}
               leftIconName={"lock"}
               rightIconName={passwordVisible ? "eye" : "eye-off"}
-              placeholder={"password"}
+              placeholder={"Password"}
               onChangeText={setPassword}
               onPress={()=>setPasswordVisible(!passwordVisible)}
               style={{paddingLeft:50,paddingRight:50}}
@@ -147,7 +171,7 @@ const LoginScreen = () => {
               }
               style={{ marginVertical: "5%" }}
             />
-          </View>
+          </Animated.View>
         </KeyboardAvoidingView>
       </Modal>
     </SafeAreaView>
@@ -195,7 +219,10 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "rgba(0,0,0,0.5)",
   },
-
+  backgroundOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
   modalView: {
     margin: "8%",
     width: "90%",
@@ -212,5 +239,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+
   },
 });

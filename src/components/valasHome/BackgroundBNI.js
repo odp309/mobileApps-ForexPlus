@@ -6,6 +6,7 @@ const BackgroundBNI = () => {
     return (
       <View style={styles.backgroundBNI}>
         <Image
+        resizeMode="stretch"
           style={{
             width: "100%",
             height: "100%",
@@ -23,11 +24,10 @@ const BackgroundBNI = () => {
   const styles = StyleSheet.create({
     backgroundBNI: {
       width: "100%",
-      height: 200,
+      height: '100%',
       position: "absolute",
       backgroundColor: colors.primary.primaryOne,
       borderBottomRightRadius: 50,
-      borderBottomLeftRadius: 50,
-      zIndex: -1,
+      borderBottomLeftRadius: 50, 
     },
   });

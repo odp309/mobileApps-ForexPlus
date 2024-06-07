@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import colors from "../../theme/colors";
 import {
@@ -9,27 +9,9 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import BackgroundBNI from "./BackgroundBNI";
-import BackButton from "../shared/BackButton";
+import BackButton from "../shared/BackButton"; 
 
-const RiwayatButton = () => {
-  return (
-    <TouchableOpacity style={styles.riwayatBtn}>
-      <Image
-        style={{
-          width: 20,
-          height: 20,
-          alignSelf: "center",
-        }}
-        resizeMode="contain"
-        source={require("../../../assets/Riwayat.png")}
-      />
-      <BodySmallText style={{ color: colors.primary.primaryOne }}>
-        Riwayat
-      </BodySmallText>
-    </TouchableOpacity>
-  );
-};
-
+ 
 function ValasHeader() {
   const navigation = useNavigation();
 
@@ -44,8 +26,7 @@ function ValasHeader() {
         <BackButton
           onPress={() => navigation.goBack()}
           color={colors.color.white}
-        />
-        <RiwayatButton />
+        /> 
       </View>
 
       <View
@@ -55,12 +36,8 @@ function ValasHeader() {
           marginVertical: 20,
         }}
       >
-        <MaterialCommunityIcons
-          name="wallet"
-          size={40}
-          color={colors.color.white}
-        />
-        <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
+        <Image style={{width:40,height:40}} source={require('../../../assets/valas-plus.png')} />
+        <View style={{ flexDirection: "row", alignItems: "flex-start" }}> 
           <HeadingFiveText
             style={{ color: colors.color.white, fontWeight: "bold" }}
           >
@@ -82,14 +59,12 @@ export default ValasHeader;
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
-    alignItems: "center",
-    marginTop: 10,
-    paddingTop: 50,
-    paddingBottom: 26,
-    top: -32,
-
+    alignItems: "center",  
+    height:Dimensions.get('screen').height * 0.22,
     zIndex: 1,
     position: "absolute",
+    width:"100%",
+    
   },
   topHeader: {
     flexDirection: "row",
