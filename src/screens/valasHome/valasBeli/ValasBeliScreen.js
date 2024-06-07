@@ -96,6 +96,7 @@ export default function ValasBeliScreen() {
             judul={"TAPLUS PEGAWAI BNI"}
             isi={"18901517618"}
             saldo={"IDR 10.000.000"}
+            countryCode='jpy'
           />
         </View>
       </View>
