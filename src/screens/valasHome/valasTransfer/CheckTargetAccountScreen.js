@@ -21,6 +21,7 @@ import { useNavigation } from "@react-navigation/native";
 import BackButton from "../../../components/shared/BackButton"; 
 import { Ionicons } from "@expo/vector-icons";
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
+
 const CheckTargetAccountScreen = () => {
   const dataRekening = [
     { id: "1", noRek: "123456789", nama: "Arfiandi Wijatmiko" },

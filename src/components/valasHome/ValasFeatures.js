@@ -68,7 +68,8 @@ const ValasFeatures = () => {
         namaFitur="Transfer"
         onPress={() => navigation.navigate("TransferValas")}
       />
-      <FeatureButton namaFitur="Tarik" />
+      <FeatureButton namaFitur="Tarik"
+      onPress={() => navigation.navigate("TarikValas")} />
     </View>
   );
 };

@@ -10,12 +10,14 @@ import CheckTargetAccountScreen from "../screens/valasHome/valasTransfer/CheckTa
 import ValasJualScreen from "../screens/valasHome/valasJual/ValasJualScreen";
 import EnterTransferScreen from "../screens/valasHome/valasTransfer/EnterTransferScreen"; 
 import PinConfirmationScreen from "../screens/valasHome/PinConfirmationScreen";
-import ValasBeliScreen from "../screens/valasHome/valasBeli.js/ValasBeliScreen";
+import ValasBeliScreen from "../screens/valasHome/valasBeli/ValasBeliScreen.js";
+import ValasTarikScreen from "../screens/valasHome/valasTarik/ValasTarikScreen.js"
+import HistoryScreen from "../screens/valasHome/riwayatTransaksi/HistoryScreen.js";
 
 const Stack = createNativeStackNavigator();
 const ScreenNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="Login">
+    <Stack.Navigator initialRouteName="RiwayatTransaksi">
       <Stack.Screen
         name="Login"
         options={{ headerShown: false, headerStyle: {} }}
@@ -56,6 +58,16 @@ const ScreenNavigator = () => {
       <Stack.Screen
         name="ValasBeli"
         component={ValasBeliScreen}
+        options={{ headerShown: false }} 
+      />
+      <Stack.Screen
+        name="TarikValas"
+        component={ValasTarikScreen}
+        options={{ headerShown: false }} 
+      />
+      <Stack.Screen
+        name="RiwayatTransaksi"
+        component={HistoryScreen}
         options={{ headerShown: false }} 
       />
     </Stack.Navigator>
