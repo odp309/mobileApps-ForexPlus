@@ -5,8 +5,8 @@ import {
     BodySmallText,
     BodySmallTextSemiBold,
     HeadingSixText,
-  } from "../../../components/shared/StyledText";
-  import StyledButton from "../../../components/shared/StyledButton";
+  } from "../../shared/StyledText";
+  import StyledButton from "../../shared/StyledButton";
   import colors from "../../../theme/colors";
   import {
     View,
@@ -20,11 +20,11 @@ import {
     Dimensions,
   } from "react-native";
   import { Ionicons } from "@expo/vector-icons";
-  import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
+  import ContentHeader from "../shared/ContentHeader";
   import { FontAwesome } from "@expo/vector-icons";
-  import WalletSource from "../../../components/valasHome/shared/WalletSource";
-  import ExchangeResult from "../../../components/valasHome/shared/ExchangeResult";
-  import InputCurrency from "../../../components/valasHome/shared/InputCurrency";
+  import WalletSource from "../shared/WalletSource";
+  import ExchangeResult from "../shared/ExchangeResult";
+  import InputCurrency from "../shared/InputCurrency";
 const ModalVerification = ({modalVisible,setModalVisible,handlePinVerification}) => {
     return (
         <Modal
@@ -93,6 +93,7 @@ const ModalVerification = ({modalVisible,setModalVisible,handlePinVerification})
                     style={{ 
                       alignItems: "center",
                       marginHorizontal:20, 
+                      marginBottom:20
                     }}
                   />
                 </View>

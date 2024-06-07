@@ -27,7 +27,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import WalletSource from "../../../components/valasHome/shared/WalletSource";
 import ExchangeResult from "../../../components/valasHome/shared/ExchangeResult";
 import InputCurrency from "../../../components/valasHome/shared/InputCurrency";
-import ModalVerification from "./ModalVerification";
+import ModalVerification from "../../../components/valasHome/valasBeli/ModalVerification";
 
 export default function ValasBeliScreen() {
   const navigation = useNavigation();
@@ -102,6 +102,7 @@ export default function ValasBeliScreen() {
       <View style={styles.bottomContainer}>
         <StyledButton
           title={"Lanjut"}
+          size={"lg"}
           mode={"primary"}
           style={{ marginTop: 10 }}
           onPress={() => {
@@ -122,7 +123,7 @@ const styles = StyleSheet.create({
   topContainer: {
     width: "100%",
     flex: 0.1,
-    marginTop: "15%",
+    marginTop: "10%",
     paddingHorizontal: 20,
   },
   middleContainer: {

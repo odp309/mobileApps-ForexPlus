@@ -97,7 +97,7 @@ export default ValasJualScreen;
 const styles = StyleSheet.create({
   container: {
     height: DIMENSION_HEIGHT * 1,
-    paddingTop: "15%",
+    paddingTop: "10%",
     backgroundColor: colors.color.white,
   },
   textStyle: {

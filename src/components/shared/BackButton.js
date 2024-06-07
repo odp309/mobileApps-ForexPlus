@@ -1,13 +1,30 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-const BackButton = ({style,onPress,color}) => {
+const BackButton = ({style,onPress,color,hasConfirmation}) => {
+  const alertConfirmation = () => {
+    Alert.alert(
+      "Anda Ingin Membatalkan Transaksi?",
+      "",
+      [
+        {
+          text: "No", 
+          style: "cancel"
+        },
+        {
+          text: "Yes",
+          onPress: () => onPress
+        }
+      ],
+      { cancelable: false }
+    );
+  }
   return (
     <View>
       <TouchableOpacity
         style={style}
-        onPress={onPress}
+        onPress={hasConfirmation ? ()=>alertConfirmation() : onPress}
       >
         <Ionicons name="arrow-back" size={24} color={color} />
       </TouchableOpacity>

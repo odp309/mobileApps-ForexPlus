@@ -51,12 +51,11 @@ export default ValasReservation;
 
 const styles = StyleSheet.create({
   container: {
-    width: "90%",
+    width: "100%",
     backgroundColor: colors.primary.primaryThree,
-    borderRadius: 20,
-    marginHorizontal: 20,
-    marginBottom: 40,
-    elevation: 5, // This is the elevation for the drop shadow
+    borderRadius: 20, 
+    marginBottom: 20,
+    elevation: 5, // This is the elevation for the drop shadow 
   },
   containerTglJam: {
     paddingVertical: 10,

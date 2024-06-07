@@ -11,6 +11,7 @@ import ValasJualScreen from "../screens/valasHome/valasJual/ValasJualScreen";
 import EnterTransferScreen from "../screens/valasHome/valasTransfer/EnterTransferScreen"; 
 import PinConfirmationScreen from "../screens/valasHome/PinConfirmationScreen";
 import ValasBeliScreen from "../screens/valasHome/valasBeli.js/ValasBeliScreen";
+import TransactionResultScreen from "../screens/valasHome/valasTransfer/TransactionResultScreen";
 
 const Stack = createNativeStackNavigator();
 const ScreenNavigator = () => {
@@ -51,6 +52,11 @@ const ScreenNavigator = () => {
       <Stack.Screen
         name="PinConfirmation"
         component={PinConfirmationScreen}
+        options={{ headerShown: false }} 
+      />
+      <Stack.Screen
+        name="TransactionResult"
+        component={TransactionResultScreen}
         options={{ headerShown: false }} 
       />
       <Stack.Screen

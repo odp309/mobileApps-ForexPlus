@@ -1,26 +1,40 @@
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import colors from "../../theme/colors";
 import { BodyLargeText, BodyMediumText } from "../shared/StyledText";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Fontisto } from "@expo/vector-icons";
 
-const WalletCard = ({ valasType }) => {
-  const [inputText, setInputText] = useState("1000000");
-  const [hiddenText, setHiddenText] = useState("*******");
-  const [hideText, setHideText] = useState(true);
+const WalletCard = ({ valasType, selectedWallet }) => {
+  const [hiddenText, setHiddenText] = useState(selectedWallet.balance);
+  const [hideText, setHideText] = useState(false);
+
+  useEffect(() => { 
+    setHiddenText(
+      hideText
+        ? hideTextWithAsterisks(selectedWallet.balance)
+        : selectedWallet.balance
+    );
+  }, [selectedWallet.balance,hideText]);
 
   const hideTextWithAsterisks = (text) => {
-    return "*".repeat(text.length);
+    return "*".repeat(text.toString().length);
   };
 
   const toggleHideText = () => {
-    setHideText(!hideText);
-    setHiddenText(hideText ? inputText : hideTextWithAsterisks(inputText));
+    setHideText(!hideText); 
   };
 
   return (
     <View style={styles.container}>
-      <BodyMediumText style={{color:colors.primary.primaryOne}}>Saldo Aktif</BodyMediumText>
+      <BodyMediumText style={{ color: colors.primary.primaryOne }}>
+        Saldo Aktif
+      </BodyMediumText>
       <View
         style={{
           flexDirection: "row",
@@ -31,11 +45,9 @@ const WalletCard = ({ valasType }) => {
         }}
       >
         <BodyLargeText style={styles.boldText}>{valasType}</BodyLargeText>
-        <BodyLargeText style={styles.boldText}>
-          {hiddenText}
-        </BodyLargeText>
+        <BodyLargeText style={styles.boldText}>{hiddenText}</BodyLargeText>
         <TouchableOpacity onPress={toggleHideText}>
-          <Fontisto name="locked" size={20} color={colors.primary.primaryOne} />
+          <Fontisto name={hideText ? "locked" : "unlocked"} size={20} color={colors.primary.primaryOne} />
         </TouchableOpacity>
       </View>
     </View>
@@ -50,11 +62,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingHorizontal: 30,
     paddingVertical: 40,
-    width: "86%",
-    height: 180,
+    width: "90%",
+    height: Dimensions.get("screen").height * 0.2,
     backgroundColor: colors.primary.primaryThree,
-
     borderRadius: 30,
+    zIndex: -1,
   },
   boldText: {
     fontWeight: "bold",

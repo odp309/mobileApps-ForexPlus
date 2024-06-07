@@ -1,5 +1,12 @@
-import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react"; 
+import {
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+} from "react-native";
+import React, { useEffect, useState } from "react";
 import {
   BodyLargeTextSemiBold,
   BodyXLTextBold,
@@ -7,10 +14,33 @@ import {
 } from "../../components/shared/StyledText";
 import colors from "../../theme/colors";
 import ContentHeader from "../../components/valasHome/shared/ContentHeader";
+import { useNavigation } from "@react-navigation/native";
 
 const PinConfirmationScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [nominal, setNominal] = useState(0);
+  const [pin, setPin] = useState("");
+  const [pinStatus, setPinStatus] = useState(false);
+  const navigation = useNavigation();
+
+  const handlePinChange = (text) => {
+    if (text.length <= 6) {
+      setPin(text);
+    }
+  };
+
+  useEffect(() => {
+    setPinStatus(true);
+    if (pin.length === 6) {
+      if (pin === "654321") {
+        console.log("benar");
+        setPinStatus(true);
+        navigation.navigate("TransactionResult");
+      } else {
+        console.log("salah");
+        setPinStatus(false);
+      }
+    }
+  }, [pin]);
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
@@ -23,38 +53,26 @@ const PinConfirmationScreen = () => {
           >
             Masukkan PIN BNI Mobile Banking
           </BodyLargeTextSemiBold>
-          <View
-            style={{
-              flexDirection: "row",
-              width: "75%",
-              justifyContent: "space-around",
-              marginTop:"5%",
-              marginBottom:"8%",
-            }}
-          >
-            <Image
-              style={{ width: 25, height: 25 }}
-              source={require("../../../assets/icon-pin-input.png")}
-            />
-            <Image
-              style={{ width: 25, height: 25 }}
-              source={require("../../../assets/icon-pin-input.png")}
-            />
-            <Image
-              style={{ width: 25, height: 25 }}
-              source={require("../../../assets/icon-pin-input.png")}
-            />
-            <Image
-              style={{ width: 25, height: 25 }}
-              source={require("../../../assets/icon-pin-input.png")}
-            />
-            <Image
-              style={{ width: 25, height: 25 }}
-              source={require("../../../assets/icon-pin-input.png")}
-            />
-            <Image
-              style={{ width: 25, height: 25 }}
-              source={require("../../../assets/icon-pin-input.png")}
+          <View style={styles.pinContainer}>
+            {[...Array(6)].map((_, index) => (
+              <Image
+                key={index}
+                style={styles.pinImage}
+                source={
+                  !pinStatus && pin.length === 6
+                    ? require("../../../assets/icon-pin-input-wrong.png")
+                    : index < pin.length
+                    ? require("../../../assets/icon-pin-input-selected.png")
+                    : require("../../../assets/icon-pin-input.png")
+                }
+              />
+            ))}
+            <TextInput
+              style={styles.textInput}
+              keyboardType="numeric"
+              maxLength={6}
+              value={pin}
+              onChangeText={handlePinChange}
             />
           </View>
         </View>
@@ -82,12 +100,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
   },
-  bottomContainer: {
-    width: "100%",
-    justifyContent: "center",
-    flex: 0.15,
-    paddingHorizontal: 20,
-  },
   contentContainer: {
     alignItems: "center",
     padding: 10,
@@ -95,9 +107,25 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: 20,
     minHeight: 100,
-    borderColor: colors.primary.primaryOne
+    borderColor: colors.primary.primaryOne,
   },
-  walletContainer: {
-    marginTop: 20,
+  pinContainer: {
+    width: "75%",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginBottom: "7%",
+    position: "relative",
+    marginTop: 5,
+  },
+  pinImage: {
+    width: 25,
+    height: 25,
+  },
+  textInput: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    opacity: 0,
+    paddingVertical: 20,
   },
 });

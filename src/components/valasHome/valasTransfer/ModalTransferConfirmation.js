@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 import React from "react";
-import StyledButton from "../../../components/shared/StyledButton"; 
+import StyledButton from "../../shared/StyledButton"; 
 import { Modal } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
@@ -16,7 +16,7 @@ import {
   BodyLargeTextSemiBold,
   BodyMediumText,
   BodyMediumTextSemiBold,
-} from "../../../components/shared/StyledText";
+} from "../../shared/StyledText";
 import colors from "../../../theme/colors";
 
 const screenHeight = Dimensions.get("screen").height;
@@ -63,7 +63,7 @@ const ModalTransferConfirmation = ({data, modalVisible, setModalVisible,nominal,
               </View>
               <View style={{flexDirection:'row',justifyContent:'space-between',width:'100%'}}>
                 <BodyMediumText>Total Transfer</BodyMediumText>
-                <BodyMediumTextSemiBold>SGD {nominal}</BodyMediumTextSemiBold>
+                <BodyMediumTextSemiBold>AUD {nominal}</BodyMediumTextSemiBold>
               </View>
             </View>
 
