@@ -12,6 +12,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { useState } from "react";
 import PullConfirmationModal from "../../../components/valasHome/valasTarik/PullConfirmationModal";
 import BranchItem from "../../../components/valasHome/valasTarik/BranchItem";
+import { useNavigation } from "@react-navigation/native";
 
 const branchDummy = [
   {
@@ -65,15 +66,19 @@ const ChooseBranchScreen = () => {
   const [inputBranch, setInputBranch] = useState("");
   const [modalVisibility, setModalVisibility] = useState(false);
   const [selectedBranch, setSelectedBranch] = useState(branchDummy[0]);
+  const navigation = useNavigation();
 
-  const toggleBottomSheet = () => {
-    console.log("testing");
-    setModalVisibility(!modalVisibility);
-  };
+  // const toggleBottomSheet = () => {
+  //   console.log("testing");
+  //   setModalVisibility(!modalVisibility);
+  // };
 
   const receiveBranchData = (data) => {
-    setModalVisibility(!modalVisibility);
+    // setModalVisibility(!modalVisibility);
     setSelectedBranch(data);
+    const branchData = data;
+    console.log(branchData);
+    navigation.navigate('ChooseDate',{branchData});
   };
 
   // Branch Item for Flatlist
@@ -123,11 +128,11 @@ const ChooseBranchScreen = () => {
           />
         </View>
 
-        <PullConfirmationModal
+        {/* <PullConfirmationModal
           modalVisibility={modalVisibility}
           toggleBottomSheet={toggleBottomSheet}
           branchData={selectedBranch}
-        />
+        /> */}
       </View>
       <View style={styles.bottomContainer}></View>
     </View>

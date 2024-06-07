@@ -10,16 +10,28 @@ import WalletSource from "../shared/WalletSource";
 import StyledButton from "../../shared/StyledButton";
 import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
 import colors from "../../../theme/colors";
 import { useNavigation } from "@react-navigation/native";
+
+const BRANCH_TEXT_LENGTH = 16;
 
 const PullConfirmationModal = ({
   modalVisibility,
   toggleBottomSheet,
   branchData,
+  date,
+  pullBalance,
+  valasType,
+  valasCode
 }) => {
   const navigation = useNavigation();
+
+  // Function to return the longLengthBranchName to longLengthBr...
+  const longText = (text) => {
+    const newText = text.slice(0, BRANCH_TEXT_LENGTH);
+    const textWithDot = newText + "...";
+    return textWithDot;
+  };
 
   const toPinVerification = () => {
     toggleBottomSheet();
@@ -38,6 +50,7 @@ const PullConfirmationModal = ({
               <AntDesign name="close" size={24} color="black" />
             </TouchableOpacity>
           </View>
+
           <HeadingSixText style={styles.confirmationTextTitle}>
             Konfirmasi Tarik Valas
           </HeadingSixText>
@@ -55,33 +68,41 @@ const PullConfirmationModal = ({
             </View>
             <View>
               <BodyLargeText style={{ fontWeight: "bold" }}>
-                Yen Jepang
+                {valasType}
               </BodyLargeText>
-              <BodyMediumText>JPY</BodyMediumText>
+              <BodyMediumText>{valasCode}</BodyMediumText>
             </View>
           </View>
 
           {/* Kantor Tujuan */}
-          <View style={styles.infoContainer}>
-            <View style={styles.iconContainer}>
-              <FontAwesome
-                name="bank"
-                size={40}
-                color={colors.secondary.secondaryOne}
-              />
-            </View>
-            <View style={{ width: "70%" }}>
-              <BodyLargeText style={{ fontWeight: "bold" }}>
+          <View style={styles.textContainer}>
+            <BodyRegularText>Cabang Penarikan</BodyRegularText>
+            {/* If the text is too long, then replace the 25 index to the last as ... */}
+            {branchData.branchName.length <= BRANCH_TEXT_LENGTH ? (
+              <BodyRegularText style={{ fontWeight: "bold" }}>
                 {branchData.branchName}
-              </BodyLargeText>
-              <BodyMediumText>{branchData.alamat}</BodyMediumText>
-            </View>
+              </BodyRegularText>
+            ) : (
+              <BodyRegularText style={{ fontWeight: "bold" }}>
+                {longText(branchData.branchName)}
+              </BodyRegularText>
+            )}
+          </View>
+
+          {/* Tanggal Penarikan */}
+          <View style={styles.textContainer}>
+            <BodyRegularText>Tanggal Penarikan</BodyRegularText>
+            <BodyRegularText style={{ fontWeight: "bold" }}>
+              {date}
+            </BodyRegularText>
           </View>
 
           {/* Total Penarikan */}
           <View style={styles.totalPenarikan}>
             <BodyRegularText>Total Penarikan</BodyRegularText>
-            <BodyRegularText>JPY 500000</BodyRegularText>
+            <BodyRegularText style={{ fontWeight: "bold" }}>
+              {pullBalance}
+            </BodyRegularText>
           </View>
 
           {/* Dompet SUMBER */}
@@ -91,7 +112,7 @@ const PullConfirmationModal = ({
             saldo="20000"
           />
         </View>
-        
+
         {/* Bottom Container */}
         <View style={styles.bottomContainer}>
           <StyledButton
@@ -151,5 +172,11 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     borderColor: colors.primary.primaryThree,
     borderBottomWidth: 5,
+  },
+  textContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    marginBottom: 20,
   },
 });

@@ -3,11 +3,12 @@ import { FontAwesome } from "@expo/vector-icons";
 import { BodyMediumText, BodySmallText } from "../../shared/StyledText";
 import colors from "../../../theme/colors";
 
+const BRANCH_TEXT_LENGTH = 24;
 
 const BranchItem = ({ data, handleOnPress }) => {
-  // Function to return the branch name to branchName...
+  // Function to return the longLengthBranchName to longLengthBr...
   const longText = (text) => {
-    const newText = text.slice(0, 24);
+    const newText = text.slice(0, BRANCH_TEXT_LENGTH);
     const textWithDot = newText + "...";
     return textWithDot;
   };

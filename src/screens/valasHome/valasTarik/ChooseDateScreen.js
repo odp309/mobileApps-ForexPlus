@@ -2,24 +2,16 @@ import { StyleSheet, View, Dimensions, TouchableOpacity } from "react-native";
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
 import StyledButton from "../../../components/shared/StyledButton";
 import { useEffect, useState } from "react";
-import colors from "../../../theme/colors";
-import { FontAwesome } from "@expo/vector-icons";
-import {
-  BodyLargeText,
-  BodyMediumText,
-  HeadingSixText,
-} from "../../../components/shared/StyledText";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-// import CalendarPicker from "react-native-calendar-picker";
-import { Calendar } from "react-native-calendars";
-import { getDaysInMonth } from "date-fns";
-import sizes from "../../../theme/sizes";
+import PullConfirmationModal from "../../../components/valasHome/valasTarik/PullConfirmationModal";
+import CalendarComponent from "../../../components/valasHome/valasTarik/CalendarComponent";
+import TitleAndChooseButton from "../../../components/valasHome/valasTarik/TitleAndChooseButton";
 
-const DIMENSION_WIDTH = Dimensions.get("screen").width;
 const RESERVATION_LENGTH = 6;
 
-const ChooseDateScreen = () => {
+const ChooseDateScreen = ({ route }) => {
   const [isCalendarShown, setIsCalendarShown] = useState(false);
+  const [modalVisibility, setModalVisibility] = useState(false);
+  const { branchData } = route.params;
 
   // For Calendar States
   const [selectedDate, setSelectedDate] = useState("");
@@ -81,16 +73,17 @@ const ChooseDateScreen = () => {
   }, []);
 
   const onDateChange = (data) => {
-    // Calendar Picker
-    // const newDate = data.toISOString();
-    // setSelectedDate(newDate);
-
     // Calendar
     setSelectedDate(data.dateString);
   };
 
   const onChooseDatePress = () => {
     setIsCalendarShown(!isCalendarShown);
+  };
+
+  const toggleBottomSheet = () => {
+    console.log("testing");
+    setModalVisibility(!modalVisibility);
   };
 
   return (
@@ -100,98 +93,29 @@ const ChooseDateScreen = () => {
       </View>
 
       <View style={styles.middleContainer}>
-        {/* Title and SearchBar */}
-        <View style={styles.titleSearchContainer}>
-          <HeadingSixText
-            style={{
-              fontWeight: "bold",
-              color: colors.primary.primaryOne,
-              marginBottom: 10,
-            }}
-          >
-            Pilih Hari Kedatangan
-          </HeadingSixText>
-          {/* Choose Date */}
-          <TouchableOpacity
-            style={styles.chooseDate}
-            onPress={onChooseDatePress}
-          >
-            <BodyMediumText style={{ color: colors.color.grey }}>
-              Pilih Tanggal
-            </BodyMediumText>
-            <View style={styles.searchIcon}>
-              <MaterialCommunityIcons
-                name="calendar-clock"
-                size={30}
-                color={colors.color.grey}
-              />
-            </View>
-          </TouchableOpacity>
-        </View>
+        {/* Title and Calendar Button */}
+        <TitleAndChooseButton onChooseDatePress={onChooseDatePress} />
 
         {/* Calendar */}
-        {isCalendarShown && (
-          <View style={styles.calendarContainer}>
-            <Calendar
-              onDayPress={onDateChange}
-              theme={{
-                textMonthFontWeight: "bold",
-                textMonthFontSize: sizes.font.xl,
-                monthTextColor: colors.color.black,
-                todayTextColor: colors.color.lightGrey, // Today Color, default is Blue
-                
-              }}
-              firstDay={1}
-              markingType="custom"
-              minDate={minDateState}
-              maxDate={maxDateState}
-              markedDates={{
-                [selectedDate]: {
-                  customStyles: {
-                    container: {
-                      backgroundColor: colors.primary.primaryOne,
-                    },
-                    text: {
-                      color: colors.color.white,
-                    },
-                  },
-                },
-                ...(selectedDate === currentDate ? {
+        <CalendarComponent
+          isCalendarShown={isCalendarShown}
+          onDateChange={onDateChange}
+          minDateState={minDateState}
+          maxDateState={maxDateState}
+          selectedDate={selectedDate}
+          currentDate={currentDate}
+          weekendsArray={weekendsArray}
+        />
 
-                  [currentDate]: {
-                    customStyles: {
-                      container: {
-                        backgroundColor: colors.primary.primaryOne,
-                      },
-                      text: {
-                        color: colors.color.white,
-                      },
-                    },
-                  }
-                } : {
-                  [currentDate]: {
-                    customStyles: {
-                      container: {
-                        backgroundColor: colors.primary.primaryThree,
-                      },
-                      text: {
-                        color: colors.primary.primaryOne,
-                      },
-                    },
-                  }
-                }),
-                // Mark weekends as disabled
-                ...weekendsArray.reduce((acc, date) => {
-                  acc[date] = { disabled: true, disableTouchEvent: true };
-                  return acc;
-                }, {}),
-              }}
-            />
-          </View>
-        )}
-        {/* <View>
-          <BodyMediumText>SELECTED DATE:{selectedDate}</BodyMediumText>
-        </View> */}
+        <PullConfirmationModal
+          modalVisibility={modalVisibility}
+          toggleBottomSheet={toggleBottomSheet}
+          branchData={branchData}
+          date={selectedDate}
+          pullBalance={1000}
+          valasType="Yen Jepang"
+          valasCode="JPY"
+        />
       </View>
 
       <View style={styles.bottomContainer}>
@@ -207,7 +131,7 @@ const ChooseDateScreen = () => {
             mode="primary"
             title="Lanjut"
             size={"lg"}
-            onPress={() => {}}
+            onPress={toggleBottomSheet}
             style={{ marginBottom: 20 }}
           />
         )}
@@ -240,35 +164,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flex: 0.15,
     paddingHorizontal: 20,
-  },
-  titleSearchContainer: {
-    paddingHorizontal: 20,
-    paddingTop: 10,
-    paddingBottom: 20,
-    width: "100%",
-  },
-  chooseDate: {
-    width: "100%",
-    minHeight: 50,
-    paddingHorizontal: 20,
-    borderRadius: 15,
-    backgroundColor: colors.color.lightGrey,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  searchIcon: {
-    // paddingHorizontal: 20,
-  },
-  calendarContainer: {
-    width: DIMENSION_WIDTH - 40,
-    padding: 20,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: colors.primary.primaryOne,
-  },
-  selectedDateColor: {
-    backgroundColor: colors.primary.primaryOne,
-    color: colors.color.white,
   },
 });
