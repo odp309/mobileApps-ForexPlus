@@ -5,6 +5,7 @@ import {
   Text,
   Image,
   ImageBackground,
+  BackHandler,
 } from "react-native";
 import StyledButton from "../../components/shared/StyledButton";
 import {
@@ -49,10 +50,11 @@ const TransactionResultScreen = ({route}) => {
 
   // Animation Function
   useEffect(() => {
-    if (animationRef.current) {
-      // Play the animation once
+    if (animationRef.current) { 
       animationRef.current.play();
     }
+    const backHandler = BackHandler.addEventListener("hardwareBackPress", () => true);
+    return () => backHandler.remove();
     console.log("KOKO");
     console.log(transactionData);
   }, []);
@@ -77,8 +79,7 @@ const TransactionResultScreen = ({route}) => {
     <View style={styles.container}>
       <View style={styles.topContainer}></View>
 
-      <View style={styles.middleContainer}>
-        {/* Success Icon Animation */}
+      <View style={styles.middleContainer}> 
         <View style={{ width: "100%", alignItems: "center" }}>
           <LottieView
             ref={animationRef}
@@ -122,14 +123,14 @@ export default TransactionResultScreen;
 
 const styles = StyleSheet.create({
   container: {
-    height: Dimensions.get("screen").height,
+    height: "100%",
     justifyContent: "flex-start",
     backgroundColor: colors.color.white,
   },
   topContainer: {
     width: "100%",
     flex: 0.1,
-    marginTop: "15%",
+    marginTop: "12%",
     paddingHorizontal: 20,
   },
   middleContainer: {
@@ -140,6 +141,6 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     flex: 0.15,
-    paddingHorizontal: 20,
+    paddingHorizontal: 20,  
   },
 });

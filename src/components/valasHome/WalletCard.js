@@ -4,15 +4,18 @@ import {
   Text,
   TouchableOpacity,
   Dimensions,
+  Image,
 } from "react-native";
 import colors from "../../theme/colors";
 import { BodyLargeText, BodyMediumText } from "../shared/StyledText";
 import { useEffect, useState } from "react";
 import { Fontisto } from "@expo/vector-icons";
 
+
+const WINDOW_HEIGHT = Dimensions.get("window").height;
 const WalletCard = ({ valasType, selectedWallet }) => {
   const [hiddenText, setHiddenText] = useState(selectedWallet.balance);
-  const [hideText, setHideText] = useState(false);
+  const [hideText, setHideText] = useState(true);
 
   useEffect(() => { 
     setHiddenText(
@@ -32,6 +35,7 @@ const WalletCard = ({ valasType, selectedWallet }) => {
 
   return (
     <View style={styles.container}>
+      <View style={{width:"50%",justifyContent:'center'}}>
       <BodyMediumText style={{ color: colors.primary.primaryOne }}>
         Saldo Aktif
       </BodyMediumText>
@@ -40,16 +44,25 @@ const WalletCard = ({ valasType, selectedWallet }) => {
           flexDirection: "row",
           alignItems: "center",
           marginTop: 30,
-          width: "50%",
-          justifyContent: "space-evenly",
+          width: "70%",
+          justifyContent:"space-between", 
         }}
       >
         <BodyLargeText style={styles.boldText}>{valasType}</BodyLargeText>
         <BodyLargeText style={styles.boldText}>{hiddenText}</BodyLargeText>
         <TouchableOpacity onPress={toggleHideText}>
-          <Fontisto name={hideText ? "locked" : "unlocked"} size={20} color={colors.primary.primaryOne} />
+          <Fontisto name={hideText ? "locked" : "unlocked"} size={18} color={colors.primary.primaryOne} />
         </TouchableOpacity>
       </View>
+      </View>
+
+
+      <View style={{height:"100%"}}>
+        <View style={{alignSelf:'flex-end'}}>
+        <Image source={{uri:selectedWallet.landmarkIcon}} style={{height:"100%",width:150,borderWidth:1}} resizeMode="contain" />
+        </View>
+      </View>
+      
     </View>
   );
 };
@@ -60,13 +73,12 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
     marginBottom: 20,
-    paddingHorizontal: 30,
-    paddingVertical: 40,
+    paddingHorizontal: 30, 
     width: "90%",
-    height: Dimensions.get("screen").height * 0.2,
+    height: WINDOW_HEIGHT * 0.22,
     backgroundColor: colors.primary.primaryThree,
     borderRadius: 30,
-    zIndex: -1,
+    flexDirection:'row'
   },
   boldText: {
     fontWeight: "bold",

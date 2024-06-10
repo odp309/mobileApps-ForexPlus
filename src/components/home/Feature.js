@@ -25,52 +25,52 @@ const Feature = ({ user }) => {
     {
       id: "1",
       title: "Transfer",
-      icon: require("../../../assets/icon-transfer.png"),
+      icon: "https://i.imgur.com/H2SNoul.png",
     },
     {
       id: "2",
       title: "E-Wallet",
-      icon: require("../../../assets/icon-e-wallet.png"),
+      icon: "https://i.imgur.com/4HEOj3a.png",
     },
     {
       id: "3",
       title: "Pembayaran",
-      icon: require("../../../assets/icon-pembayaran.png"),
+      icon: "https://i.imgur.com/0ByIYKc.png",
     },
     {
       id: "4",
       title: "Valas⁺",
-      icon: require("../../../assets/icon-valas-plus.png"),
+      icon: "https://i.imgur.com/MIYjWhG.png",
     },
     {
       id: "5",
       title: "Pembelian",
-      icon: require("../../../assets/icon-pembelian.png"),
+      icon: "https://i.imgur.com/tp9QYUJ.png",
     },
     {
       id: "6",
       title: "Life Goals",
-      icon: require("../../../assets/icon-life-goals.png"),
+      icon: "https://i.imgur.com/dzfoXQY.png",
     },
     {
       id: "7",
       title: "DiKado",
-      icon: require("../../../assets/icon-dikado.png"),
+      icon: "https://imgur.com/VUF1oku.png",
     },
     {
       id: "8",
       title: "Credit Card",
-      icon: require("../../../assets/icon-my-credit-card.png"),
+      icon: "https://i.imgur.com/gif7P3O.png",
     },
     {
       id: "9",
       title: "Rekeningku",
-      icon: require("../../../assets/icon-rekeningku.png"),
+      icon: "https://i.imgur.com/limBQcr.png",
     },
     {
       id: "10",
       title: "Mobile Tunai",
-      icon: require("../../../assets/icon-mobile-tunai.png"),
+      icon: "https://i.imgur.com/7OZfnPk.png",
     },
   ];
   const numColumns = 4;
@@ -105,7 +105,7 @@ const Feature = ({ user }) => {
           <TouchableOpacity onPress={() => navigation.navigate("ValasHome")}>
             <Image
               style={{ width: 60, height: 60, marginBottom: 5 }}
-              source={item.icon}
+              source={{ uri: item.icon }}
             />
           </TouchableOpacity>
 
@@ -193,7 +193,7 @@ const Feature = ({ user }) => {
               }}
             >
               <BodyMediumText>
-                {showAll ? "View Less" : "View All"}
+                {showAll ? "Tampilkan Lebih Sedikit" : "Tampilkan Semua"}
               </BodyMediumText>
               <Ionicons
                 name={showAll ? "chevron-up-outline" : "chevron-down-outline"}

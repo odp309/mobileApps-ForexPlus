@@ -7,7 +7,7 @@ import {
   BodyLargeText,
   HeadingSixText,
 } from "../../shared/StyledText";
-import WalletSource from "../shared/WalletSource";
+import WalletSource from "./WalletValasSource";
 import colors from "../../../theme/colors";
 import StyledButton from "../../shared/StyledButton";
 import { useNavigation } from "@react-navigation/native";
@@ -15,9 +15,13 @@ import { useNavigation } from "@react-navigation/native";
 const ConfirmationModal = ({
   isVisible,
   toggleBottomSheet,
+  title,
   pendapatan,
   kurs,
   inputSaldo,
+  transactionType,
+  namaPenerima,
+  totalTransfer
 }) => {
   const navigation = useNavigation();
   const toPinVerification = () => {
@@ -25,10 +29,9 @@ const ConfirmationModal = ({
     navigation.navigate("PinConfirmation");
   };
   return (
-    <BottomSheet isVisible={isVisible} >
+    <BottomSheet isVisible={isVisible}>
       <View style={styles.container}>
         <View style={styles.topContainer}>
-          {/* CLOSE BUTTON */}
           <View
             style={{ width: "100%", alignItems: "flex-end", paddingRight: 20 }}
           >
@@ -37,10 +40,9 @@ const ConfirmationModal = ({
             </TouchableOpacity>
           </View>
 
-          {/* CONFIRMATION TITLE */}
           <View style={{ width: "100%", alignItems: "center" }}>
             <HeadingSixText style={styles.confirmationTextTitle}>
-              Konfirmasi Penjualan Valas
+              {title}
             </HeadingSixText>
           </View>
         </View>
@@ -53,7 +55,7 @@ const ConfirmationModal = ({
               alignItems: "flex-start",
               width: "100%",
               paddingHorizontal: 20,
-              marginTop:15,
+              marginTop: 15,
             }}
           >
             <View>
@@ -72,29 +74,52 @@ const ConfirmationModal = ({
 
           {/* SUMMARY */}
           <View style={styles.summaryContainer}>
-            <View style={styles.confirmationText}>
-              <BodyRegularText>Nominal Pendapatan</BodyRegularText>
-              <BodyRegularText style={{ fontWeight: "bold" }}>
-                IDR {pendapatan}
-              </BodyRegularText>
-            </View>
-            <View style={styles.confirmationText}>
-              <BodyRegularText>Kurs Jual</BodyRegularText>
-              <BodyRegularText style={{ fontWeight: "bold" }}>
-                JPY 1 = RP. {kurs}
-              </BodyRegularText>
-            </View>
-            <View style={styles.confirmationText}>
-              <BodyRegularText>Total Transaksi</BodyRegularText>
-              <BodyRegularText style={{ fontWeight: "bold" }}>
-                JPY {inputSaldo}
-              </BodyRegularText>
-            </View>
+            {transactionType === "jual" || transactionType === "beli" ? (
+              <View>
+                <View style={styles.confirmationText}>
+                  <BodyRegularText>Nominal Pendapatan</BodyRegularText>
+                  <BodyRegularText style={{ fontWeight: "bold" }}>
+                    IDR {pendapatan}
+                  </BodyRegularText>
+                </View>
+                <View style={styles.confirmationText}>
+                  <BodyRegularText>Kurs Jual</BodyRegularText>
+                  <BodyRegularText style={{ fontWeight: "bold" }}>
+                    JPY 1 = RP. {kurs}
+                  </BodyRegularText>
+                </View>
+                <View style={styles.confirmationText}>
+                  <BodyRegularText>Total Transaksi</BodyRegularText>
+                  <BodyRegularText style={{ fontWeight: "bold" }}>
+                    JPY {inputSaldo}
+                  </BodyRegularText>
+                </View>
+              </View>
+            ) : transactionType === "transfer" ? (
+              <View>
+                <View style={styles.confirmationText}>
+                  <BodyRegularText>Nama Penerima</BodyRegularText>
+                  <BodyRegularText style={{ fontWeight: "bold" }}>
+                    IDR {namaPenerima}
+                  </BodyRegularText>
+                </View>
+                <View style={styles.confirmationText}>
+                  <BodyRegularText>Total Transfer</BodyRegularText>
+                  <BodyRegularText style={{ fontWeight: "bold" }}>
+                    {totalTransfer}
+                  </BodyRegularText>
+                </View> 
+              </View>
+            ) : null}
           </View>
 
           {/* DOMPET SUMBER */}
           <View>
-            <WalletSource style={{ backgroundColor: colors.color.white }} countryCode='jpy' saldo="100" />
+            <WalletSource
+              style={{ backgroundColor: colors.color.white }}
+              countryCode={"jpy"}
+              saldo={"2000"}
+            />
           </View>
         </View>
 

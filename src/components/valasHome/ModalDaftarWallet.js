@@ -111,7 +111,7 @@ const ModalDaftarWallet = ({
                   <Image
                     resizeMode="stretch"
                     style={{ width: 30, height: 30, marginRight: 15 }}
-                    source={require("../../../assets/icons/flags/United_States.png")}
+                    source={{uri: item.flagIcon}}
                   />
                   <BodyMediumText>
                     {item.currencyName} ({item.currencyCode})
@@ -130,7 +130,7 @@ const ModalDaftarWallet = ({
           <Image
             resizeMode="stretch"
             style={{ width: 30, height: 30, marginRight: 15 }}
-            source={require("../../../assets/icons/flags/United_States.png")}
+            source={{uri : selectedWallet.flagIcon}}
           />
           <BodyXLTextBold style={{ color: colors.primary.primaryOne }}>
             {selectedWallet.currencyCode}

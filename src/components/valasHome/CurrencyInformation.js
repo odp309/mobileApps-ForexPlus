@@ -1,16 +1,15 @@
 import { Dimensions, StyleSheet, Text, View } from "react-native";
-import { BodySmallText } from "../shared/StyledText";
+import { BodySmallText, BodySmallTextSemiBold } from "../shared/StyledText";
 import colors from "../../theme/colors";
 import { useEffect, useState } from "react";
 import { fetchKurs } from "../../config/ValasConfig";
-
-const SCREEN_WIDTH = Dimensions.get("screen").width;
+ 
 const CurrencyInformation = () => {
   const [dataCurrency, setDataCurrency] = useState(null);
 
   const getData = async () => {
     try {
-      const data = await fetchKurs();
+      const data = await fetchKurs(); 
       setDataCurrency(data); 
     } catch (error) {
       console.error(error);
@@ -38,19 +37,19 @@ const CurrencyInformation = () => {
     <View style={styles.container}>
       <View style={{ flexDirection: "row" }}>
         <View style={styles.row}>
-          <BodySmallText style={{ color: colors.color.grey }}>
+          <BodySmallTextSemiBold style={{ color: colors.color.grey }}>
             Kurs
-          </BodySmallText>
+          </BodySmallTextSemiBold>
         </View>
         <View style={styles.row}>
-          <BodySmallText style={{ color: colors.color.grey }}>
+          <BodySmallTextSemiBold style={{ color: colors.color.grey }}>
             Beli
-          </BodySmallText>
+          </BodySmallTextSemiBold>
         </View>
         <View style={styles.row}>
-          <BodySmallText style={{ color: colors.color.grey }}>
+          <BodySmallTextSemiBold style={{ color: colors.color.grey }}>
             Jual
-          </BodySmallText>
+          </BodySmallTextSemiBold>
         </View>
       </View>
 
@@ -83,8 +82,9 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     borderRadius: 20,
-    marginBottom: 40,
+    marginBottom: 20,
     borderWidth: 1,
+    borderColor:colors.primary.primaryOne,
   },
   row: {
     padding: 10,

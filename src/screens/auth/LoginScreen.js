@@ -26,7 +26,7 @@ import Input from "../../components/shared/Input";
 import { cleanupToken, login } from "../../config/AuthConfig";
 import colors from "../../theme/colors";
 
-const screenHeight = Dimensions.get("screen").height;
+const screenHeight = Dimensions.get("window").height*1.05;
 const screenWidth = Dimensions.get("screen").width;
 
 const LoginScreen = () => {
@@ -61,13 +61,13 @@ const LoginScreen = () => {
     <SafeAreaView style={styles.container}>
       <ImageBackground
         style={{ flex: 1 }}
-        source={require("../../../assets/bg-login.png")}
+        source={{uri : "https://i.imgur.com/qPgwgw6.png"}}
       >
         <View style={styles.topContainer}>
           <Image
-            style={{ width: "40%", marginBottom: "20%" }}
+            style={{ width: "40%", height:50, marginBottom: 20 }}
             resizeMode="contain"
-            source={require("../../../assets/icon-bni.png")}
+            source={{uri : "https://i.imgur.com/rkL9Et5.png"}}
           />
         </View>
         <View style={styles.bottomContainer}>
@@ -85,21 +85,21 @@ const LoginScreen = () => {
             <View style={styles.contentStyle}>
               <Image
                 style={styles.shortcutImage}
-                source={require("../../../assets/icon-e-wallet.png")}
+                source={{uri : "https://i.imgur.com/4HEOj3a.png"}}
               />
               <BodySmallText style={{ marginTop: 5 }}>E-Wallet</BodySmallText>
             </View>
             <View style={styles.contentStyle}>
               <Image
                 style={styles.shortcutImage}
-                source={require("../../../assets/icon-qris.png")}
+                source={{uri : "https://i.imgur.com/SjHm9Cw.png"}}
               />
               <BodySmallText style={{ marginTop: 5 }}>QRIS</BodySmallText>
             </View>
             <View style={styles.contentStyle}>
               <Image
                 style={styles.shortcutImage}
-                source={require("../../../assets/icon-menu-lain.png")}
+                source={{uri : "https://i.imgur.com/ZMivkWV.png"}}
               />
               <BodySmallText style={{ marginTop: 5 }}>Menu Lain</BodySmallText>
             </View>
@@ -123,10 +123,18 @@ const LoginScreen = () => {
         <KeyboardAvoidingView
           style={styles.modalContainer}
           behavior={Platform.OS === "ios" ? "padding" : "height"}
-          keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+          // keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
         >
-          <TouchableOpacity style={styles.backgroundOverlay} onPress={() => setModalVisible(false)} />
-          <Animated.View style={[styles.modalView, { transform: [{ translateY: slideAnim }] }]}>
+          <TouchableOpacity
+            style={styles.backgroundOverlay}
+            onPress={() => setModalVisible(false)}
+          />
+          <Animated.View
+            style={[
+              styles.modalView,
+              { transform: [{ translateY: slideAnim }] },
+            ]}
+          >
             <Image
               style={{ width: "35%", marginVertical: "5%" }}
               resizeMode="contain"
@@ -140,7 +148,7 @@ const LoginScreen = () => {
               leftIconName={"person"}
               placeholder={"Email"}
               onChangeText={setEmail}
-              style={{paddingLeft:50}}
+              style={{ paddingLeft: 50 }}
             />
             <Input
               mode={"active"}
@@ -153,8 +161,8 @@ const LoginScreen = () => {
               rightIconName={passwordVisible ? "eye" : "eye-off"}
               placeholder={"Password"}
               onChangeText={setPassword}
-              onPress={()=>setPasswordVisible(!passwordVisible)}
-              style={{paddingLeft:50,paddingRight:50}}
+              onPress={() => setPasswordVisible(!passwordVisible)}
+              style={{ paddingLeft: 50, paddingRight: 50 }}
             />
             <StyledButton
               mode={"primary"}
@@ -185,7 +193,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     height: screenHeight,
   },
-  topContainer: { 
+  topContainer: {
     height: screenHeight * 0.6,
     paddingVertical: "10%",
     width: "100%",
@@ -195,7 +203,7 @@ const styles = StyleSheet.create({
   bottomContainer: {
     height: screenHeight * 0.4,
     justifyContent: "space-evenly",
-    paddingHorizontal: "10%", 
+    paddingHorizontal: "10%",
     width: "100%",
   },
   shortcutImage: {
@@ -239,6 +247,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-
   },
 });

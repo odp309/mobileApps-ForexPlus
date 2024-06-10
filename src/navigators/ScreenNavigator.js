@@ -9,10 +9,10 @@ import ValasHomeScreen from "../screens/valasHome/ValasHomeScreen";
 import CheckTargetAccountScreen from "../screens/valasHome/valasTransfer/CheckTargetAccountScreen";
 import ValasJualScreen from "../screens/valasHome/valasJual/ValasJualScreen";
 import EnterTransferScreen from "../screens/valasHome/valasTransfer/EnterTransferScreen"; 
-import PinConfirmationScreen from "../screens/valasHome/PinConfirmationScreen"; 
+import PinConfirmationScreen from "../screens/valasHome/PinConfirmationScreen";  
 import ValasBeliScreen from "../screens/valasHome/valasBeli/ValasBeliScreen.js";
 import ValasTarikScreen from "../screens/valasHome/valasTarik/ValasTarikScreen.js"
-import HistoryScreen from "../screens/valasHome/riwayatTransaksi/HistoryScreen.js";
+import HistoryScreen from "../screens/valasHome/riwayatTransaksi/HistoryScreen.js";   
 import TransactionResultScreen from "../screens/valasHome/TransactionResultScreen";
 import ChooseBranchScreen from "../screens/valasHome/valasTarik/ChooseBranchScreen";
 import ValasRiwayatScreen from "../screens/valasHome/riwayat/ValasRiwayatScreen";
@@ -59,12 +59,7 @@ const ScreenNavigator = () => {
         name="PinConfirmation"
         component={PinConfirmationScreen}
         options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="TransactionResult"
-        component={TransactionResultScreen}
-        options={{ headerShown: false }} 
-      />
+      /> 
       <Stack.Screen
         name="ValasBeli"
         component={ValasBeliScreen}
@@ -81,13 +76,18 @@ const ScreenNavigator = () => {
         options={{ headerShown: false }} 
       />
       <Stack.Screen
+        name="TransactionResult"
+        component={TransactionResultScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="ChooseBranch"
         component={ChooseBranchScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Riwayat"
-        component={ValasRiwayatScreen}
+        component={HistoryScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen

@@ -35,13 +35,14 @@ const HomeScreen = () => {
         }
       }, 500);
     }
-
+  }, []);
+  useEffect(() => {
     if (isFocused) {
       const backHandler = BackHandler.addEventListener(
         "hardwareBackPress",
         backAction
       );
-      return backHandler.remove();
+      return () => backHandler.remove();
     }
   }, [isFocused]);
 
@@ -64,7 +65,7 @@ const HomeScreen = () => {
   ];
 
   return (
-    <View style={styles.container}> 
+    <View style={styles.container}>
       <FlatList
         data={data(user, fullName)}
         renderItem={renderedView}
