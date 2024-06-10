@@ -19,6 +19,7 @@ import WalletSource from "../../../components/valasHome/shared/WalletSource";
 import ValasConversion from "../../../components/valasHome/shared/ValasConversion";
 import ConfirmationModal from "../../../components/valasHome/shared/ConfirmationModal";
 import { alertConfirmation } from "../../../config/ValasConfig";
+import { useSafeAreaFrame } from "react-native-safe-area-context";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 export default function ValasBeliScreen() {
@@ -29,6 +30,12 @@ export default function ValasBeliScreen() {
   const [kurs, setKurs] = useState("103");
   const [valas, setValas] = useState("JPY");
   const [isVisible, setIsVisible] = useState(false); 
+  const [currentBalance, setCurrentBalance]  = useState("1000000");
+  const [minPurchase, setMinPurchase] = useState("10");
+  const [maxPurchase, setMaxPurchase] = useState("25000");
+
+
+  const [inputError, setInputError] = useState('');
  
   useEffect(()=>{
     const backHandler = BackHandler.addEventListener("hardwareBackPress",() => alertConfirmation(navigation));
@@ -41,10 +48,27 @@ export default function ValasBeliScreen() {
   };
 
   const kursCalculation = (data) => {
+    const kursResult = parseInt(data) * parseInt(kurs);
     data === ""
       ? setExchange("")
-      : setExchange(parseInt(data) * parseInt(kurs));
+      : setExchange(kursResult);
+      checkError(data,kursResult);
   };
+
+  const checkError = (data,kursResult) => {
+    if(kursResult>parseInt(currentBalance)){
+      setInputError("Jumlah melebihi Saldo Aktif Rupiah");
+    }
+    else if(parseInt(data) < parseInt(minPurchase)){
+      setInputError('Minimum pembelian valas AUD 10')
+    }
+    else if(parseInt(data) > parseInt(maxPurchase)){
+      setInputError('Maksimum Pembelian valas AUD 25.000');
+    }
+    else{
+      console.log('Other ERROR');
+    }
+  }
 
   const acceptInputCurrency = (data) => {
     console.log(data);
