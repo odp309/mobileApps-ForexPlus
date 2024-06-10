@@ -9,30 +9,34 @@ import {
 import React, { useEffect, useState } from "react";
 import {
   BodyLargeTextSemiBold,
+  BodySmallText,
+  BodySmallTextSemiBold,
   BodyXLTextBold,
   BodyXLTextSemiBold,
 } from "../../components/shared/StyledText";
 import colors from "../../theme/colors";
 import ContentHeader from "../../components/valasHome/shared/ContentHeader";
 import { useNavigation } from "@react-navigation/native";
+import IncorrectPinMessage from "../../components/valasHome/IncorrectPinMessage";
 
 const transactionData = {
   // Must
-  isSetoranAwal: false, //boolean
+  isSetoranAwal: true, //boolean
   isTransfer: false, //boolean
-  isSellOrPurchase: true, //boolean
+  isSellOrPurchase: false, //boolean
   date: "29 Juni 2024",
   noRek: "1811209312",
   saldo: "1000", // Saldo transaksi
-  tipeValas: "jpy", //jpy,aud,usd, dan lain lainnya
+  tipeValas: "aud", //jpy,aud,usd, dan lain lainnya
 
   // Depends on the Type of Transaction
-  transactionType: "Penjualan",  //Pembelian || Penjualan
-  namaPenerima: 'Adelia Kinanti',
+  transactionType: "Pembelian", // isSellOrPurchase = true => Pembelian || Penjualan
+  namaPenerima: "Adelia Kinanti", // isTransfer = true
 };
 
 const PinConfirmationScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [errorVisible, setErrorVisible] = useState(false);
   const [pin, setPin] = useState("");
   const [pinStatus, setPinStatus] = useState(false);
   const navigation = useNavigation();
@@ -49,9 +53,10 @@ const PinConfirmationScreen = () => {
       if (pin === "654321") {
         console.log("benar");
         setPinStatus(true);
-        navigation.navigate("TransactionResult",transactionData);
+        navigation.navigate("TransactionResult", { transactionData });
       } else {
         console.log("salah");
+        setErrorVisible(!errorVisible);
         setPinStatus(false);
       }
     }
@@ -91,6 +96,11 @@ const PinConfirmationScreen = () => {
             />
           </View>
         </View>
+        {errorVisible && (
+          <View style={{ width: "100%", marginTop: 20 }}>
+            <IncorrectPinMessage />
+          </View>
+        )}
       </View>
     </View>
   );
