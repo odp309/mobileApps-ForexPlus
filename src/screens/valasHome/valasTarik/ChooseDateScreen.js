@@ -144,7 +144,7 @@ export default ChooseDateScreen;
 
 const styles = StyleSheet.create({
   container: {
-    height: Dimensions.get("screen").height,
+    height: Dimensions.get("window").height*1.05,
     justifyContent: "flex-start",
     backgroundColor: "white",
   },

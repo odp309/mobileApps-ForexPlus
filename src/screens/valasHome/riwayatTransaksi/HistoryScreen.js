@@ -41,7 +41,7 @@ return (
     
     <View style={styles.container}>
         <View style={styles.topContainer}>
-            <ContentHeader title={"Riwayat"}/>
+            <ContentHeader title={"Riwayat"} hasRigtIcon={true}/>
         </View>
 
         <View style={styles.middleContainer}>

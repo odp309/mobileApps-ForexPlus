@@ -87,7 +87,7 @@ const ScreenNavigator = () => {
       />
       <Stack.Screen
         name="Riwayat"
-        component={ValasRiwayatScreen}
+        component={HistoryScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen

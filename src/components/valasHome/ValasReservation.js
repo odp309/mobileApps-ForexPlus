@@ -55,12 +55,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary.primaryThree,
     borderRadius: 20, 
     marginBottom: 20,
-    elevation: 5, // This is the elevation for the drop shadow 
+    elevation: 5, 
   },
   containerTglJam: {
     paddingVertical: 10,
     paddingHorizontal: 20,
-    width: "50%",
+    width: "50%", 
     backgroundColor: colors.color.white,
   },
   addRightBorder: {

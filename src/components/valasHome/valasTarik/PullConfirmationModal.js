@@ -8,7 +8,7 @@ import {
 } from "../../shared/StyledText";
 import WalletSource from "../shared/WalletSource";
 import StyledButton from "../../shared/StyledButton";
-import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Image, Modal } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../../../theme/colors";
 import { useNavigation } from "@react-navigation/native";
@@ -44,7 +44,7 @@ const PullConfirmationModal = ({
         <View style={styles.topContainer}>
           {/* CLOSE BUTTON */}
           <View
-            style={{ width: "100%", alignItems: "flex-end", paddingRight: 20 }}
+            style={{ width: "100%", alignItems: "flex-end", }}
           >
             <TouchableOpacity onPress={toggleBottomSheet}>
               <AntDesign name="close" size={24} color="black" />
@@ -107,6 +107,8 @@ const PullConfirmationModal = ({
 
           {/* Dompet SUMBER */}
           <WalletSource
+          jenisRekening={"TAPLUS PEGAWAI"}
+          rekening={"121212"}
             style={{ backgroundColor: colors.color.white }}
             countryCode="jpy"
             saldo="20000"
@@ -118,6 +120,7 @@ const PullConfirmationModal = ({
           <StyledButton
             mode="primary"
             title="Tarik"
+            size={"lg"}
             onPress={toPinVerification}
           />
         </View>

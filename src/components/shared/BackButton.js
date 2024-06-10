@@ -9,11 +9,11 @@ const BackButton = ({style,onPress,color,hasConfirmation}) => {
       "",
       [
         {
-          text: "No", 
+          text: "Tidak", 
           style: "cancel"
         },
         {
-          text: "Yes",
+          text: "Ya",
           onPress : onPress
         }
       ],

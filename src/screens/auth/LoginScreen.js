@@ -26,7 +26,7 @@ import Input from "../../components/shared/Input";
 import { cleanupToken, login } from "../../config/AuthConfig";
 import colors from "../../theme/colors";
 
-const screenHeight = Dimensions.get("screen").height;
+const screenHeight = Dimensions.get("window").height*1.05;
 const screenWidth = Dimensions.get("screen").width;
 
 const LoginScreen = () => {
@@ -123,7 +123,7 @@ const LoginScreen = () => {
         <KeyboardAvoidingView
           style={styles.modalContainer}
           behavior={Platform.OS === "ios" ? "padding" : "height"}
-          keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+          // keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
         >
           <TouchableOpacity
             style={styles.backgroundOverlay}

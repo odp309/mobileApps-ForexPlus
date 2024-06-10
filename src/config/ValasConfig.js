@@ -1,6 +1,7 @@
 import axios from "axios";
 import axiosInstance from "../connectivity/AxiosConfigManager";
 import { url } from "../connectivity/ApiManager";
+import { Alert } from "react-native";
 
 const fetchNomorRekening = async (accountNumber) => { 
   try {
@@ -33,4 +34,23 @@ const fetchBankAccount = async (userId) => {
     console.log(error);
   }
 }
-export {fetchNomorRekening,fetchKurs,fetchBankAccount}
+
+const alertConfirmation = (navigation) => {
+  Alert.alert(
+    "Anda Ingin Membatalkan Transaksi?",
+    "",
+    [
+      {
+        text: "Tidak", 
+        style: "cancel"
+      },
+      {
+        text: "Ya",
+        onPress : ()=> navigation.goBack()
+      }
+    ],
+    { cancelable: false }
+  );
+  return true;
+}
+export {fetchNomorRekening,fetchKurs,fetchBankAccount,alertConfirmation}

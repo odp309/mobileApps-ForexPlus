@@ -11,6 +11,7 @@ import colors from "../../theme/colors";
 import ValasHeader from "../../components/valasHome/ValasHeader";
 import {
   BodyMediumText,
+  BodyMediumTextSemiBold,
   BodySmallText,
 } from "../../components/shared/StyledText";
 import ValasFeatures from "../../components/valasHome/ModalValasFeatures";
@@ -21,7 +22,7 @@ import CurrencyInformation from "../../components/valasHome/CurrencyInformation"
 import { fetchBankAccount, fetchNomorRekening } from "../../config/ValasConfig";
 import { userData } from "../../config/AuthConfig";
 
-const WINDOW_HEIGHT = Dimensions.get("screen").height;
+const WINDOW_HEIGHT = Dimensions.get("window").height*1.05;
 
 const ValasHomeScreen = () => {
   const [selectedRekening, setSelectedRekening] = useState(null);
@@ -116,9 +117,9 @@ const ValasHomeScreen = () => {
             borderTopColor: colors.primary.primaryThree,
           }}
         >
-          <BodyMediumText style={{ color: colors.color.grey }}>
+          <BodyMediumTextSemiBold style={{ color: colors.color.grey,marginBottom:10 }}>
             Daftar Reservasi Tarik
-          </BodyMediumText>
+          </BodyMediumTextSemiBold>
           <ValasReservation />
         </View>
       ),
@@ -136,9 +137,9 @@ const ValasHomeScreen = () => {
             borderTopColor: colors.primary.primaryThree,
           }}
         >
-          <BodyMediumText style={{ color: colors.color.grey }}>
+          <BodyMediumTextSemiBold style={{ color: colors.color.grey ,marginBottom:10}}>
             Daftar Kurs Mata Uang
-          </BodyMediumText>
+          </BodyMediumTextSemiBold>
           <CurrencyInformation />
         </View>
       ),
