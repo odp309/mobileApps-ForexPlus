@@ -61,7 +61,7 @@ const country = {
 
 const InputCurrency = ({  style, countryCode,onChangeText,value}) => {  
   return (
-    <View style={styles.container}>
+    <View style={[styles.container,style]}>
       <View style={styles.countryContainer}>
         <Image
           source={country[countryCode].pathImage}
@@ -90,7 +90,7 @@ export default InputCurrency;
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
-    marginVertical: 10,
+    marginTop: 10,
     width: "100%",
     height:42,
     color: colors.primary.primaryOne,

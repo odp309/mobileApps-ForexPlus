@@ -27,7 +27,7 @@ export default ExchangeResult;
 const styles = StyleSheet.create({
     container: {
         justifyContent: "center",
-        marginVertical: 10,
+        marginTop: 10,
         width: "100%",
         height:42,
         borderRadius: 100, // Adjust the border radius as needed

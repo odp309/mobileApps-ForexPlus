@@ -24,7 +24,7 @@ const ValasConversion = ({
           {firstInputTitle}
         </BodyRegularText>
         <InputCurrency countryCode="jpy" onChangeText={changeTextData} />
-        <BodySmallText style={{ color: colors.color.error }}>
+        <BodySmallText style={{ color: colors.color.error, fontSize: 12 }}>
           {firstError}
         </BodySmallText>
       </View>
@@ -46,9 +46,11 @@ const ValasConversion = ({
           {secondInputTitle}
         </BodyRegularText>
         <ExchangeResult value={exchange} />
-        <BodySmallText style={{ color: colors.color.error }}>
-          {secondError}
-        </BodySmallText>
+        {secondError[0] === "J" ? (
+          <BodySmallText style={{ color: colors.color.error, fontSize: 12 }}>
+            {secondError}
+          </BodySmallText>
+        ) : null}
       </View>
     </View>
   );
