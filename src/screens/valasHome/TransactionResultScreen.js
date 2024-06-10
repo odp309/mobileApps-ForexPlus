@@ -19,16 +19,29 @@ import { AntDesign } from "@expo/vector-icons";
 import { useEffect, useRef } from "react";
 import LottieView from "lottie-react-native";
 import ResultCard from "../../components/valasHome/ResultCard";
+import WalletRekeningSource from "../../components/valasHome/shared/WalletRekeningSource";
 
-const TransactionResultScreen = ({
-  tipeTransaksi,
-  date,
-  tipeValas,
-  noRek,
-  transactionResult,
-}) => {
+// FORMAT transactionData:
+// const transactionData = {
+//   // Must
+//   isSetoranAwal: false, //boolean
+//   isTransfer: false, //boolean
+//   isSellOrPurchase: true, //boolean
+//   date: "29 Juni 2024",
+//   noRek: "1811209312",
+//   saldo: "1000", // Saldo transaksi
+//   tipeValas: "jpy", //jpy,aud,usd, dan lain lainnya
+
+//   // Depends on the Type of Transaction
+//   transactionType: "Penjualan",  //Pembelian || Penjualan
+//   namaPenerima: 'Adelia Kinanti',
+// };
+
+
+const TransactionResultScreen = ({route}) => {
   const navigation = useNavigation();
   const animationRef = useRef(null); //Animation Variable
+  const transactionData = route.params;
 
   const toHomeScreen = () => {
     navigation.navigate("ValasHome");
@@ -40,7 +53,25 @@ const TransactionResultScreen = ({
       // Play the animation once
       animationRef.current.play();
     }
+    console.log("KOKO");
+    console.log(transactionData);
   }, []);
+
+  const TitleAndDate = () => {
+    if(transactionData.isSetoranAwal){
+      return(<View>
+        <HeadingSixText style={{ fontWeight: "bold", textAlign: "center" }}>
+            Setoran Awal Berhasil!
+          </HeadingSixText>
+        <BodyMediumText style={{ fontWeight: "bold", textAlign: "center" }}>
+            Dompet Valas {} telah ditambahkan
+          </BodyMediumText>
+          <BodySmallText style={{ color: colors.color.lightGrey }}>
+            7 Mei 2024 - 11.03
+          </BodySmallText>
+      </View>)
+    }
+  }
 
   return (
     <View style={styles.container}>

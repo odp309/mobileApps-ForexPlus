@@ -94,7 +94,7 @@ const ConfirmationModal = ({
 
           {/* DOMPET SUMBER */}
           <View>
-            <WalletSource style={{ backgroundColor: colors.color.white }} />
+            <WalletSource style={{ backgroundColor: colors.color.white }} countryCode='jpy' saldo="100" />
           </View>
         </View>
 

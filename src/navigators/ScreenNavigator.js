@@ -22,7 +22,7 @@ const Stack = createNativeStackNavigator();
 
 const ScreenNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="Login">
+    <Stack.Navigator initialRouteName="PinConfirmation">
       <Stack.Screen
         name="Login"
         options={{ headerShown: false, headerStyle: {} }}

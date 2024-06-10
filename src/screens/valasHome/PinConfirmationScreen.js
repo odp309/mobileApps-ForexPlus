@@ -16,6 +16,21 @@ import colors from "../../theme/colors";
 import ContentHeader from "../../components/valasHome/shared/ContentHeader";
 import { useNavigation } from "@react-navigation/native";
 
+const transactionData = {
+  // Must
+  isSetoranAwal: false, //boolean
+  isTransfer: false, //boolean
+  isSellOrPurchase: true, //boolean
+  date: "29 Juni 2024",
+  noRek: "1811209312",
+  saldo: "1000", // Saldo transaksi
+  tipeValas: "jpy", //jpy,aud,usd, dan lain lainnya
+
+  // Depends on the Type of Transaction
+  transactionType: "Penjualan",  //Pembelian || Penjualan
+  namaPenerima: 'Adelia Kinanti',
+};
+
 const PinConfirmationScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [pin, setPin] = useState("");
@@ -34,7 +49,7 @@ const PinConfirmationScreen = () => {
       if (pin === "654321") {
         console.log("benar");
         setPinStatus(true);
-        navigation.navigate("TransactionResult");
+        navigation.navigate("TransactionResult",transactionData);
       } else {
         console.log("salah");
         setPinStatus(false);
