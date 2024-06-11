@@ -17,6 +17,7 @@ import NavigasiRekeningWallet from "../../components/valasHome/NavigasiRekeningW
 import CurrencyInformation from "../../components/valasHome/CurrencyInformation";
 import { fetchBankAccount, fetchNomorRekening } from "../../config/ValasConfig";
 import { userData } from "../../config/AuthConfig";
+import ValasCreateContent from "../../components/valasHome/ValasCreateContent";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
@@ -51,7 +52,6 @@ const ValasHomeScreen = () => {
 
   useEffect(() => {
     getData();
-    console.log(selectedCurrency);
   }, []);
 
   useEffect(() => {
@@ -60,6 +60,10 @@ const ValasHomeScreen = () => {
       setSelectedWallet(selectedRekening.listWallet[0]);
     }
   }, [selectedRekening]);
+
+  useEffect(()=>{
+    console.log("wallet: "+selectedWallet);
+  },[selectedWallet])
 
   if (isLoading) {
     return (
@@ -94,27 +98,29 @@ const ValasHomeScreen = () => {
     },
     {
       id: "2",
-      view: () => (
-        <WalletCard
-          valasType={selectedWallet.currencyCode}
-          selectedWallet={selectedWallet}
-          setSelectedWallet={setSelectedWallet}
-        />
-      ),
+      view: () => (selectedWallet!=null ? ( 
+          <WalletCard
+            valasType={selectedWallet.currencyCode}
+            selectedWallet={selectedWallet}
+            setSelectedWallet={setSelectedWallet}
+          /> 
+      ) :(
+        <ValasCreateContent />
+      )),
     },
     {
       id: "3",
-      view: () => (
-        <ValasFeatures
-          selectedRekening={selectedRekening}
-          selectedWallet={selectedWallet}
-          selectedCurrency={selectedCurrency}
-        />
-      ),
+      view: () => (selectedWallet != null && (
+          <ValasFeatures
+            selectedRekening={selectedRekening}
+            selectedWallet={selectedWallet}
+            selectedCurrency={selectedCurrency}
+          /> 
+      )),
     },
     {
       id: "4",
-      view: () => (
+      view: () => (( selectedWallet != null) && (
         <View
           style={{
             width: "100%",
@@ -132,7 +138,7 @@ const ValasHomeScreen = () => {
           </BodyMediumTextSemiBold>
           <ValasReservation />
         </View>
-      ),
+      )),
     },
     {
       id: "5",
@@ -169,7 +175,7 @@ const ValasHomeScreen = () => {
   return (
     <View style={styles.container}>
       <ValasHeader />
-      {selectedRekening && selectedWallet && (
+      {selectedRekening && (
         <View style={styles.content}>
           <FlatList
             data={data}
