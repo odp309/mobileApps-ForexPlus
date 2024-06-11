@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import BackgroundBNI from "./BackgroundBNI";
 import BackButton from "../shared/BackButton"; 
 
- 
+ const WINDOW_HEIGHT = Dimensions.get('window').height * 1.05;
 function ValasHeader() {
   const navigation = useNavigation();
 
@@ -36,7 +36,7 @@ function ValasHeader() {
           marginVertical: 20,
         }}
       >
-        <Image style={{width:40,height:40}} source={require('../../../assets/valas-plus.png')} />
+        <Image style={{width:40,height:40}} source={{uri:"https://i.imgur.com/PwD5C5f.png"}} />
         <View style={{ flexDirection: "row", alignItems: "flex-start" }}> 
           <HeadingFiveText
             style={{ color: colors.color.white, fontWeight: "bold" }}
@@ -60,11 +60,10 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",  
-    height:Dimensions.get('screen').height * 0.22,
+    height:WINDOW_HEIGHT * 0.22,
     zIndex: 1,
     position: "absolute",
-    width:"100%",
-    
+    width:"100%", 
   },
   topHeader: {
     flexDirection: "row",

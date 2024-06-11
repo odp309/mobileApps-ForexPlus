@@ -1,8 +1,8 @@
 import { Image, StyleSheet, Text, View } from "react-native";
-import React from "react"; 
+import React from "react";
 import { Skeleton } from "@rneui/themed";
 
-const Header = ({user}) => {
+const Header = ({ user }) => {
   return (
     <View style={styles.container}>
       {user === null ? (
@@ -31,12 +31,12 @@ const Header = ({user}) => {
           <Image
             style={{ width: 90, height: 40, alignSelf: "center" }}
             resizeMode="center"
-            source={require("../../../assets/icon-bni.png")}
+            source={{ uri: "https://i.imgur.com/rkL9Et5.png" }}
           />
           <Image
-            style={{ width: 22, alignSelf: "center" }}
+            style={{ width: 22, height: 40, alignSelf: "center" }}
             resizeMode="center"
-            source={require("../../../assets/icon-notif.png")}
+            source={{ uri: "https://i.imgur.com/HXlTT4D.png" }}
           />
         </>
       )}

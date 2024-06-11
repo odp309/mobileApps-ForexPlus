@@ -1,17 +1,36 @@
 import { Dimensions, StyleSheet, Text, View } from "react-native";
-import { BodySmallText } from "../shared/StyledText";
+import { BodySmallText, BodySmallTextSemiBold } from "../shared/StyledText";
 import colors from "../../theme/colors";
-import { useEffect, useState } from "react";
-import { fetchKurs } from "../../config/ValasConfig";
+import { useEffect, useMemo, useState } from "react";
+import { fetchKurs, formatNumber } from "../../config/ValasConfig";
+import { Image } from "react-native";
+ 
+const CurrencyInformation = ({dataCurrency,setDataCurrency,selectedWallet,setSelectedCurrency}) => {
 
-const SCREEN_WIDTH = Dimensions.get("screen").width;
-const CurrencyInformation = () => {
-  const [dataCurrency, setDataCurrency] = useState(null);
+  const filteredKurs = useMemo(() => {
+    if (dataCurrency != null) {
+      return dataCurrency.find((item) =>
+        item.currencyCode.toLowerCase().includes(selectedWallet.currencyCode.toLowerCase())
+      );
+    }
+    return null; 
+  }, [dataCurrency, selectedWallet]);
+
+  useEffect(() => {
+    if (filteredKurs) {
+      // console.log(filteredKurs.sellRate);
+      setSelectedCurrency(filteredKurs)
+    } else {
+      console.log('No matching currency code found');
+    } 
+  }, [filteredKurs, selectedWallet]);
 
   const getData = async () => {
     try {
-      const data = await fetchKurs();
+      const data = await fetchKurs(); 
       setDataCurrency(data); 
+      // setSelectedCurrency(filteredKurs);
+      //console.log(data);
     } catch (error) {
       console.error(error);
     }
@@ -28,38 +47,36 @@ const CurrencyInformation = () => {
       </View>
     );
   }
-  const formatNumber = (number) => {
-    return new Intl.NumberFormat('de-DE', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 3,
-    }).format(Math.floor(number));
-  };
+
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: "row" }}>
         <View style={styles.row}>
-          <BodySmallText style={{ color: colors.color.grey }}>
+          <BodySmallTextSemiBold style={{ color: colors.color.grey }}>
             Kurs
-          </BodySmallText>
+          </BodySmallTextSemiBold>
         </View>
         <View style={styles.row}>
-          <BodySmallText style={{ color: colors.color.grey }}>
+          <BodySmallTextSemiBold style={{ color: colors.color.grey }}>
             Beli
-          </BodySmallText>
+          </BodySmallTextSemiBold>
         </View>
         <View style={styles.row}>
-          <BodySmallText style={{ color: colors.color.grey }}>
+          <BodySmallTextSemiBold style={{ color: colors.color.grey }}>
             Jual
-          </BodySmallText>
+          </BodySmallTextSemiBold>
         </View>
       </View>
 
       {dataCurrency.map((currency, index) => (
         <View key={index} style={{ flexDirection: "row" }}>
           <View style={styles.row}>
+            <View style={{flexDirection:"row",alignItems:'center',justifyContent:'center'}}>
+            <Image style={{width:25,height:25,marginRight:10}} source={{uri : currency.flagIcon}} />
             <BodySmallText style={{ color: colors.color.grey }}>
               {currency.currencyCode}
             </BodySmallText>
+            </View>
           </View>
           <View style={styles.row}>
             <BodySmallText style={{ color: colors.color.grey }}>
@@ -83,8 +100,9 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     borderRadius: 20,
-    marginBottom: 40,
+    marginBottom: 20,
     borderWidth: 1,
+    borderColor:colors.primary.primaryOne,
   },
   row: {
     padding: 10,

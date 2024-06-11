@@ -1,6 +1,7 @@
 import {
   ActivityIndicator,
   Animated,
+  BackHandler,
   Dimensions,
   Image,
   ImageBackground,
@@ -22,12 +23,15 @@ import StyledButton from "../../../components/shared/StyledButton";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
+import { alertConfirmation } from "../../../config/ValasConfig";
 
 const dataRekening = [
   { id: "1", noRek: "123456789", nama: "Arfiandi Wijatmiko" },
   { id: "2", noRek: "191919191", nama: "Muhammad Daffa F.A" },
   { id: "3", noRek: "131313131", nama: "Farrel haridhi" },
 ];
+
+const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
 const CheckTargetAccountScreen = () => {
   const navigation = useNavigation();
@@ -53,7 +57,7 @@ const CheckTargetAccountScreen = () => {
     setButtonVisible(false);
     setTimeout(() => {
       const findResult = findNoRek(inputRekening);
-      
+
       if (findResult) {
         setAccountFind(findResult);
         setMessageStatus("Berhasil Menemukan");
@@ -69,7 +73,6 @@ const CheckTargetAccountScreen = () => {
         setButtonVisible(true);
       }
       setIsCheckingAccount(false);
-      
     }, 500);
   };
 
@@ -100,6 +103,13 @@ const CheckTargetAccountScreen = () => {
     }
   }, [accountFind, navigation]);
 
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener("hardwareBackPress", () =>
+      alertConfirmation(navigation)
+    );
+    return () => backHandler.remove();
+  }, []);
+
   useFocusEffect(
     useCallback(() => {
       setHasChecked(false);
@@ -129,12 +139,13 @@ const CheckTargetAccountScreen = () => {
         <Input
           mode={"active"}
           value={inputRekening}
-          hasRightIcon={true}
+          hasRightIcon={!!inputRekening}
           keyboardType="numeric"
           rightIconName={"close-circle"}
           onChangeText={setInputRekening}
           placeholder={"Masukkan nomor rekening"}
           iconColor={colors.color.lightGrey}
+          onPress={()=> setInputRekening("")}
         />
 
         {hasChecked && (
@@ -190,31 +201,31 @@ const CheckTargetAccountScreen = () => {
               opacity: fadeAnim,
               transform: [{ translateY: translateYAnim }],
             }}
-          > 
-              <ImageBackground
-                resizeMode="stretch"
-                source={require("../../../../assets/card-account.png")}
-                style={styles.cardContainer}
-              >
-                <View>
-                  <Image
-                    source={require("../../../../assets/icon-user-he.png")}
-                    style={{ width: 80, height: 80 }}
-                  />
-                </View>
-                <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                  <BodyLargeTextSemiBold
-                    style={{ color: colors.primary.primaryOne, fontSize: 20 }}
-                  >
-                    {accountFind.nama}
-                  </BodyLargeTextSemiBold>
-                  <BodyMediumTextSemiBold
-                    style={{ color: colors.primary.primaryOne, fontSize: 18 }}
-                  >
-                    {accountFind.noRek}
-                  </BodyMediumTextSemiBold>
-                </View>
-              </ImageBackground> 
+          >
+            <ImageBackground
+              resizeMode="stretch"
+              source={require("../../../../assets/card-account.png")}
+              style={styles.cardContainer}
+            >
+              <View>
+                <Image
+                  source={require("../../../../assets/icon-user-he.png")}
+                  style={{ width: 80, height: 80 }}
+                />
+              </View>
+              <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                <BodyLargeTextSemiBold
+                  style={{ color: colors.primary.primaryOne, fontSize: 20 }}
+                >
+                  {accountFind.nama}
+                </BodyLargeTextSemiBold>
+                <BodyMediumTextSemiBold
+                  style={{ color: colors.primary.primaryOne, fontSize: 18 }}
+                >
+                  {accountFind.noRek}
+                </BodyMediumTextSemiBold>
+              </View>
+            </ImageBackground>
           </Animated.View>
         )}
       </View>
@@ -236,14 +247,14 @@ export default CheckTargetAccountScreen;
 
 const styles = StyleSheet.create({
   container: {
-    height: Dimensions.get("screen").height * 1,
+    height: WINDOW_HEIGHT,
     justifyContent: "flex-start",
     backgroundColor: "white",
   },
   topContainer: {
     width: "100%",
     flex: 0.1,
-    marginTop: "10%",
+    marginTop: "12%",
     paddingHorizontal: 20,
   },
   middleContainer: {

@@ -9,7 +9,7 @@ import colors from "../../../theme/colors";
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
 import { useNavigation } from "@react-navigation/native";
 import InputCurrency from "../../../components/valasHome/shared/InputCurrency";
-import WalletSource from "../../../components/valasHome/shared/WalletSource";
+import WalletValasSource from "../../../components/valasHome/shared/WalletValasSource";
 import StyledButton from "../../../components/shared/StyledButton";
 
 const DIMENSION_HEIGHT = Dimensions.get("screen").height;
@@ -74,19 +74,16 @@ const ValasTarikScreen = () => {
           <View style={styles.lineContainer}>
             <View style={styles.line} />
             <View style={styles.boxRekeningSumber}>
-              <WalletSource
+              <WalletValasSource
                 style={{ backgroundColor: "white" }}
-                // judul={"DOMPET VALAS"}
-                // isi={"Dollar Singapura"}
-                // saldo={`SGD ${saldo}`}
-                countryCode="jpy"
-                saldo={saldo}
+                countryCode={"usd"}
+                saldo={`SGD ${saldo}`}
               />
             </View>
           </View>
 
           <View style={styles.bottomContainer}>
-            {inputNominal === "" ? (
+            {inputNominal === "" || inputNominal % 100 != 0 ? (
               <StyledButton
                 mode="primary-disabled"
                 title="Lanjut"
@@ -120,7 +117,7 @@ const styles = StyleSheet.create({
   topContainer: {
     width: "100%",
     flex: 0.1,
-    marginTop: "15%",
+    marginTop: "12%",
     paddingHorizontal: 20,
   },
   middleContainer: {

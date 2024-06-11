@@ -1,115 +1,133 @@
-import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
 import {
-  BodyLargeTextSemiBold,
-  BodyMediumText,
-  BodyMediumTextSemiBold,
-  BodySmallText,
-  BodySmallTextSemiBold,
-  HeadingSixText,
+  BodyLargeText, 
+  BodyMediumText, 
 } from "../../../components/shared/StyledText";
 import StyledButton from "../../../components/shared/StyledButton";
 import colors from "../../../theme/colors";
 import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  Modal,
-  Button,
+  View, 
+  StyleSheet, 
   Dimensions,
+  Alert,
+  BackHandler,
+  Platform,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
-import { FontAwesome } from "@expo/vector-icons";
-import WalletSource from "../../../components/valasHome/shared/WalletSource";
-import ExchangeResult from "../../../components/valasHome/shared/ExchangeResult";
-import InputCurrency from "../../../components/valasHome/shared/InputCurrency";
-import ModalVerification from "../../../components/valasHome/valasBeli/ModalVerification";
+import ContentHeader from "../../../components/valasHome/shared/ContentHeader"; 
+import WalletSource from "../../../components/valasHome/shared/WalletSource"; 
+import ValasConversion from "../../../components/valasHome/shared/ValasConversion";
+import ConfirmationModal from "../../../components/valasHome/shared/ConfirmationModal";
+import { alertConfirmation, formatNumber } from "../../../config/ValasConfig";
+
+const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
 export default function ValasBeliScreen() {
+  const route = useRoute();
   const navigation = useNavigation();
 
-  const [nominalPembelian, setNominalPembelian] = useState("");
-  const [nominalAsal, setNominalAsal] = useState("");
-  const [modalVisible, setModalVisible] = useState(false);
+  const [transactionData, setTransactionData] = useState({
+    selectedWallet: route.params?.selectedWallet,
+    selectedRekening: route.params?.selectedRekening,
+    selectedCurrency: route.params?.selectedCurrency,
+    inputValue: "",
+    convertedValue: ""
+  });
 
-  const handleNominalPembelianChange = (text) => {
-    setNominalPembelian(text);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener("hardwareBackPress", () => alertConfirmation(navigation));
+    return () => backHandler.remove();
+  }, []);
+
+  useEffect(() => {
+    // console.log(" Selected rekening/wallet di hal beli : ");
+    // console.log(transactionData.selectedCurrency);
+  }, [transactionData.selectedCurrency]);
+
+  const toggleBottomSheet = () => {
+    console.log(isVisible); 
+    setIsVisible(!isVisible);
   };
 
-  const handleNominalAsalChange = (text) => {
-    setNominalAsal(text);
+  const kursCalculation = (data) => {
+    setTransactionData(prevState => ({
+      ...prevState,
+      convertedValue: data === "" ? "" : (parseInt(data) * parseInt(transactionData.selectedCurrency.buyRate)).toString()
+    }));
   };
 
-  const handlePinVerification = () => {
-    setModalVisible(false);
-    navigation.navigate("PinConfirmation");
-  };
+  const acceptInputCurrency = (data) => {
+    console.log(data);
+    setTransactionData(prevState => ({
+      ...prevState,
+      inputValue: data
+    }));
+    kursCalculation(data);
+  }; 
 
   return (
     <View style={styles.container}>
-      <ModalVerification
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        handlePinVerification={handlePinVerification}
-      />
+      <ConfirmationModal
+          title={"Konfirmasi Pembelian Valas"}
+          transactionType={"beli"}
+          isVisible={isVisible}
+          toggleBottomSheet={toggleBottomSheet}
+          transactionData={transactionData}
+        />
       <View style={styles.topContainer}>
-        <ContentHeader title={"Pembelian Valas"} />
+        <ContentHeader title={"Pembelian Valas"} hasConfirmation={true} />
       </View>
 
       <View style={styles.middleContainer}>
-        <View style={styles.inputContainer}>
-          <BodySmallTextSemiBold style={styles.inputLabel}>
-            Nominal Pembelian
-          </BodySmallTextSemiBold>
-          <InputCurrency countryCode="jpy" />
-        </View>
-        <View style={styles.arrowDownContainer}>
-          <View style={{ alignItems: "center", marginVertical: 10 }}>
-            <FontAwesome
-              name="long-arrow-down"
-              size={24}
-              color={colors.primary.primaryOne}
-            />
+        <View style={{ paddingHorizontal: 20 }}>
+          <ValasConversion
+            firstInputTitle={"Nominal Pembelian"}
+            secondInputTitle={"Nominal Asal"}
+            transactionData={transactionData}
+            changeTextData={acceptInputCurrency} 
+          />
+          <View style={styles.kursBeliContainer}>
+            <BodyMediumText
+              style={{ color: colors.color.grey, fontWeight: "bold" }}
+            >
+              Kurs Beli
+            </BodyMediumText>
+            <BodyLargeText style={styles.textStyle}>
+              {transactionData.selectedCurrency.currencyCode} 1.00 = Rp. {formatNumber(transactionData.selectedCurrency.buyRate)}
+            </BodyLargeText>
           </View>
         </View>
-
-        <View style={styles.inputContainer}>
-          <BodySmallTextSemiBold style={styles.inputLabel}>
-            Nominal Asal
-          </BodySmallTextSemiBold>
-          <ExchangeResult />
-        </View>
-        <View style={styles.kursBeliContainer}>
-          <BodySmallTextSemiBold style={styles.kursBeliText}>
-            Kurs Beli
-          </BodySmallTextSemiBold>
-          <BodySmallTextSemiBold style={styles.kursBeliValue}>
-            AUD 1 = IDR 11.973
-          </BodySmallTextSemiBold>
-        </View>
+        <View
+          style={{ backgroundColor: colors.primary.primaryThree, height: 4 }}
+        />
         <View style={styles.boxRekeningSumber}>
           <WalletSource
-            judul={"TAPLUS PEGAWAI BNI"}
-            isi={"18901517618"}
-            saldo={"IDR 10.000.000"}
-            countryCode='jpy'
+            jenisRekening={transactionData.selectedRekening.type}
+            rekening={transactionData.selectedRekening.accountNumber}
+            saldo={formatNumber(transactionData.selectedRekening.balance)}
           />
         </View>
       </View>
       <View style={styles.bottomContainer}>
-        <StyledButton
-          title={"Lanjut"}
-          size={"lg"}
-          mode={"primary"}
-          style={{ marginTop: 10 }}
-          onPress={() => {
-            setModalVisible(true);
-          }}
-        />
+        {transactionData.inputValue === "" || transactionData.selectedRekening.balance < transactionData.convertedValue ? (
+          <StyledButton
+            mode="primary-disabled"
+            title="Lanjut"
+            size={"lg"}
+            style={{ marginBottom: 20 }}
+          />
+        ) : (
+          <StyledButton
+            mode="primary"
+            title="Lanjut"
+            size={"lg"}
+            onPress={toggleBottomSheet}
+            style={{ marginBottom: 20 }}
+          />
+        )}
       </View>
     </View>
   );
@@ -117,14 +135,14 @@ export default function ValasBeliScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    height: Dimensions.get("screen").height,
+    height: WINDOW_HEIGHT,
     justifyContent: "flex-start",
     backgroundColor: "white",
   },
   topContainer: {
     width: "100%",
     flex: 0.1,
-    marginTop: "10%",
+    marginTop: "12%",
     paddingHorizontal: 20,
   },
   middleContainer: {
@@ -133,14 +151,13 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     width: "100%",
-    justifyContent: "flex-start",
+    justifyContent: Platform.OS==="android"? "center" : "flex-start",
     flex: 0.15,
     paddingHorizontal: 20,
   },
 
   arrowDownContainer: {
     alignItems: "center",
-
     marginTop: 8,
     marginBottom: 0,
   },
@@ -148,9 +165,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   kursBeliContainer: {
-    marginTop: 15,
-    marginBottom: 20,
-    marginHorizontal: 20,
+    paddingVertical: "8%",
+    width: "100%",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
   },
   kursBeliText: {
     marginBottom: 5,
@@ -159,9 +177,7 @@ const styles = StyleSheet.create({
   kursBeliValue: {
     color: "#EF5C26",
   },
-  boxRekeningSumber: {
-    backgroundColor: "#F0EBEB",
-  },
+  boxRekeningSumber: {},
   rekeningSumberContainer: {
     marginBottom: 20,
   },
@@ -205,12 +221,15 @@ const styles = StyleSheet.create({
   },
   rekeningSumberImage: {
     width: "35%",
-    // borderWidth:1
   },
   bniImage: {
     width: "100%",
     left: 75,
     borderColor: "red",
     height: 100,
+  },
+  textStyle: {
+    color: colors.primary.primaryOne,
+    fontWeight: "bold",
   },
 });

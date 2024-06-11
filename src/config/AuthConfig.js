@@ -51,8 +51,13 @@ const login = async (
       ]);
     }, expiredTime);
   } catch (error) {
-    console.log(error);
-    Alert.alert("Login failed", "Username / Password salah, mohon periksa kembali");
+    console.log(error.response.status);
+    if(error.response.status === 401){
+      Alert.alert("Login failed", "Username / Password salah, mohon periksa kembali");
+    }
+    else {
+      Alert.alert("Network Error", "Check your connection");
+    }
   }
 };
 const cleanupToken = async () => {

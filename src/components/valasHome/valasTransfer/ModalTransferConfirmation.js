@@ -18,6 +18,7 @@ import {
   BodyMediumTextSemiBold,
 } from "../../shared/StyledText";
 import colors from "../../../theme/colors";
+import { BottomSheet } from "@rneui/base";
 
 const screenHeight = Dimensions.get("screen").height;
 const screenWidth = Dimensions.get("screen").width;
@@ -26,18 +27,14 @@ const ModalTransferConfirmation = ({data, modalVisible, setModalVisible,nominal,
   const navigation = useNavigation();
   return (
     <View>
-      <Modal
-        visible={modalVisible}
-        animationType="fade"
+      <BottomSheet
+        isVisible={modalVisible} 
         transparent={true}
         statusBarTranslucent={true}
         onRequestClose={() => {
           setModalVisible(!modalVisible);
         }}
-      >
-        <View
-          style={styles.modalContainer} 
-        >
+      > 
           <View style={styles.modalView}>
             <TouchableOpacity
               style={{ alignSelf: "flex-end" }}
@@ -73,10 +70,9 @@ const ModalTransferConfirmation = ({data, modalVisible, setModalVisible,nominal,
               size={"lg"}
               onPress={onPress}
               style={{ marginVertical: "5%" }}
-            />
-          </View>
+            /> 
         </View>
-      </Modal>
+      </BottomSheet>
     </View>
   );
 };

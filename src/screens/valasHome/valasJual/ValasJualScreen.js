@@ -1,40 +1,45 @@
 import {
   Dimensions,
   StyleSheet,
-  View,
-  Text,
-  Button,
-  TouchableOpacity,
-  Image,
+  View, 
+  Alert,
+  BackHandler,
 } from "react-native";
-import React, { useState } from "react";
-import {
-  BodyRegularText,
+import React, { useEffect, useState } from "react";
+import { 
   BodyMediumText,
-  BodyLargeText,
-  BodyXLTextSemiBold,
+  BodyLargeText, 
 } from "../../../components/shared/StyledText";
-import colors from "../../../theme/colors";
-import InputCurrency from "../../../components/valasHome/shared/InputCurrency";
-import { FontAwesome } from "@expo/vector-icons";
-import ExchangeResult from "../../../components/valasHome/shared/ExchangeResult";
-import StyledButton from "../../../components/shared/StyledButton";
-import WalletSource from "../../../components/valasHome/shared/WalletSource";
-import BackButton from "../../../components/shared/BackButton";
-import { useNavigation } from "@react-navigation/core";
-import ValasConversion from "../../../components/valasHome/valasJual/ValasConversion";
+import colors from "../../../theme/colors"; 
+import { FontAwesome } from "@expo/vector-icons"; 
+import StyledButton from "../../../components/shared/StyledButton";  
+import ValasConversion from "../../../components/valasHome/shared/ValasConversion";
 
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
-import ConfirmationModal from "../../../components/valasHome/valasJual/ConfirmationModal";
-const DIMENSION_HEIGHT = Dimensions.get("screen").height;
+import ConfirmationModal from "../../../components/valasHome/shared/ConfirmationModal"; 
+import { alertConfirmation, formatNumber } from "../../../config/ValasConfig";
+import WalletSource from "../../../components/valasHome/shared/WalletSource";
+import { useNavigation, useRoute } from "@react-navigation/native";
+
+const DIMENSION_HEIGHT = Dimensions.get("window").height;
 
 const ValasJualScreen = () => {
+  const route = useRoute();
   const navigation = useNavigation();
-  const [exchange, setExchange] = useState("");
-  const [inputValue, setInputValue] = useState("");
-  const [kurs, setKurs] = useState("103");
-  const [valas, setValas] = useState("JPY");
+
+  const [transactionData, setTransactionData] = useState({
+    selectedWallet: route.params?.selectedWallet,
+    selectedRekening: route.params?.selectedRekening,
+    selectedCurrency: route.params?.selectedCurrency,
+    inputValue: "",
+    convertedValue: ""
+  });
   const [isVisible, setIsVisible] = useState(false); //Modal Visibility
+
+  useEffect(()=>{
+    const backHandler = BackHandler.addEventListener("hardwareBackPress",() => alertConfirmation(navigation));
+    return () => backHandler.remove();
+  },[])
 
   const toggleBottomSheet = () => {
     console.log(isVisible);
@@ -42,28 +47,34 @@ const ValasJualScreen = () => {
   };
 
   const kursCalculation = (data) => {
-    data === ""
-      ? setExchange("")
-      : setExchange(parseInt(data) * parseInt(kurs));
+    setTransactionData(prevState => ({
+      ...prevState,
+      convertedValue: data === "" ? "" : (parseInt(data) * parseInt(transactionData.selectedCurrency.sellRate)).toString()
+    }));
   };
 
   const acceptInputCurrency = (data) => {
     console.log(data);
-    setInputValue(data);
+    setTransactionData(prevState => ({
+      ...prevState,
+      inputValue: data
+    }));
     kursCalculation(data);
-  };
+  }; 
 
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
-        <ContentHeader title={"Penjualan Valas"} />
+        <ContentHeader title={"Penjualan Valas"} hasConfirmation={true} />
       </View>
 
       <View style={[styles.middleContainer]}>
         <View style={{ paddingHorizontal: 20 }}>
           {/* Konversi dari Valas ke IDR */}
           <ValasConversion
-            exchange={exchange}
+            firstInputTitle={"Nominal Penjualan"}
+            secondInputTitle={"Nominal Pendapatan"}
+            transactionData={transactionData}
             changeTextData={acceptInputCurrency}
           />
 
@@ -75,26 +86,32 @@ const ValasJualScreen = () => {
               Kurs Jual
             </BodyMediumText>
             <BodyLargeText style={styles.textStyle}>
-              {valas} 1.00 = Rp. {kurs}
+            {transactionData.selectedCurrency.currencyCode} 1.00 = Rp. {formatNumber(transactionData.selectedCurrency.sellRate)}
             </BodyLargeText>
           </View>
         </View>
-
+        <View
+          style={{ backgroundColor: colors.primary.primaryThree, height: 4 }}
+        />
         <View>
-          <WalletSource countryCode="aud" saldo="20000" />
+        <WalletSource
+            jenisRekening={transactionData.selectedRekening.type}
+            rekening={transactionData.selectedRekening.accountNumber}
+            saldo={formatNumber(transactionData.selectedRekening.balance)}
+          />
         </View>
 
         <ConfirmationModal
+          title={"Konfirmasi Penjualan Valas"}
+          transactionType={"jual"}
           isVisible={isVisible}
           toggleBottomSheet={toggleBottomSheet}
-          pendapatan={exchange}
-          kurs={kurs}
-          inputSaldo={inputValue}
+          transactionData={transactionData}
         />
       </View>
 
       <View style={styles.bottomContainer}>
-        {inputValue === "" ? (
+        {transactionData.inputValue === "" ? (
           <StyledButton
             mode="primary-disabled"
             title="Lanjut"
@@ -119,14 +136,14 @@ export default ValasJualScreen;
 
 const styles = StyleSheet.create({
   container: {
-    height: DIMENSION_HEIGHT * 1,
+    height: Dimensions.get("window").height*1.05, 
     justifyContent: "flex-start",
-    backgroundColor: colors.color.white,
+    backgroundColor: "white",
   },
   topContainer: {
     width: "100%",
     flex: 0.1,
-    marginTop: "15%",
+    marginTop: "10%",
     paddingHorizontal: 20,
   },
   middleContainer: {

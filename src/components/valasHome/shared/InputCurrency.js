@@ -80,6 +80,7 @@ const InputCurrency = ({  style, countryCode,onChangeText,value}) => {
         keyboardType="numeric"
         placeholderTextColor={colors.primary.primaryThree}
         onChangeText={onChangeText}
+        returnKeyType="done"
       />
     </View>
   );

@@ -10,9 +10,13 @@ import colors from "../../../theme/colors";
 import StyledButton from "../../../components/shared/StyledButton";
 import { Image } from "react-native";
 import InputCurrency from "../../../components/valasHome/shared/InputCurrency";
-import WalletSource from "../../../components/valasHome/shared/WalletSource";
+import WalletSource from "../../../components/valasHome/shared/WalletValasSource";
 import ModalTransferConfirmation from "../../../components/valasHome/valasTransfer/ModalTransferConfirmation";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import ConfirmationModal from "../../../components/valasHome/shared/ConfirmationModal";
+
+
+const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
 const EnterTransferScreen = () => { 
   const route = useRoute();
@@ -57,9 +61,7 @@ const EnterTransferScreen = () => {
 
         <View style={styles.walletContainer}>
           <WalletSource
-          judul={"TAPLUS PEGAWAI"}
-          isi={"182182812"}
-          saldo={"AUD 500"}
+          countryCode={"jpy"} saldo={"2000"}
           />
         </View>
       </View>
@@ -73,13 +75,14 @@ const EnterTransferScreen = () => {
           }}
         />
       </View>
-      <ModalTransferConfirmation
-        data={data}
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        nominal={nominal}
-        onPress={()=> handleMoveToPin()}
-      />
+      <ConfirmationModal
+          title={"Konfirmasi Pembelian Valas"}
+          isVisible={modalVisible}
+          toggleBottomSheet={()=> setModalVisible(false)}  
+          namaPenerima={"aa"}
+          totalTransfer={nominal}
+          transactionType={"transfer"}
+        />
     </View>
   );
 };
@@ -88,14 +91,14 @@ export default EnterTransferScreen;
 
 const styles = StyleSheet.create({
   container: {
-    height: Dimensions.get("screen").height * 1,
+    height: WINDOW_HEIGHT,
     justifyContent: "flex-start",
     backgroundColor: "white",
   },
   topContainer: {
     width: "100%",
     flex: 0.1,
-    marginTop: "15%",
+    marginTop: "12%",
     paddingHorizontal: 20,
   },
   middleContainer: {

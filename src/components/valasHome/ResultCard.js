@@ -7,7 +7,7 @@ const ResultCard = ({}) => {
       {/* Summary Result Card Component */}
       <View style={styles.summaryResult}>
         <ImageBackground
-          source={require("../../../assets/SummaryBackground.png")}
+          source={{uri:"https://i.imgur.com/EOkwhJu.png"}}
           resizeMode="cover"
           imageStyle={{ borderRadius: 20 }}
           style={styles.imageContainer}
