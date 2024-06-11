@@ -5,11 +5,15 @@ import {
   Dimensions,
   Text,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import colors from "../../theme/colors";
 import ValasHeader from "../../components/valasHome/ValasHeader";
-import { BodyMediumTextSemiBold } from "../../components/shared/StyledText";
+import {
+  BodyMediumTextSemiBold,
+  BodySmallTextSemiBold,
+} from "../../components/shared/StyledText";
 import ValasFeatures from "../../components/valasHome/ValasFeatures";
 import ValasReservation from "../../components/valasHome/ValasReservation";
 import WalletCard from "../../components/valasHome/WalletCard";
@@ -18,10 +22,12 @@ import CurrencyInformation from "../../components/valasHome/CurrencyInformation"
 import { fetchBankAccount, fetchNomorRekening } from "../../config/ValasConfig";
 import { userData } from "../../config/AuthConfig";
 import ValasCreateContent from "../../components/valasHome/ValasCreateContent";
+import { useNavigation } from "@react-navigation/native";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
 const ValasHomeScreen = () => {
+  const navigation = useNavigation();
   const [selectedRekening, setSelectedRekening] = useState(null);
   const [selectedWallet, setSelectedWallet] = useState(null);
   const [selectedCurrency, setSelectedCurrency] = useState(null);
@@ -61,9 +67,9 @@ const ValasHomeScreen = () => {
     }
   }, [selectedRekening]);
 
-  useEffect(()=>{
-    console.log("wallet: "+selectedWallet);
-  },[selectedWallet])
+  useEffect(() => {
+    console.log("wallet: " + selectedWallet);
+  }, [selectedWallet]);
 
   if (isLoading) {
     return (
@@ -98,47 +104,53 @@ const ValasHomeScreen = () => {
     },
     {
       id: "2",
-      view: () => (selectedWallet!=null ? ( 
+      view: () =>
+        selectedWallet != null ? (
           <WalletCard
             valasType={selectedWallet.currencyCode}
             selectedWallet={selectedWallet}
             setSelectedWallet={setSelectedWallet}
-          /> 
-      ) :(
-        <ValasCreateContent />
-      )),
+          />
+        ) : (
+          <ValasCreateContent />
+        ),
     },
     {
       id: "3",
-      view: () => (selectedWallet != null && (
+      view: () =>
+        selectedWallet != null && (
           <ValasFeatures
             selectedRekening={selectedRekening}
             selectedWallet={selectedWallet}
             selectedCurrency={selectedCurrency}
-          /> 
-      )),
+          />
+        ),
     },
     {
       id: "4",
-      view: () => (( selectedWallet != null) && (
-        <View
-          style={{
-            width: "100%",
-            paddingHorizontal: 20,
-            paddingTop: 10,
-            marginTop: 10,
-            borderTopWidth: 4,
-            borderTopColor: colors.primary.primaryThree,
-          }}
-        >
-          <BodyMediumTextSemiBold
-            style={{ color: colors.color.grey, marginBottom: 10 }}
+      view: () =>
+        selectedWallet != null && (
+          <View
+            style={{
+              width: "100%",
+              paddingHorizontal: 20,
+              paddingTop: 10,
+              marginTop: 10,
+              borderTopWidth: 4,
+              borderTopColor: colors.primary.primaryThree,
+            }}
           >
-            Daftar Reservasi Tarik
-          </BodyMediumTextSemiBold>
-          <ValasReservation />
-        </View>
-      )),
+            <BodyMediumTextSemiBold
+              style={{ color: colors.color.grey, marginBottom: 10 }}
+            >
+              Daftar Reservasi Tarik
+            </BodyMediumTextSemiBold>
+            <ValasReservation />
+            <TouchableOpacity onPress={()=> navigation.navigate("ValasReservation")}>
+              <BodySmallTextSemiBold style={{textAlign:'center',color:colors.color.grey}}>Lihat selengkapnya</BodySmallTextSemiBold>
+            </TouchableOpacity>
+          </View>
+        ),
     },
     {
       id: "5",
@@ -200,6 +212,6 @@ const styles = StyleSheet.create({
   },
   content: {
     top: 0.22 * WINDOW_HEIGHT,
-    flex:0.78
+    flex: 0.78,
   },
 });

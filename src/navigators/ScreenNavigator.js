@@ -19,6 +19,7 @@ import ValasRiwayatScreen from "../screens/valasHome/riwayat/ValasRiwayatScreen"
 import ChooseDateScreen from "../screens/valasHome/valasTarik/ChooseDateScreen";
 import ChooseWalletScreen from "../screens/valasHome/valasAddWallet/ChooseWalletScreen.js";
 import FirstTopUpScreen from "../screens/valasHome/valasAddWallet/FirstTopUpScreen.js";
+import ValasReservationScreen from "../screens/valasHome/reservasi/ValasReservationScreen.js";
 
 const Stack = createNativeStackNavigator();
 
@@ -105,6 +106,11 @@ const ScreenNavigator = () => {
       <Stack.Screen
         name="FirstTopUp"
         component={FirstTopUpScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ValasReservation"
+        component={ValasReservationScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
