@@ -64,7 +64,7 @@ const PinConfirmationScreen = () => {
   }
 
   useEffect(() => {
-    console.log(transactionData.selectedRekening);
+    console.log(transactionData.selectedWallet.walletId);
     console.log(transactionData.inputValue); 
         transactionData.inputValue,
         pin
