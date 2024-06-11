@@ -9,12 +9,8 @@ import {
 import React, { useState, useEffect } from "react";
 import colors from "../../theme/colors";
 import ValasHeader from "../../components/valasHome/ValasHeader";
-import {
-  BodyMediumText,
-  BodyMediumTextSemiBold,
-  BodySmallText,
-} from "../../components/shared/StyledText";
-import ValasFeatures from "../../components/valasHome/ModalValasFeatures";
+import { BodyMediumTextSemiBold } from "../../components/shared/StyledText";
+import ValasFeatures from "../../components/valasHome/ValasFeatures";
 import ValasReservation from "../../components/valasHome/ValasReservation";
 import WalletCard from "../../components/valasHome/WalletCard";
 import NavigasiRekeningWallet from "../../components/valasHome/NavigasiRekeningWallet";
@@ -22,12 +18,14 @@ import CurrencyInformation from "../../components/valasHome/CurrencyInformation"
 import { fetchBankAccount, fetchNomorRekening } from "../../config/ValasConfig";
 import { userData } from "../../config/AuthConfig";
 
-const WINDOW_HEIGHT = Dimensions.get("window").height*1.05;
+const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
 const ValasHomeScreen = () => {
   const [selectedRekening, setSelectedRekening] = useState(null);
   const [selectedWallet, setSelectedWallet] = useState(null);
+  const [selectedCurrency, setSelectedCurrency] = useState(null);
   const [listRekening, setListRekening] = useState(null);
+  const [dataCurrency, setDataCurrency] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const getData = async () => {
@@ -53,6 +51,7 @@ const ValasHomeScreen = () => {
 
   useEffect(() => {
     getData();
+    console.log(selectedCurrency);
   }, []);
 
   useEffect(() => {
@@ -103,7 +102,16 @@ const ValasHomeScreen = () => {
         />
       ),
     },
-    { id: "3", view: () => <ValasFeatures /> },
+    {
+      id: "3",
+      view: () => (
+        <ValasFeatures
+          selectedRekening={selectedRekening}
+          selectedWallet={selectedWallet}
+          selectedCurrency={selectedCurrency}
+        />
+      ),
+    },
     {
       id: "4",
       view: () => (
@@ -117,7 +125,9 @@ const ValasHomeScreen = () => {
             borderTopColor: colors.primary.primaryThree,
           }}
         >
-          <BodyMediumTextSemiBold style={{ color: colors.color.grey,marginBottom:10 }}>
+          <BodyMediumTextSemiBold
+            style={{ color: colors.color.grey, marginBottom: 10 }}
+          >
             Daftar Reservasi Tarik
           </BodyMediumTextSemiBold>
           <ValasReservation />
@@ -137,10 +147,18 @@ const ValasHomeScreen = () => {
             borderTopColor: colors.primary.primaryThree,
           }}
         >
-          <BodyMediumTextSemiBold style={{ color: colors.color.grey ,marginBottom:10}}>
+          <BodyMediumTextSemiBold
+            style={{ color: colors.color.grey, marginBottom: 10 }}
+          >
             Daftar Kurs Mata Uang
           </BodyMediumTextSemiBold>
-          <CurrencyInformation />
+          <CurrencyInformation
+            dataCurrency={dataCurrency}
+            setDataCurrency={setDataCurrency}
+            selectedWallet={selectedWallet}
+            setSelectedCurrency={setSelectedCurrency}
+            selectedCurrency={selectedCurrency}
+          />
         </View>
       ),
     },
@@ -176,6 +194,6 @@ const styles = StyleSheet.create({
   },
   content: {
     top: 0.22 * WINDOW_HEIGHT,
-    height: 0.78 * WINDOW_HEIGHT,
+    flex:0.78
   },
 });

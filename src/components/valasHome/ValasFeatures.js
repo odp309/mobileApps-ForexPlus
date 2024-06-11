@@ -58,17 +58,17 @@ const FeatureButton = ({ namaFitur, onPress }) => {
   );
 };
 
-const ValasFeatures = () => {
+const ValasFeatures = ({selectedRekening,selectedWallet,selectedCurrency}) => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <FeatureButton
         namaFitur="Beli"
-        onPress={() => navigation.navigate("ValasBeli")}
+        onPress={() => navigation.navigate("ValasBeli",{selectedRekening,selectedWallet,selectedCurrency})}
       />
       <FeatureButton
         namaFitur="Jual"
-        onPress={() => navigation.navigate("JualValas")}
+        onPress={() => navigation.navigate("JualValas",{selectedRekening,selectedWallet,selectedCurrency})}
       />
       <FeatureButton
         namaFitur="Transfer"

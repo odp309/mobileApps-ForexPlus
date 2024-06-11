@@ -12,23 +12,28 @@ import {
 } from "../../../components/shared/StyledText";
 import colors from "../../../theme/colors"; 
 import { FontAwesome } from "@expo/vector-icons"; 
-import StyledButton from "../../../components/shared/StyledButton"; 
-import { useNavigation } from "@react-navigation/core";
+import StyledButton from "../../../components/shared/StyledButton";  
 import ValasConversion from "../../../components/valasHome/shared/ValasConversion";
 
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
-import ConfirmationModal from "../../../components/valasHome/shared/ConfirmationModal";
-import WalletValasSource from "../../../components/valasHome/shared/WalletValasSource";
-import { alertConfirmation } from "../../../config/ValasConfig";
+import ConfirmationModal from "../../../components/valasHome/shared/ConfirmationModal"; 
+import { alertConfirmation, formatNumber } from "../../../config/ValasConfig";
+import WalletSource from "../../../components/valasHome/shared/WalletSource";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 const DIMENSION_HEIGHT = Dimensions.get("window").height;
 
 const ValasJualScreen = () => {
+  const route = useRoute();
   const navigation = useNavigation();
-  const [exchange, setExchange] = useState("");
-  const [inputValue, setInputValue] = useState("");
-  const [kurs, setKurs] = useState("103");
-  const [valas, setValas] = useState("JPY");
+
+  const [transactionData, setTransactionData] = useState({
+    selectedWallet: route.params?.selectedWallet,
+    selectedRekening: route.params?.selectedRekening,
+    selectedCurrency: route.params?.selectedCurrency,
+    inputValue: "",
+    convertedValue: ""
+  });
   const [isVisible, setIsVisible] = useState(false); //Modal Visibility
 
   useEffect(()=>{
@@ -42,16 +47,20 @@ const ValasJualScreen = () => {
   };
 
   const kursCalculation = (data) => {
-    data === ""
-      ? setExchange("")
-      : setExchange(parseInt(data) * parseInt(kurs));
+    setTransactionData(prevState => ({
+      ...prevState,
+      convertedValue: data === "" ? "" : (parseInt(data) * parseInt(transactionData.selectedCurrency.sellRate)).toString()
+    }));
   };
 
   const acceptInputCurrency = (data) => {
     console.log(data);
-    setInputValue(data);
+    setTransactionData(prevState => ({
+      ...prevState,
+      inputValue: data
+    }));
     kursCalculation(data);
-  };
+  }; 
 
   return (
     <View style={styles.container}>
@@ -65,7 +74,7 @@ const ValasJualScreen = () => {
           <ValasConversion
             firstInputTitle={"Nominal Penjualan"}
             secondInputTitle={"Nominal Pendapatan"}
-            exchange={exchange}
+            transactionData={transactionData}
             changeTextData={acceptInputCurrency}
           />
 
@@ -77,7 +86,7 @@ const ValasJualScreen = () => {
               Kurs Jual
             </BodyMediumText>
             <BodyLargeText style={styles.textStyle}>
-              {valas} 1.00 = Rp. {kurs}
+            {transactionData.selectedCurrency.currencyCode} 1.00 = Rp. {formatNumber(transactionData.selectedCurrency.sellRate)}
             </BodyLargeText>
           </View>
         </View>
@@ -85,21 +94,24 @@ const ValasJualScreen = () => {
           style={{ backgroundColor: colors.primary.primaryThree, height: 4 }}
         />
         <View>
-          <WalletValasSource countryCode="aud" saldo="20000" />
+        <WalletSource
+            jenisRekening={transactionData.selectedRekening.type}
+            rekening={transactionData.selectedRekening.accountNumber}
+            saldo={formatNumber(transactionData.selectedRekening.balance)}
+          />
         </View>
 
         <ConfirmationModal
           title={"Konfirmasi Penjualan Valas"}
+          transactionType={"jual"}
           isVisible={isVisible}
           toggleBottomSheet={toggleBottomSheet}
-          pendapatan={exchange}
-          kurs={kurs}
-          inputSaldo={inputValue}
+          transactionData={transactionData}
         />
       </View>
 
       <View style={styles.bottomContainer}>
-        {inputValue === "" ? (
+        {transactionData.inputValue === "" ? (
           <StyledButton
             mode="primary-disabled"
             title="Lanjut"

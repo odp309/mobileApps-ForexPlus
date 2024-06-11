@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/home/HomeScreen"; 
@@ -39,7 +39,7 @@ const BottomNavigator = () => {
       initialRouteName="Beranda"
       screenOptions={{
         headerShown: false,
-        tabBarStyle: { height: 70 },
+        tabBarStyle: { height:  Platform.OS === "ios" ? 100 : 70 },
         tabBarLabelStyle: {
           fontSize: 12,
           marginBottom: "15%",

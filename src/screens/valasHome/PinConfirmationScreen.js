@@ -14,31 +14,52 @@ import {
 } from "../../components/shared/StyledText";
 import colors from "../../theme/colors";
 import ContentHeader from "../../components/valasHome/shared/ContentHeader";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { fetchValasPurchase } from "../../config/ValasConfig";
 
-const PinConfirmationScreen = () => {
-  const [modalVisible, setModalVisible] = useState(false);
+const PinConfirmationScreen = () => { 
   const [pin, setPin] = useState("");
   const [pinStatus, setPinStatus] = useState(false);
   const navigation = useNavigation();
-
+  const route = useRoute();
+  const transactionData = route.params?.transactionData;
   const handlePinChange = (text) => {
     if (text.length <= 6) {
       setPin(text);
     }
   };
 
+  const sendTransaction = async () => {
+    try {
+      const beli = await fetchValasPurchase(
+        transactionData.selectedWallet.id,
+        transactionData.inputValue,
+        pin
+      ); 
+      console.log('Transaction successful:', beli);
+      navigation.navigate('TransactionResult'); 
+    } catch (error) { 
+      console.error('Transaction failed:', error);
+      setPinStatus(false); 
+    }
+  }
+
   useEffect(() => {
+    console.log(transactionData.selectedRekening);
+    console.log(transactionData.inputValue); 
+        transactionData.inputValue,
+        pin
     setPinStatus(true);
-    if (pin.length === 6) {
-      if (pin === "654321") {
-        console.log("benar");
-        setPinStatus(true);
-        navigation.navigate("TransactionResult");
-      } else {
-        console.log("salah");
-        setPinStatus(false);
-      }
+    if (pin.length === 6) { 
+       sendTransaction();
+      // if (pin === "654321") {
+      //   console.log("benar");
+      //   setPinStatus(true);
+      //   navigation.navigate("TransactionResult");
+      // } else {
+      //   console.log("salah");
+      //   setPinStatus(false);
+      // }
     }
   }, [pin]);
   return (
@@ -85,7 +106,7 @@ export default PinConfirmationScreen;
 
 const styles = StyleSheet.create({
   container: {
-    height: Dimensions.get("screen").height * 1,
+    height: Dimensions.get("window").height * 1.05,
     justifyContent: "flex-start",
     backgroundColor: "white",
   },

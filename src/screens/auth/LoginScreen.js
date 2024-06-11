@@ -194,14 +194,14 @@ const styles = StyleSheet.create({
     height: screenHeight,
   },
   topContainer: {
-    height: screenHeight * 0.6,
+    flex : 0.6,
     paddingVertical: "10%",
     width: "100%",
     alignItems: "center",
     justifyContent: "flex-end",
   },
   bottomContainer: {
-    height: screenHeight * 0.4,
+    flex : 0.4,
     justifyContent: "space-evenly",
     paddingHorizontal: "10%",
     width: "100%",

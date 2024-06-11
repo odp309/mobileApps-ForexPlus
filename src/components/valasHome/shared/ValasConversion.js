@@ -5,18 +5,17 @@ import { FontAwesome } from "@expo/vector-icons";
 import ExchangeResult from "./ExchangeResult";
 import colors from "../../../theme/colors";
 
-
-const ValasConversion = ({firstInputTitle,secondInputTitle, containerStyle, exchange, changeTextData }) => {
+const ValasConversion = ({firstInputTitle,secondInputTitle, containerStyle,transactionData, changeTextData, }) => {
     return (
       <View style={[containerStyle,styles.container]}>
-        {/* Nominal Penjualan (InputCurrency) */}
+        {/* Nominal Penjualan (InputCurrency) */} 
         <View>
           <BodyRegularText
             style={{ color: colors.color.grey, fontWeight: "bold" }}
           >
             {firstInputTitle}
           </BodyRegularText>
-          <InputCurrency countryCode="jpy" onChangeText={changeTextData} />
+          <InputCurrency countryCode={transactionData.selectedWallet.currencyCode.toLowerCase()}onChangeText={changeTextData} />
         </View>
   
         {/* DownArrowButton */}
@@ -35,7 +34,7 @@ const ValasConversion = ({firstInputTitle,secondInputTitle, containerStyle, exch
           >
             {secondInputTitle}
           </BodyRegularText>
-          <ExchangeResult value={exchange} />
+          <ExchangeResult value={transactionData.convertedValue} />
         </View>
       </View>
     );
