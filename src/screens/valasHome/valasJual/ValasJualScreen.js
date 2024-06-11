@@ -4,19 +4,13 @@ import {
   BodyMediumText,
   BodyLargeText,
 } from "../../../components/shared/StyledText";
-import colors from "../../../theme/colors"; 
-import { FontAwesome } from "@expo/vector-icons"; 
-import StyledButton from "../../../components/shared/StyledButton";  
 import colors from "../../../theme/colors";
-import { FontAwesome } from "@expo/vector-icons";
 import StyledButton from "../../../components/shared/StyledButton";
-import { useNavigation } from "@react-navigation/core";
 import ValasConversion from "../../../components/valasHome/shared/ValasConversion";
 
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
-import ConfirmationModal from "../../../components/valasHome/shared/ConfirmationModal"; 
+import ConfirmationModal from "../../../components/valasHome/shared/ConfirmationModal";
 import { alertConfirmation, formatNumber } from "../../../config/ValasConfig";
-import WalletSource from "../../../components/valasHome/shared/WalletSource";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import WalletValasSource from "../../../components/valasHome/shared/WalletValasSource";
 
@@ -31,11 +25,9 @@ const ValasJualScreen = () => {
     selectedRekening: route.params?.selectedRekening,
     selectedCurrency: route.params?.selectedCurrency,
     inputValue: "",
-    convertedValue: ""
+    convertedValue: "",
   });
-  const [isVisible, setIsVisible] = useState(false);  
-
-  const [currentBalance, setCurrentBalance] = useState("10000000");
+  const [isVisible, setIsVisible] = useState(false);
   const [minSell, setMinSell] = useState("10");
   const [maxSell, setMaxSell] = useState("25000");
   const [inputError, setInputError] = useState("");
@@ -53,41 +45,53 @@ const ValasJualScreen = () => {
   };
 
   const kursCalculation = (data) => {
-    setTransactionData(prevState => ({
+    const kursResult =
+      parseInt(data) * parseInt(transactionData.selectedCurrency.buyRate);
+    setTransactionData((prevState) => ({
       ...prevState,
-      convertedValue: data === "" ? "" : (parseInt(data) * parseInt(transactionData.selectedCurrency.sellRate)).toString()
+      convertedValue:
+        data === ""
+          ? ""
+          : (
+              parseInt(data) *
+              parseInt(transactionData.selectedCurrency.sellRate)
+            ).toString(),
     }));
-    const kursResult = parseInt(data) * parseInt(kurs);
-    data === ""
-      ? setExchange("")
-      : setExchange(parseInt(data) * parseInt(kurs));
     checkError(data, kursResult);
   };
 
   const checkError = (data, kursResult) => {
-    if (kursResult > parseInt(currentBalance)) {
-      setInputError("Jumlah melebihi Saldo Aktif Rupiah");
-      setInputValue("");
+    setTransactionData((prevState) => ({
+      ...prevState,
+      inputValue: "",
+    }));
+    if (data > transactionData.selectedWallet.balance) {
+      setInputError("Jumlah melebihi Saldo Wallet");
     } else if (parseInt(data) < parseInt(minSell)) {
-      setInputError(`Minimum penjualan valas AUD ${minSell}`);
-      setInputValue("");
+      setInputError(
+        `Minimum penjualan valas ${transactionData.selectedCurrency.currencyCode} ${minSell}`
+      );
     } else if (parseInt(data) > parseInt(maxSell)) {
-      setInputError(`Maksimum penjualan valas AUD ${maxSell}`);
-      setInputValue("");
+      setInputError(
+        `Maksimum penjualan valas ${transactionData.selectedCurrency.currencyCode} ${maxSell}`
+      );
     } else {
       setInputError("");
-      setInputValue(data);
+      setTransactionData((prevState) => ({
+        ...prevState,
+        inputValue: data,
+      }));
     }
   };
 
   const acceptInputCurrency = (data) => {
     console.log(data);
-    setTransactionData(prevState => ({
-      ...prevState,
-      inputValue: data
-    }));
+    // setTransactionData((prevState) => ({
+    //   ...prevState,
+    //   inputValue: data,
+    // }));
     kursCalculation(data);
-  }; 
+  };
 
   return (
     <View style={styles.container}>
@@ -115,17 +119,18 @@ const ValasJualScreen = () => {
               Kurs Jual
             </BodyMediumText>
             <BodyLargeText style={styles.textStyle}>
-            {transactionData.selectedCurrency.currencyCode} 1.00 = Rp. {formatNumber(transactionData.selectedCurrency.sellRate)}
+              {transactionData.selectedCurrency.currencyCode} 1.00 = Rp.{" "}
+              {formatNumber(transactionData.selectedCurrency.sellRate)}
             </BodyLargeText>
           </View>
         </View>
         <View
           style={{ backgroundColor: colors.primary.primaryThree, height: 4 }}
         />
-        <View> 
+        <View>
           <WalletValasSource
             saldo={transactionData.selectedWallet.balance}
-            countryCode={transactionData.selectedWallet.currencyCode.toLowerCase()} 
+            countryCode={transactionData.selectedWallet.currencyCode.toLowerCase()}
           />
         </View>
 
@@ -139,7 +144,8 @@ const ValasJualScreen = () => {
       </View>
 
       <View style={styles.bottomContainer}>
-        {transactionData.inputValue === "" || transactionData.selectedWallet.balance < transactionData.inputValue ? (
+        {transactionData.inputValue === "" ||
+        transactionData.selectedWallet.balance < transactionData.inputValue ? (
           <StyledButton
             mode="primary-disabled"
             title="Lanjut"

@@ -7,10 +7,14 @@ import {
 } from "../shared/StyledText";
 import { country } from "../../config/CountryDataConfig";
 import colors from "../../theme/colors";
+import { useEffect } from "react";
 
 const ResultCard = ({ transactionType, transactionData }) => {
+  useEffect(() => {
+    console.log(transactionData);
+  });
   return (
-    <View style={{ width: "70%", height:'65%' }}>
+    <View style={{ width: "70%", height: "100%"}}>
       {/* Summary Result Card Component */}
       <View style={styles.summaryResult}>
         <ImageBackground
@@ -20,43 +24,50 @@ const ResultCard = ({ transactionType, transactionData }) => {
           style={styles.imageContainer}
         >
           {transactionType === "transfer" ? (
-            <View style={{height:"100%", justifyContent:'space-evenly'}}>
-              <View style={{alignItems:"center"}}>
+            <View style={{ height: "100%", justifyContent: "space-evenly" }}>
+              <View style={{ alignItems: "center" }}>
                 <BodyRegularText style={{ color: colors.color.lightGrey }}>
                   Nama Penerima
                 </BodyRegularText>
-                <BodyLargeText style={{ color: colors.color.black, fontWeight:'bold' }}>
+                <BodyLargeText
+                  style={{ color: colors.color.black, fontWeight: "bold" }}
+                >
                   {transactionData.namaPenerima}
                 </BodyLargeText>
                 <BodyRegularText style={{ color: colors.color.lightGrey }}>
                   {transactionData.noRek}
                 </BodyRegularText>
               </View>
-              <View style={{alignItems:"center"}}>
+              <View style={{ alignItems: "center" }}>
                 <BodyRegularText style={{ color: colors.color.lightGrey }}>
                   {transactionData.noRek}
                 </BodyRegularText>
-                <BodyLargeText style={{ color: colors.color.black, fontWeight:'bold' }}>
-                  {country[transactionData.tipeValas].code}  {transactionData.saldo}
+                <BodyLargeText
+                  style={{ color: colors.color.black, fontWeight: "bold" }}
+                >
+                  {country[transactionData.tipeValas].code}{" "}
+                  {transactionData.saldo}
                 </BodyLargeText>
               </View>
             </View>
           ) : (
             <View style={{ alignItems: "center" }}>
               <Image
-                source={require("../../../assets/icons/flags/Japan.png")}
+                source={{uri: transactionData.selectedCurrency.flagIcon}}
                 style={{ width: 40, height: 40, marginBottom: 10 }}
               />
               <BodyLargeText style={{ fontWeight: "bold" }}>
-                {country[transactionData.tipeValas].namaValas}
+                {transactionData.selectedCurrency.currencyName}
               </BodyLargeText>
               <BodyLargeText>
-                {country[transactionData.tipeValas].code}
+                {transactionData.selectedCurrency.currencyCode}
               </BodyLargeText>
-              <BodyMediumText>{transactionData.noRek}</BodyMediumText>
+              <BodyMediumText>
+                {transactionData.selectedRekening.accountNumber}
+              </BodyMediumText>
               <BodyLargeText style={{ fontWeight: "bold", marginVertical: 20 }}>
-                {country[transactionData.tipeValas].code}{" "}
-                {transactionData.saldo}
+                {transactionData.selectedCurrency.currencyCode}{" "}
+                {transactionData.inputValue}
               </BodyLargeText>
             </View>
           )}
@@ -71,6 +82,7 @@ export default ResultCard;
 const styles = StyleSheet.create({
   summaryResult: {
     width: "100%",
+    // paddingBottom:20,
     backgroundColor: "transparent",
     borderRadius: 20,
     // Shadow for iOS
@@ -84,8 +96,9 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: "100%",
+    // height:"100%",
     alignItems: "center",
-    justifyContent:'center',
+    justifyContent: "center",
     paddingVertical: 20,
   },
 });

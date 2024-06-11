@@ -18,21 +18,6 @@ import colors from "../../theme/colors";
 import ContentHeader from "../../components/valasHome/shared/ContentHeader";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import IncorrectPinMessage from "../../components/valasHome/IncorrectPinMessage";
-
-const transactionData = {
-  // Must
-  isSetoranAwal: true, //boolean
-  isTransfer: false, //boolean
-  isSellOrPurchase: false, //boolean
-  date: "29 Juni 2024",
-  noRek: "1811209312",
-  saldo: "1000", // Saldo transaksi
-  tipeValas: "aud", //jpy,aud,usd, dan lain lainnya
-
-  // Depends on the Type of Transaction
-  transactionType: "Pembelian", // isSellOrPurchase = true => Pembelian || Penjualan
-  namaPenerima: "Adelia Kinanti", // isTransfer = true
-};
 import { fetchValasPurchase, fetchValasSell } from "../../config/ValasConfig";
 
 const PinConfirmationScreen = () => {
@@ -58,7 +43,7 @@ const PinConfirmationScreen = () => {
         pin
       );
       if (beli) {
-        navigation.navigate("TransactionResult");
+        navigation.navigate("TransactionResult",{transactionData,transactionType});
         setPinStatus(true);
         console.log("Transaction successful:", beli);
       } else {
@@ -78,10 +63,10 @@ const PinConfirmationScreen = () => {
         pin
       );
       if (jual) {
-        navigation.navigate("TransactionResult");
+        // navigation.navigate("TransactionResult");
         setPinStatus(true);
         console.log("Transaction successful:", jual);
-        navigation.navigate("TransactionResult", { transactionData });
+        navigation.navigate("TransactionResult", { transactionData, transactionType });
       } else {
         console.log("salah");
         setErrorVisible(!errorVisible);

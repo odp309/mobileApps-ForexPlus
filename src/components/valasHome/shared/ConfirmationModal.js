@@ -27,7 +27,10 @@ const ConfirmationModal = ({
   const navigation = useNavigation();
   const toPinVerification = () => {
     toggleBottomSheet();
-    navigation.navigate("PinConfirmation",{transactionData,transactionType});
+    navigation.navigate("PinConfirmation", {
+      transactionData,
+      transactionType,
+    });
   };
 
   useEffect(() => {
@@ -128,12 +131,18 @@ const ConfirmationModal = ({
 
           {/* DOMPET SUMBER */}
           <View>
-            {transactionType === "jual" || transactionType === "beli" ? (
+            {transactionType === "beli" ? (
               <WalletSource
                 style={{ backgroundColor: colors.color.white }}
                 rekening={transactionData.selectedRekening.accountNumber}
                 jenisRekening={transactionData.selectedRekening.type}
                 saldo={transactionData.selectedRekening.balance}
+              />
+            ) : transactionType === "jual" ? (
+              <WalletValasSource
+                style={{ backgroundColor: colors.color.white }}
+                countryCode={transactionData.selectedWallet.currencyCode.toLowerCase()}
+                saldo={transactionData.selectedWallet.balance}
               />
             ) : (
               <WalletValasSource
@@ -149,7 +158,7 @@ const ConfirmationModal = ({
           {/* JUAL BUTTON */}
           <StyledButton
             mode={"primary"}
-            title={transactionType==="jual" ?"Jual" : "Beli"}
+            title={transactionType === "jual" ? "Jual" : "Beli"}
             size={"lg"}
             onPress={toPinVerification}
             style={{ marginVertical: "5%" }}

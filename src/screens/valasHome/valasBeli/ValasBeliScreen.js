@@ -7,22 +7,17 @@ import {
 import StyledButton from "../../../components/shared/StyledButton";
 import colors from "../../../theme/colors";
 import {
-  View, 
-  StyleSheet, 
+  View,
+  StyleSheet,
   Dimensions,
-  Alert,
   BackHandler,
   Platform,
 } from "react-native";
-import { View, StyleSheet, Dimensions, Alert, BackHandler } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
 import WalletSource from "../../../components/valasHome/shared/WalletSource";
 import ValasConversion from "../../../components/valasHome/shared/ValasConversion";
 import ConfirmationModal from "../../../components/valasHome/shared/ConfirmationModal";
 import { alertConfirmation, formatNumber } from "../../../config/ValasConfig";
-import { alertConfirmation } from "../../../config/ValasConfig";
-import { useSafeAreaFrame } from "react-native-safe-area-context";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
@@ -35,92 +30,82 @@ export default function ValasBeliScreen() {
     selectedRekening: route.params?.selectedRekening,
     selectedCurrency: route.params?.selectedCurrency,
     inputValue: "",
-    convertedValue: ""
+    convertedValue: "",
   });
-
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener("hardwareBackPress", () => alertConfirmation(navigation));
-  const [exchange, setExchange] = useState("");
-  const [inputValue, setInputValue] = useState("");
-  const [kurs, setKurs] = useState("103");
-  const [valas, setValas] = useState("JPY");
-  const [isVisible, setIsVisible] = useState(false);
-  const [currentBalance, setCurrentBalance] = useState("10000000");
   const [minPurchase, setMinPurchase] = useState("10");
   const [maxPurchase, setMaxPurchase] = useState("25000");
-
   const [inputError, setInputError] = useState("");
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    console.log(transactionData);
     const backHandler = BackHandler.addEventListener("hardwareBackPress", () =>
       alertConfirmation(navigation)
     );
     return () => backHandler.remove();
   }, []);
 
-  useEffect(() => {
-    // console.log(" Selected rekening/wallet di hal beli : ");
-    // console.log(transactionData.selectedCurrency);
-  }, [transactionData.selectedCurrency]);
-  }, []);
-
   const toggleBottomSheet = () => {
-    console.log(isVisible); 
+    console.log(isVisible);
     setIsVisible(!isVisible);
   };
 
   const kursCalculation = (data) => {
-    setTransactionData(prevState => ({
+    const kursResult = parseInt(data) * parseInt(transactionData.selectedCurrency.buyRate);
+    setTransactionData((prevState) => ({
       ...prevState,
-      convertedValue: data === "" ? "" : (parseInt(data) * parseInt(transactionData.selectedCurrency.buyRate)).toString()
+      convertedValue:
+        data === ""
+          ? ""
+          : (
+              parseInt(data) *
+              parseInt(transactionData.selectedCurrency.buyRate)
+            ).toString(),
     }));
-    const kursResult = parseInt(data) * parseInt(kurs);
-    data === "" ? setExchange("") : setExchange(kursResult);
     checkError(data, kursResult);
   };
 
   const checkError = (data, kursResult) => {
-    if (kursResult > parseInt(currentBalance)) {
+    setTransactionData((prevState) => ({
+      ...prevState,
+      inputValue: "",
+    }));
+    if (kursResult > transactionData.selectedRekening.balance) {
       setInputError("Jumlah melebihi Saldo Aktif Rupiah");
-      setInputValue("");
     } else if (parseInt(data) < parseInt(minPurchase)) {
-      setInputError(`Minimum pembelian valas AUD ${minPurchase}`);
-      setInputValue("");
+      setInputError(
+        `Minimum pembelian valas ${transactionData.selectedCurrency.currencyCode} ${minPurchase}`
+      );
     } else if (parseInt(data) > parseInt(maxPurchase)) {
-      setInputError(`Maksimum pembelian valas AUD ${maxPurchase}`);
-      setInputValue("");
+      setInputError(
+        `Maksimum pembelian valas ${transactionData.selectedCurrency.currencyCode} ${maxPurchase}`
+      );
     } else {
       setInputError("");
-      setInputValue(data);
+      setTransactionData((prevState) => ({
+        ...prevState,
+        inputValue: data,
+      }));
     }
   };
 
   const acceptInputCurrency = (data) => {
     console.log(data);
-    setTransactionData(prevState => ({
-      ...prevState,
-      inputValue: data
-    }));
+    // setTransactionData((prevState) => ({
+    //   ...prevState,
+    //   inputValue: data,
+    // }));
     kursCalculation(data);
   };
 
   return (
     <View style={styles.container}>
       <ConfirmationModal
-          title={"Konfirmasi Pembelian Valas"}
-          transactionType={"beli"}
-          isVisible={isVisible}
-          toggleBottomSheet={toggleBottomSheet}
-          transactionData={transactionData}
-        />
         title={"Konfirmasi Pembelian Valas"}
+        transactionType={"beli"}
         isVisible={isVisible}
         toggleBottomSheet={toggleBottomSheet}
-        pendapatan={exchange}
-        kurs={kurs}
-        inputSaldo={inputValue}
+        transactionData={transactionData}
       />
       <View style={styles.topContainer}>
         <ContentHeader title={"Pembelian Valas"} hasConfirmation={true} />
@@ -132,8 +117,6 @@ export default function ValasBeliScreen() {
             firstInputTitle={"Nominal Pembelian"}
             secondInputTitle={"Nominal Asal"}
             transactionData={transactionData}
-            changeTextData={acceptInputCurrency} 
-            exchange={exchange}
             changeTextData={acceptInputCurrency}
             firstError={inputError}
             secondError={inputError}
@@ -145,7 +128,8 @@ export default function ValasBeliScreen() {
               Kurs Beli
             </BodyMediumText>
             <BodyLargeText style={styles.textStyle}>
-              {transactionData.selectedCurrency.currencyCode} 1.00 = Rp. {formatNumber(transactionData.selectedCurrency.buyRate)}
+              {transactionData.selectedCurrency.currencyCode} 1.00 = Rp.{" "}
+              {formatNumber(transactionData.selectedCurrency.buyRate)}
             </BodyLargeText>
           </View>
         </View>
@@ -161,8 +145,9 @@ export default function ValasBeliScreen() {
         </View>
       </View>
       <View style={styles.bottomContainer}>
-        {transactionData.inputValue === "" || transactionData.selectedRekening.balance < transactionData.convertedValue ? (
-        {inputValue === "" ? (
+        {transactionData.inputValue === "" ||
+        transactionData.selectedRekening.balance <
+          transactionData.convertedValue ? (
           <StyledButton
             mode="primary-disabled"
             title="Lanjut"
@@ -201,7 +186,7 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     width: "100%",
-    justifyContent: Platform.OS==="android"? "center" : "flex-start",
+    justifyContent: Platform.OS === "android" ? "center" : "flex-start",
     flex: 0.15,
     paddingHorizontal: 20,
   },

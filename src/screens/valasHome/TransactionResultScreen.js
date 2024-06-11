@@ -1,8 +1,4 @@
-import {
-  StyleSheet,
-  View,
-  BackHandler,
-} from "react-native";
+import { StyleSheet, View, BackHandler } from "react-native";
 import StyledButton from "../../components/shared/StyledButton";
 import {
   BodyLargeText,
@@ -38,14 +34,18 @@ const TransactionResultScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const animationRef = useRef(null); //Animation Variable
-  const transactionData = route.params.transactionData;
+  const transactionData = route.params?.transactionData;
+  const transactionType = route.params?.transactionType;
 
   const toHomeScreen = () => {
-    navigation.reset({ index: 0, routes: [{ name: "ValasHome" } ]});
+    navigation.reset({ index: 0, routes: [{ name: "ValasHome" }] });
   };
 
   // Animation Function
   useEffect(() => {
+    console.log("KOKO");
+    console.log(transactionData);
+    console.log(transactionType);
     if (animationRef.current) {
       animationRef.current.play();
     }
@@ -74,38 +74,37 @@ const TransactionResultScreen = () => {
         <View
           style={{ width: "100%", alignItems: "center", paddingHorizontal: 40 }}
         >
-          {transactionData.isSetoranAwal === true ? (
+          {transactionType === "beli" ? (
             <ResultTitleAndDate
-              title="Setoran Awal Berhasil!"
-              subTitle={`Dompet Valas ${
-                country[transactionData.tipeValas].countryName
-              } telah ditambahkan`}
-              date={transactionData.date}
+              title="Permintaan Pembelian Berhasil Terkirim"
+              date={transactionData.selectedCurrency.createdAt}
             />
-          ) : transactionData.isTransfer === true ? (
+          ) : transactionType === "jual" ? (
+            <ResultTitleAndDate
+              title="Permintaan Penjualan Berhasil Terkirim"
+              date={transactionData.selectedCurrency.createdAt}
+            />
+          ) : transactionType === "transfer" ? (
             <ResultTitleAndDate
               title="Permintaan Transfer Berhasil Terkirim"
-              date={transactionData.date}
+              date={transactionData.selectedCurrency.createdAt}
             />
-          ) : (
-            <ResultTitleAndDate
-              title={`Permintaan ${transactionData.transactionType} Berhasil Terkirim`}
-              date={transactionData.date}
-            />
-          )}
+          ) : null}
         </View>
         {/* Summary Result Card Component */}
-        <View style={{ width: "100%", alignItems: "center", marginTop: "15%" }}>
-          <ResultCard />
-        <View style={{ width: "100%", alignItems: "center", marginTop: "15%" }}>
-          {transactionData.isTransfer === true ? (
-            <ResultCard transactionType="transfer" transactionData={transactionData}/>
-          ) : (
-            <ResultCard transactionType="nonTransfer" transactionData={transactionData}/>
-          )}
+        <View style={{ width: "100%", alignItems: "center"}}>
+          <View
+            style={{ width: "100%", alignItems: "center", marginTop: "15%" }}
+          >
+            {transactionType != "transfer" ? (
+              <ResultCard
+                transactionType={transactionType}
+                transactionData={transactionData}
+              />
+            ) : null}
+          </View>
         </View>
       </View>
-
 
       {/* To Homepage Button */}
       <View style={styles.bottomContainer}>
