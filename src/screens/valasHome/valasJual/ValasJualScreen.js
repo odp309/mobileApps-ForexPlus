@@ -6,8 +6,7 @@ import {
 } from "../../../components/shared/StyledText";
 import colors from "../../../theme/colors";
 import { FontAwesome } from "@expo/vector-icons";
-import StyledButton from "../../../components/shared/StyledButton";
-import { useNavigation } from "@react-navigation/core";
+import StyledButton from "../../../components/shared/StyledButton"; 
 import ValasConversion from "../../../components/valasHome/shared/ValasConversion";
 
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
