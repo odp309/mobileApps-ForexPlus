@@ -17,7 +17,7 @@ import ValasConversion from "../../../components/valasHome/shared/ValasConversio
 
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
 import ConfirmationModal from "../../../components/valasHome/shared/ConfirmationModal"; 
-import { alertConfirmation, formatNumber } from "../../../config/ValasConfig";
+import { alertConfirmation, fetchMinimumSell, formatNumber } from "../../../config/ValasConfig";
 import WalletSource from "../../../components/valasHome/shared/WalletSource";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import WalletValasSource from "../../../components/valasHome/shared/WalletValasSource";
@@ -27,6 +27,7 @@ const DIMENSION_HEIGHT = Dimensions.get("window").height;
 const ValasJualScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
+  const [minimumSell, setMinimumSell] = useState(null);
 
   const [transactionData, setTransactionData] = useState({
     selectedWallet: route.params?.selectedWallet,
@@ -42,6 +43,28 @@ const ValasJualScreen = () => {
     return () => backHandler.remove();
   },[])
 
+  const setFetchMinimum = async () => {
+    const minimumData = await fetchMinimumSell(
+      transactionData.selectedWallet.currencyCode.toUpperCase()
+    );
+    setMinimumSell(minimumData);
+  };
+  useEffect(() => {
+    setFetchMinimum(); 
+  }, []);
+
+  const isButtonDisabled = () => {
+    const inputValue = parseFloat(transactionData.inputValue);
+    const convertedValue = parseFloat(transactionData.convertedValue);
+    const balance = parseFloat(transactionData.selectedRekening.balance);
+
+    return (
+      transactionData.inputValue === "" ||
+      inputValue < minimumSell ||
+      balance < convertedValue
+    );
+  };
+
   const toggleBottomSheet = () => {
     console.log(isVisible);
     setIsVisible(!isVisible);
@@ -56,6 +79,7 @@ const ValasJualScreen = () => {
 
   const acceptInputCurrency = (data) => {
     console.log(data);
+    
     setTransactionData(prevState => ({
       ...prevState,
       inputValue: data
@@ -111,22 +135,14 @@ const ValasJualScreen = () => {
       </View>
 
       <View style={styles.bottomContainer}>
-        {transactionData.inputValue === "" || transactionData.selectedWallet.balance < transactionData.inputValue ? (
-          <StyledButton
-            mode="primary-disabled"
-            title="Lanjut"
-            size={"lg"}
-            style={{ marginBottom: 20 }}
-          />
-        ) : (
-          <StyledButton
-            mode="primary"
-            title="Lanjut"
-            size={"lg"}
-            onPress={toggleBottomSheet}
-            style={{ marginBottom: 20 }}
-          />
-        )}
+      <StyledButton
+          mode={isButtonDisabled() ? "primary-disabled" : "primary"}
+          title="Lanjut"
+          size={"lg"}
+          onPress={toggleBottomSheet}
+          style={{ marginBottom: 20 }}
+          disabled={isButtonDisabled()}
+        />
       </View>
     </View>
   );

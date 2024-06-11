@@ -1,25 +1,29 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import {
-  BodyLargeText, 
-  BodyMediumText, 
+  BodyLargeText,
+  BodyMediumText,
 } from "../../../components/shared/StyledText";
 import StyledButton from "../../../components/shared/StyledButton";
 import colors from "../../../theme/colors";
 import {
-  View, 
-  StyleSheet, 
+  View,
+  StyleSheet,
   Dimensions,
   Alert,
   BackHandler,
   Platform,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import ContentHeader from "../../../components/valasHome/shared/ContentHeader"; 
-import WalletSource from "../../../components/valasHome/shared/WalletSource"; 
+import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
+import WalletSource from "../../../components/valasHome/shared/WalletSource";
 import ValasConversion from "../../../components/valasHome/shared/ValasConversion";
 import ConfirmationModal from "../../../components/valasHome/shared/ConfirmationModal";
-import { alertConfirmation, formatNumber } from "../../../config/ValasConfig";
+import {
+  alertConfirmation,
+  fetchMinimumBuy,
+  formatNumber,
+} from "../../../config/ValasConfig";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
@@ -27,56 +31,83 @@ export default function ValasBeliScreen() {
   const route = useRoute();
   const navigation = useNavigation();
 
+  const [minimumBuy, setMinimumBuy] = useState(null);
   const [transactionData, setTransactionData] = useState({
     selectedWallet: route.params?.selectedWallet,
     selectedRekening: route.params?.selectedRekening,
     selectedCurrency: route.params?.selectedCurrency,
     inputValue: "",
-    convertedValue: ""
+    convertedValue: "",
   });
 
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const backHandler = BackHandler.addEventListener("hardwareBackPress", () => alertConfirmation(navigation));
+    const backHandler = BackHandler.addEventListener("hardwareBackPress", () =>
+      alertConfirmation(navigation)
+    );
     return () => backHandler.remove();
   }, []);
 
+  const setFetchMinimum = async () => {
+    const minimumData = await fetchMinimumBuy(
+      transactionData.selectedWallet.currencyCode.toUpperCase()
+    );
+    setMinimumBuy(minimumData);
+  };
+
   useEffect(() => {
-    // console.log(" Selected rekening/wallet di hal beli : ");
-    // console.log(transactionData.selectedCurrency);
-  }, [transactionData.selectedCurrency]);
+    setFetchMinimum(); 
+  }, []);
 
   const toggleBottomSheet = () => {
-    console.log(isVisible); 
+    console.log(isVisible);
     setIsVisible(!isVisible);
   };
 
   const kursCalculation = (data) => {
-    setTransactionData(prevState => ({
+    setTransactionData((prevState) => ({
       ...prevState,
-      convertedValue: data === "" ? "" : (parseInt(data) * parseInt(transactionData.selectedCurrency.buyRate)).toString()
+      convertedValue:
+        data === ""
+          ? ""
+          : (
+              parseInt(data) *
+              parseInt(transactionData.selectedCurrency.buyRate)
+            ).toString(),
     }));
   };
 
   const acceptInputCurrency = (data) => {
     console.log(data);
-    setTransactionData(prevState => ({
+    setTransactionData((prevState) => ({
       ...prevState,
-      inputValue: data
+      inputValue: data,
     }));
     kursCalculation(data);
-  }; 
+  };
+
+  const isButtonDisabled = () => {
+    const inputValue = parseFloat(transactionData.inputValue);
+    const convertedValue = parseFloat(transactionData.convertedValue);
+    const balance = parseFloat(transactionData.selectedRekening.balance);
+
+    return (
+      transactionData.inputValue === "" ||
+      inputValue < minimumBuy ||
+      balance < convertedValue
+    );
+  };
 
   return (
     <View style={styles.container}>
       <ConfirmationModal
-          title={"Konfirmasi Pembelian Valas"}
-          transactionType={"beli"}
-          isVisible={isVisible}
-          toggleBottomSheet={toggleBottomSheet}
-          transactionData={transactionData}
-        />
+        title={"Konfirmasi Pembelian Valas"}
+        transactionType={"beli"}
+        isVisible={isVisible}
+        toggleBottomSheet={toggleBottomSheet}
+        transactionData={transactionData}
+      />
       <View style={styles.topContainer}>
         <ContentHeader title={"Pembelian Valas"} hasConfirmation={true} />
       </View>
@@ -87,7 +118,7 @@ export default function ValasBeliScreen() {
             firstInputTitle={"Nominal Pembelian"}
             secondInputTitle={"Nominal Asal"}
             transactionData={transactionData}
-            changeTextData={acceptInputCurrency} 
+            changeTextData={acceptInputCurrency}
           />
           <View style={styles.kursBeliContainer}>
             <BodyMediumText
@@ -96,7 +127,8 @@ export default function ValasBeliScreen() {
               Kurs Beli
             </BodyMediumText>
             <BodyLargeText style={styles.textStyle}>
-              {transactionData.selectedCurrency.currencyCode} 1.00 = Rp. {formatNumber(transactionData.selectedCurrency.buyRate)}
+              {transactionData.selectedCurrency.currencyCode} 1.00 = Rp.{" "}
+              {formatNumber(transactionData.selectedCurrency.buyRate)}
             </BodyLargeText>
           </View>
         </View>
@@ -112,22 +144,14 @@ export default function ValasBeliScreen() {
         </View>
       </View>
       <View style={styles.bottomContainer}>
-        {transactionData.inputValue === "" || transactionData.selectedRekening.balance < transactionData.convertedValue ? (
-          <StyledButton
-            mode="primary-disabled"
-            title="Lanjut"
-            size={"lg"}
-            style={{ marginBottom: 20 }}
-          />
-        ) : (
-          <StyledButton
-            mode="primary"
-            title="Lanjut"
-            size={"lg"}
-            onPress={toggleBottomSheet}
-            style={{ marginBottom: 20 }}
-          />
-        )}
+        <StyledButton
+          mode={isButtonDisabled() ? "primary-disabled" : "primary"}
+          title="Lanjut"
+          size={"lg"}
+          onPress={toggleBottomSheet}
+          style={{ marginBottom: 20 }}
+          disabled={isButtonDisabled()}
+        />
       </View>
     </View>
   );
@@ -151,7 +175,7 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     width: "100%",
-    justifyContent: Platform.OS==="android"? "center" : "flex-start",
+    justifyContent: Platform.OS === "android" ? "center" : "flex-start",
     flex: 0.15,
     paddingHorizontal: 20,
   },

@@ -13,7 +13,7 @@ const ValasCreateContent = () => {
       />
       <View style={{alignItems:'center',width:"70%"}}>
         <BodyMediumText style={{textAlign:"center",marginTop:10}}>
-          Hemat waktu, tanpa ribet! {"\n"}Buka dompet valas secara online.{" "}
+          Hemat waktu, tanpa ribet!{"\n"}Buka dompet valas secara online.{" "}
         </BodyMediumText>
         <StyledButton
           title={"Buka Sekarang"}
