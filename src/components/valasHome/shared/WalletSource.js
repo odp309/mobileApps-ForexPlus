@@ -4,7 +4,7 @@ import { BodyMediumText, BodySmallText } from "../../shared/StyledText";
 
 const DIMENSION_HEIGHT = Dimensions.get("window").height;
 
-const WalletSource = ({ style, rekening,jenisRekening,saldo }) => {
+const WalletSource = ({ style, rekening, jenisRekening, saldo }) => {
   return (
     <View style={[styles.container, style]}>
       <BodyMediumText>Dompet Sumber</BodyMediumText>
@@ -13,7 +13,7 @@ const WalletSource = ({ style, rekening,jenisRekening,saldo }) => {
           <View style={styles.contentContainer}>
             <View style={styles.textContainer}>
               <BodyMediumText style={{ fontWeight: "bold" }}>
-                {jenisRekening}
+                {jenisRekening.toUpperCase()}
               </BodyMediumText>
               <BodySmallText>{rekening}</BodySmallText>
               <BodyMediumText style={{ fontWeight: "bold" }}>
@@ -21,10 +21,7 @@ const WalletSource = ({ style, rekening,jenisRekening,saldo }) => {
               </BodyMediumText>
             </View>
             <View style={styles.landmarkContainer}>
-                <Image
-                  resizeMode="contain" 
-                  style={{ width: 100}}
-                />
+              <Image resizeMode="contain" style={{ width: 100 }} />
             </View>
           </View>
         </View>
@@ -52,7 +49,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingTop: 20,
     paddingBottom: 30,
-    paddingHorizontal: 20, 
+    paddingHorizontal: 20,
   },
   cardContainer: {
     height: 100,
