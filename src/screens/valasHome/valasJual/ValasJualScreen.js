@@ -1,18 +1,13 @@
-import {
-  Dimensions,
-  StyleSheet,
-  View, 
-  Alert,
-  BackHandler,
-} from "react-native";
+import { Dimensions, StyleSheet, View, Alert, BackHandler } from "react-native";
 import React, { useEffect, useState } from "react";
-import { 
+import {
   BodyMediumText,
-  BodyLargeText, 
+  BodyLargeText,
 } from "../../../components/shared/StyledText";
-import colors from "../../../theme/colors"; 
-import { FontAwesome } from "@expo/vector-icons"; 
-import StyledButton from "../../../components/shared/StyledButton";  
+import colors from "../../../theme/colors";
+import { FontAwesome } from "@expo/vector-icons";
+import StyledButton from "../../../components/shared/StyledButton";
+import { useNavigation } from "@react-navigation/core";
 import ValasConversion from "../../../components/valasHome/shared/ValasConversion";
 
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
@@ -36,10 +31,17 @@ const ValasJualScreen = () => {
   });
   const [isVisible, setIsVisible] = useState(false); //Modal Visibility
 
-  useEffect(()=>{
-    const backHandler = BackHandler.addEventListener("hardwareBackPress",() => alertConfirmation(navigation));
+  const [currentBalance, setCurrentBalance] = useState("10000000");
+  const [minSell, setMinSell] = useState("10");
+  const [maxSell, setMaxSell] = useState("25000");
+  const [inputError, setInputError] = useState("");
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener("hardwareBackPress", () =>
+      alertConfirmation(navigation)
+    );
     return () => backHandler.remove();
-  },[])
+  }, []);
 
   const toggleBottomSheet = () => {
     console.log(isVisible);
@@ -47,18 +49,31 @@ const ValasJualScreen = () => {
   };
 
   const kursCalculation = (data) => {
-    setTransactionData(prevState => ({
-      ...prevState,
-      convertedValue: data === "" ? "" : (parseInt(data) * parseInt(transactionData.selectedCurrency.sellRate)).toString()
-    }));
+    const kursResult = parseInt(data) * parseInt(kurs);
+    data === ""
+      ? setExchange("")
+      : setExchange(parseInt(data) * parseInt(kurs));
+    checkError(data, kursResult);
+  };
+
+  const checkError = (data, kursResult) => {
+    if (kursResult > parseInt(currentBalance)) {
+      setInputError("Jumlah melebihi Saldo Aktif Rupiah");
+      setInputValue("");
+    } else if (parseInt(data) < parseInt(minSell)) {
+      setInputError(`Minimum penjualan valas AUD ${minSell}`);
+      setInputValue("");
+    } else if (parseInt(data) > parseInt(maxSell)) {
+      setInputError(`Maksimum penjualan valas AUD ${maxSell}`);
+      setInputValue("");
+    } else {
+      setInputError("");
+      setInputValue(data);
+    }
   };
 
   const acceptInputCurrency = (data) => {
     console.log(data);
-    setTransactionData(prevState => ({
-      ...prevState,
-      inputValue: data
-    }));
     kursCalculation(data);
   }; 
 
@@ -76,6 +91,8 @@ const ValasJualScreen = () => {
             secondInputTitle={"Nominal Pendapatan"}
             transactionData={transactionData}
             changeTextData={acceptInputCurrency}
+            firstError={inputError}
+            secondError={inputError}
           />
 
           {/* Kurs Jual */}
@@ -136,7 +153,7 @@ export default ValasJualScreen;
 
 const styles = StyleSheet.create({
   container: {
-    height: Dimensions.get("window").height*1.05, 
+    height: Dimensions.get("window").height * 1.05,
     justifyContent: "flex-start",
     backgroundColor: "white",
   },

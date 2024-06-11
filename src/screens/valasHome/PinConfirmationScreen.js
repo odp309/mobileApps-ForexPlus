@@ -9,15 +9,34 @@ import {
 import React, { useEffect, useState } from "react";
 import {
   BodyLargeTextSemiBold,
+  BodySmallText,
+  BodySmallTextSemiBold,
   BodyXLTextBold,
   BodyXLTextSemiBold,
 } from "../../components/shared/StyledText";
 import colors from "../../theme/colors";
 import ContentHeader from "../../components/valasHome/shared/ContentHeader";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { fetchValasPurchase } from "../../config/ValasConfig";
+import { useNavigation } from "@react-navigation/native";
+import IncorrectPinMessage from "../../components/valasHome/IncorrectPinMessage";
 
-const PinConfirmationScreen = () => { 
+const transactionData = {
+  // Must
+  isSetoranAwal: true, //boolean
+  isTransfer: false, //boolean
+  isSellOrPurchase: false, //boolean
+  date: "29 Juni 2024",
+  noRek: "1811209312",
+  saldo: "1000", // Saldo transaksi
+  tipeValas: "aud", //jpy,aud,usd, dan lain lainnya
+
+  // Depends on the Type of Transaction
+  transactionType: "Pembelian", // isSellOrPurchase = true => Pembelian || Penjualan
+  namaPenerima: "Adelia Kinanti", // isTransfer = true
+};
+
+const PinConfirmationScreen = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [errorVisible, setErrorVisible] = useState(false);
   const [pin, setPin] = useState("");
   const [pinStatus, setPinStatus] = useState(false);
   const navigation = useNavigation();
@@ -50,16 +69,16 @@ const PinConfirmationScreen = () => {
         transactionData.inputValue,
         pin
     setPinStatus(true);
-    if (pin.length === 6) { 
-       sendTransaction();
-      // if (pin === "654321") {
-      //   console.log("benar");
-      //   setPinStatus(true);
-      //   navigation.navigate("TransactionResult");
-      // } else {
-      //   console.log("salah");
-      //   setPinStatus(false);
-      // }
+    if (pin.length === 6) {
+      if (pin === "654321") {
+        console.log("benar");
+        setPinStatus(true);
+        navigation.navigate("TransactionResult", { transactionData });
+      } else {
+        console.log("salah");
+        setErrorVisible(!errorVisible);
+        setPinStatus(false);
+      }
     }
   }, [pin]);
   return (
@@ -97,6 +116,11 @@ const PinConfirmationScreen = () => {
             />
           </View>
         </View>
+        {errorVisible && (
+          <View style={{ width: "100%", marginTop: 20 }}>
+            <IncorrectPinMessage />
+          </View>
+        )}
       </View>
     </View>
   );
