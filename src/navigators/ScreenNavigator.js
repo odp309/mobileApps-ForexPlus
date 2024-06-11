@@ -95,6 +95,11 @@ const ScreenNavigator = () => {
         component={ChooseDateScreen}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="ValasReservation"
+        component={ValasReservationScreen}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
