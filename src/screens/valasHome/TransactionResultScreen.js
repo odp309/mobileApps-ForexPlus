@@ -41,7 +41,7 @@ const TransactionResultScreen = () => {
   const transactionData = route.params.transactionData;
 
   const toHomeScreen = () => {
-    navigation.navigate("ValasHome");
+    navigation.reset({ index: 0, routes: [{ name: "ValasHome" } ]});
   };
 
   // Animation Function
@@ -96,6 +96,8 @@ const TransactionResultScreen = () => {
         </View>
         {/* Summary Result Card Component */}
         <View style={{ width: "100%", alignItems: "center", marginTop: "15%" }}>
+          <ResultCard />
+        <View style={{ width: "100%", alignItems: "center", marginTop: "15%" }}>
           {transactionData.isTransfer === true ? (
             <ResultCard transactionType="transfer" transactionData={transactionData}/>
           ) : (
@@ -103,6 +105,7 @@ const TransactionResultScreen = () => {
           )}
         </View>
       </View>
+
 
       {/* To Homepage Button */}
       <View style={styles.bottomContainer}>
@@ -139,6 +142,7 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     flex: 0.15,
+    paddingHorizontal: 20,
     paddingHorizontal: 20,
   },
 });

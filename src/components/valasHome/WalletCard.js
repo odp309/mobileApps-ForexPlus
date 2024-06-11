@@ -59,7 +59,7 @@ const WalletCard = ({ valasType, selectedWallet }) => {
 
       <View style={{height:"100%"}}>
         <View style={{alignSelf:'flex-end'}}>
-        <Image source={{uri:selectedWallet.landmarkIcon}} style={{height:"100%",width:150,borderWidth:1}} resizeMode="contain" />
+        <Image source={{uri:selectedWallet.landmarkIcon}} style={{height:"100%",width:150}} resizeMode="contain" />
         </View>
       </View>
       
@@ -83,5 +83,6 @@ const styles = StyleSheet.create({
   boldText: {
     fontWeight: "bold",
     color: colors.primary.primaryOne,
+
   },
 });

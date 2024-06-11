@@ -16,7 +16,7 @@ const fetchNomorRekening = async (accountNumber) => {
 
 const fetchKurs = async () => {
   try{ 
-    const dataKurs = await axiosInstance.get(url+"/public/exchange_rate/get-all") ; 
+    const dataKurs = await axiosInstance.get("/public/exchange_rate/get-all") ; 
     return dataKurs.data;
   }
   catch(error) {
@@ -26,13 +26,50 @@ const fetchKurs = async () => {
 
 const fetchBankAccount = async (userId) => {
   try{  
-    const dataBank = await axiosInstance.post(url+"/private/bank_account/get-all",{userId}) ; 
+    const dataBank = await axiosInstance.post("/private/bank_account/get-all",{userId}) ; 
     // console.log(dataBank.data);
     return dataBank.data;
   }
   catch(error) {
     console.log(error);
   }
+}
+const fetchValasPurchase = async (walletId,amountToBuy,pin) =>{
+  try {
+    console.log("Wallet ID : "+walletId);
+    console.log("Amount : "+amountToBuy);
+    console.log("Pin : " + pin);
+    const response = await axiosInstance.post("/private/buy-valas/buy",{walletId,amountToBuy,pin});
+    console.log(response.data);
+    if(response){
+      return true;
+    }
+    else {
+      return false;
+    }
+  } catch (err) {
+    console.log(err);
+  }  
+
+}
+
+const fetchValasSell = async (walletId,amountToSell,pin) =>{
+  try {
+    console.log("Wallet ID : "+walletId);
+    console.log("Amount : "+amountToSell);
+    console.log("Pin : " + pin);
+    const response = await axiosInstance.post("/private/sell-valas/sell",{walletId,amountToSell,pin});
+    console.log(response.data);
+    if(response){
+      return true;
+    }
+    else {
+      return false;
+    }
+  } catch (err) {
+    console.log(err);
+  }  
+
 }
 
 const alertConfirmation = (navigation) => {
@@ -53,4 +90,10 @@ const alertConfirmation = (navigation) => {
   );
   return true;
 }
-export {fetchNomorRekening,fetchKurs,fetchBankAccount,alertConfirmation}
+const formatNumber = (number) => {
+  return new Intl.NumberFormat('de-DE', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 3,
+  }).format(Math.floor(number));
+};
+export {fetchNomorRekening,fetchKurs,fetchBankAccount,alertConfirmation,formatNumber,fetchValasPurchase,fetchValasSell}
