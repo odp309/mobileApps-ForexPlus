@@ -28,7 +28,6 @@ const ChooseDateScreen = ({ route }) => {
     const year = today.getFullYear();
     const month = today.getMonth();
     const hour = today.getHours();
-
     let minDate = today;
     if (hour >= 15) {
       minDate = new Date(
@@ -82,7 +81,6 @@ const ChooseDateScreen = ({ route }) => {
   };
 
   const toggleBottomSheet = () => {
-    console.log("testing");
     setModalVisibility(!modalVisibility);
   };
 
@@ -112,7 +110,7 @@ const ChooseDateScreen = ({ route }) => {
           toggleBottomSheet={toggleBottomSheet}
           branchData={branchData}
           date={selectedDate}
-          pullBalance={1000}
+          pullBalance={branchData.inputNominal}
           valasType="Yen Jepang"
           valasCode="JPY"
         />

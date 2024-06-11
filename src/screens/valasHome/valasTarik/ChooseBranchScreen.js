@@ -10,7 +10,6 @@ import { HeadingSixText } from "../../../components/shared/StyledText";
 import colors from "../../../theme/colors";
 import { FontAwesome } from "@expo/vector-icons";
 import { useState } from "react";
-import PullConfirmationModal from "../../../components/valasHome/valasTarik/PullConfirmationModal";
 import BranchItem from "../../../components/valasHome/valasTarik/BranchItem";
 import { useNavigation } from "@react-navigation/native";
 
@@ -62,22 +61,14 @@ const branchDummy = [
   },
 ];
 
-const ChooseBranchScreen = () => {
+const ChooseBranchScreen = ({route}) => {
   const [inputBranch, setInputBranch] = useState("");
-  const [modalVisibility, setModalVisibility] = useState(false);
-  const [selectedBranch, setSelectedBranch] = useState(branchDummy[0]);
   const navigation = useNavigation();
-
-  // const toggleBottomSheet = () => {
-  //   console.log("testing");
-  //   setModalVisibility(!modalVisibility);
-  // };
+  const inputNominal = route.params;
 
   const receiveBranchData = (data) => {
-    // setModalVisibility(!modalVisibility);
-    setSelectedBranch(data);
     const branchData = data;
-    console.log(branchData);
+    branchData.inputNominal = inputNominal.inputNominal;
     navigation.navigate('ChooseDate',{branchData});
   };
 
@@ -127,12 +118,6 @@ const ChooseBranchScreen = () => {
             renderItem={renderedView}
           />
         </View>
-
-        {/* <PullConfirmationModal
-          modalVisibility={modalVisibility}
-          toggleBottomSheet={toggleBottomSheet}
-          branchData={selectedBranch}
-        /> */}
       </View>
       <View style={styles.bottomContainer}></View>
     </View>

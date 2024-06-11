@@ -1,23 +1,21 @@
-import {
-  Dimensions,
-  StyleSheet,
-  View, 
-  Alert,
-  BackHandler,
-} from "react-native";
+import { Dimensions, StyleSheet, View, Alert, BackHandler } from "react-native";
 import React, { useEffect, useState } from "react";
-import { 
+import {
   BodyMediumText,
-  BodyLargeText, 
+  BodyLargeText,
 } from "../../../components/shared/StyledText";
-import colors from "../../../theme/colors"; 
-import { FontAwesome } from "@expo/vector-icons"; 
-import StyledButton from "../../../components/shared/StyledButton";  
+import colors from "../../../theme/colors";
+import { FontAwesome } from "@expo/vector-icons";
+import StyledButton from "../../../components/shared/StyledButton";
 import ValasConversion from "../../../components/valasHome/shared/ValasConversion";
 
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
-import ConfirmationModal from "../../../components/valasHome/shared/ConfirmationModal"; 
-import { alertConfirmation, fetchMinimumSell, formatNumber } from "../../../config/ValasConfig";
+import ConfirmationModal from "../../../components/valasHome/shared/ConfirmationModal";
+import {
+  alertConfirmation,
+  fetchMinimumSell,
+  formatNumber,
+} from "../../../config/ValasConfig";
 import WalletSource from "../../../components/valasHome/shared/WalletSource";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import WalletValasSource from "../../../components/valasHome/shared/WalletValasSource";
@@ -34,14 +32,17 @@ const ValasJualScreen = () => {
     selectedRekening: route.params?.selectedRekening,
     selectedCurrency: route.params?.selectedCurrency,
     inputValue: "",
-    convertedValue: ""
+    convertedValue: "",
   });
-  const [isVisible, setIsVisible] = useState(false);  
+  const [isVisible, setIsVisible] = useState(false);
+  const [inputError, setInputError] = useState("");
 
-  useEffect(()=>{
-    const backHandler = BackHandler.addEventListener("hardwareBackPress",() => alertConfirmation(navigation));
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener("hardwareBackPress", () =>
+      alertConfirmation(navigation)
+    );
     return () => backHandler.remove();
-  },[])
+  }, []);
 
   const setFetchMinimum = async () => {
     const minimumData = await fetchMinimumSell(
@@ -50,7 +51,7 @@ const ValasJualScreen = () => {
     setMinimumSell(minimumData);
   };
   useEffect(() => {
-    setFetchMinimum(); 
+    setFetchMinimum();
   }, []);
 
   const isButtonDisabled = () => {
@@ -71,21 +72,56 @@ const ValasJualScreen = () => {
   };
 
   const kursCalculation = (data) => {
-    setTransactionData(prevState => ({
+    const kursResult =
+      parseInt(data) * parseInt(transactionData.selectedCurrency.sellRate);
+    setTransactionData((prevState) => ({
       ...prevState,
-      convertedValue: data === "" ? "" : (parseInt(data) * parseInt(transactionData.selectedCurrency.sellRate)).toString()
+      convertedValue:
+        data === ""
+          ? ""
+          : (
+              parseInt(data) *
+              parseInt(transactionData.selectedCurrency.sellRate)
+            ).toString(),
     }));
+    checkError(data, kursResult);
+  };
+
+  const checkError = (data, kursResult) => {
+    setTransactionData((prevState) => ({
+      ...prevState,
+      inputValue: "",
+    }));
+    if (data > transactionData.selectedWallet.balance) {
+      setInputError("Jumlah melebihi Saldo Wallet");
+    } else if (parseInt(data) < parseInt(minimumSell)) {
+      setInputError(
+        `Minimum penjualan valas ${transactionData.selectedCurrency.currencyCode} ${minimumSell}`
+      );
+    } else if (parseInt(data) > parseInt(minimumSell * 25000)) {
+      setInputError(
+        `Maksimum penjualan valas ${
+          transactionData.selectedCurrency.currencyCode
+        } ${minimumSell * 25000}`
+      );
+    } else {
+      setInputError("");
+      setTransactionData((prevState) => ({
+        ...prevState,
+        inputValue: data,
+      }));
+    }
   };
 
   const acceptInputCurrency = (data) => {
     console.log(data);
-    
-    setTransactionData(prevState => ({
+
+    setTransactionData((prevState) => ({
       ...prevState,
-      inputValue: data
+      inputValue: data,
     }));
     kursCalculation(data);
-  }; 
+  };
 
   return (
     <View style={styles.container}>
@@ -101,6 +137,8 @@ const ValasJualScreen = () => {
             secondInputTitle={"Nominal Pendapatan"}
             transactionData={transactionData}
             changeTextData={acceptInputCurrency}
+            firstError={inputError}
+            secondError={inputError}
           />
 
           {/* Kurs Jual */}
@@ -111,17 +149,18 @@ const ValasJualScreen = () => {
               Kurs Jual
             </BodyMediumText>
             <BodyLargeText style={styles.textStyle}>
-            {transactionData.selectedCurrency.currencyCode} 1.00 = Rp. {formatNumber(transactionData.selectedCurrency.sellRate)}
+              {transactionData.selectedCurrency.currencyCode} 1.00 = Rp.{" "}
+              {formatNumber(transactionData.selectedCurrency.sellRate)}
             </BodyLargeText>
           </View>
         </View>
         <View
           style={{ backgroundColor: colors.primary.primaryThree, height: 4 }}
         />
-        <View> 
+        <View>
           <WalletValasSource
             saldo={transactionData.selectedWallet.balance}
-            countryCode={transactionData.selectedWallet.currencyCode.toLowerCase()} 
+            countryCode={transactionData.selectedWallet.currencyCode.toLowerCase()}
           />
         </View>
 
@@ -135,7 +174,7 @@ const ValasJualScreen = () => {
       </View>
 
       <View style={styles.bottomContainer}>
-      <StyledButton
+        <StyledButton
           mode={isButtonDisabled() ? "primary-disabled" : "primary"}
           title="Lanjut"
           size={"lg"}
@@ -152,7 +191,7 @@ export default ValasJualScreen;
 
 const styles = StyleSheet.create({
   container: {
-    height: Dimensions.get("window").height*1.05, 
+    height: Dimensions.get("window").height * 1.05,
     justifyContent: "flex-start",
     backgroundColor: "white",
   },

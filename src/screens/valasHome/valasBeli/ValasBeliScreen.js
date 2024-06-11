@@ -41,6 +41,7 @@ export default function ValasBeliScreen() {
   });
 
   const [isVisible, setIsVisible] = useState(false);
+  const [inputError, setInputError] = useState("");
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener("hardwareBackPress", () =>
@@ -57,7 +58,7 @@ export default function ValasBeliScreen() {
   };
 
   useEffect(() => {
-    setFetchMinimum(); 
+    setFetchMinimum();
   }, []);
 
   const toggleBottomSheet = () => {
@@ -66,6 +67,7 @@ export default function ValasBeliScreen() {
   };
 
   const kursCalculation = (data) => {
+    const kursResult = parseInt(data) * parseInt(transactionData.selectedCurrency.buyRate);
     setTransactionData((prevState) => ({
       ...prevState,
       convertedValue:
@@ -76,6 +78,31 @@ export default function ValasBeliScreen() {
               parseInt(transactionData.selectedCurrency.buyRate)
             ).toString(),
     }));
+    checkError(data, kursResult);
+  };
+
+  const checkError = (data, kursResult) => {
+    setTransactionData((prevState) => ({
+      ...prevState,
+      inputValue: "",
+    }));
+    if (kursResult > transactionData.selectedRekening.balance) {
+      setInputError("Jumlah melebihi Saldo Aktif Rupiah");
+    } else if (parseInt(data) < parseInt(minimumBuy)) {
+      setInputError(
+        `Minimum pembelian valas ${transactionData.selectedCurrency.currencyCode} ${minimumBuy}`
+      );
+    } else if (parseInt(data) > parseInt(minimumBuy * 25000)) {
+      setInputError(
+        `Maksimum pembelian valas ${transactionData.selectedCurrency.currencyCode} ${minimumBuy*25000}`
+      );
+    } else {
+      setInputError("");
+      setTransactionData((prevState) => ({
+        ...prevState,
+        inputValue: data,
+      }));
+    }
   };
 
   const acceptInputCurrency = (data) => {
@@ -119,6 +146,8 @@ export default function ValasBeliScreen() {
             secondInputTitle={"Nominal Asal"}
             transactionData={transactionData}
             changeTextData={acceptInputCurrency}
+            firstError={inputError}
+            secondError={inputError}
           />
           <View style={styles.kursBeliContainer}>
             <BodyMediumText

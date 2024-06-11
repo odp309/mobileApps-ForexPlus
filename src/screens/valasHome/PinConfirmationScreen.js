@@ -9,15 +9,20 @@ import {
 import React, { useEffect, useState } from "react";
 import {
   BodyLargeTextSemiBold,
+  BodySmallText,
+  BodySmallTextSemiBold,
   BodyXLTextBold,
   BodyXLTextSemiBold,
 } from "../../components/shared/StyledText";
 import colors from "../../theme/colors";
 import ContentHeader from "../../components/valasHome/shared/ContentHeader";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import IncorrectPinMessage from "../../components/valasHome/IncorrectPinMessage";
 import { fetchValasPurchase, fetchValasSell } from "../../config/ValasConfig";
 
 const PinConfirmationScreen = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [errorVisible, setErrorVisible] = useState(false);
   const [pin, setPin] = useState("");
   const [pinStatus, setPinStatus] = useState(false);
   const navigation = useNavigation();
@@ -38,7 +43,7 @@ const PinConfirmationScreen = () => {
         pin
       );
       if (beli) {
-        navigation.navigate("TransactionResult");
+        navigation.navigate("TransactionResult",{transactionData,transactionType});
         setPinStatus(true);
         console.log("Transaction successful:", beli);
       } else {
@@ -58,10 +63,13 @@ const PinConfirmationScreen = () => {
         pin
       );
       if (jual) {
-        navigation.navigate("TransactionResult");
+        // navigation.navigate("TransactionResult");
         setPinStatus(true);
         console.log("Transaction successful:", jual);
+        navigation.navigate("TransactionResult", { transactionData, transactionType });
       } else {
+        console.log("salah");
+        setErrorVisible(!errorVisible);
         setPinStatus(false);
       }
     } catch (error) {
@@ -124,6 +132,11 @@ const PinConfirmationScreen = () => {
             />
           </View>
         </View>
+        {errorVisible && (
+          <View style={{ width: "100%", marginTop: 20 }}>
+            <IncorrectPinMessage />
+          </View>
+        )}
       </View>
     </View>
   );
