@@ -27,7 +27,7 @@ const ConfirmationModal = ({
   const navigation = useNavigation();
   const toPinVerification = () => {
     toggleBottomSheet();
-    navigation.navigate("PinConfirmation",{transactionData});
+    navigation.navigate("PinConfirmation",{transactionData,transactionType});
   };
 
   useEffect(() => {

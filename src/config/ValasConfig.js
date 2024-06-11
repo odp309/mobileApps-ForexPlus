@@ -36,10 +36,29 @@ const fetchBankAccount = async (userId) => {
 }
 const fetchValasPurchase = async (walletId,amountToBuy,pin) =>{
   try {
-    console.log(walletId);
-    console.log(amountToBuy);
-    console.log(pin);
+    console.log("Wallet ID : "+walletId);
+    console.log("Amount : "+amountToBuy);
+    console.log("Pin : " + pin);
     const response = await axiosInstance.post("/private/buy-valas/buy",{walletId,amountToBuy,pin});
+    console.log(response.data);
+    if(response){
+      return true;
+    }
+    else {
+      return false;
+    }
+  } catch (err) {
+    console.log(err);
+  }  
+
+}
+
+const fetchValasSell = async (walletId,amountToSell,pin) =>{
+  try {
+    console.log("Wallet ID : "+walletId);
+    console.log("Amount : "+amountToSell);
+    console.log("Pin : " + pin);
+    const response = await axiosInstance.post("/private/sell-valas/sell",{walletId,amountToSell,pin});
     console.log(response.data);
     if(response){
       return true;
@@ -77,4 +96,4 @@ const formatNumber = (number) => {
     maximumFractionDigits: 3,
   }).format(Math.floor(number));
 };
-export {fetchNomorRekening,fetchKurs,fetchBankAccount,alertConfirmation,formatNumber,fetchValasPurchase}
+export {fetchNomorRekening,fetchKurs,fetchBankAccount,alertConfirmation,formatNumber,fetchValasPurchase,fetchValasSell}

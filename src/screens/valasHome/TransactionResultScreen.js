@@ -32,15 +32,18 @@ const TransactionResultScreen = ({
   const animationRef = useRef(null); //Animation Variable
 
   const toHomeScreen = () => {
-    navigation.navigate("ValasHome");
+    navigation.reset({ index: 0, routes: [{ name: "ValasHome" } ]});
   };
 
   // Animation Function
   useEffect(() => {
-    if (animationRef.current) { 
+    if (animationRef.current) {
       animationRef.current.play();
     }
-    const backHandler = BackHandler.addEventListener("hardwareBackPress", () => true);
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => true
+    );
     return () => backHandler.remove();
   }, []);
 
@@ -48,7 +51,7 @@ const TransactionResultScreen = ({
     <View style={styles.container}>
       <View style={styles.topContainer}></View>
 
-      <View style={styles.middleContainer}> 
+      <View style={styles.middleContainer}>
         <View style={{ width: "100%", alignItems: "center" }}>
           <LottieView
             ref={animationRef}
@@ -70,11 +73,11 @@ const TransactionResultScreen = ({
           </BodySmallText>
         </View>
         {/* Summary Result Card Component */}
-        <View style={{width:'100%',alignItems:'center',marginTop:'15%'}}>
-        <ResultCard />
+        <View style={{ width: "100%", alignItems: "center", marginTop: "15%" }}>
+          <ResultCard />
         </View>
       </View>
-      
+
       {/* To Homepage Button */}
       <View style={styles.bottomContainer}>
         <StyledButton
@@ -110,6 +113,6 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     flex: 0.15,
-    paddingHorizontal: 20,  
+    paddingHorizontal: 20,
   },
 });

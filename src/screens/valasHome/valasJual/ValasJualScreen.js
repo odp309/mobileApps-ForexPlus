@@ -20,6 +20,7 @@ import ConfirmationModal from "../../../components/valasHome/shared/Confirmation
 import { alertConfirmation, formatNumber } from "../../../config/ValasConfig";
 import WalletSource from "../../../components/valasHome/shared/WalletSource";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import WalletValasSource from "../../../components/valasHome/shared/WalletValasSource";
 
 const DIMENSION_HEIGHT = Dimensions.get("window").height;
 
@@ -34,7 +35,7 @@ const ValasJualScreen = () => {
     inputValue: "",
     convertedValue: ""
   });
-  const [isVisible, setIsVisible] = useState(false); //Modal Visibility
+  const [isVisible, setIsVisible] = useState(false);  
 
   useEffect(()=>{
     const backHandler = BackHandler.addEventListener("hardwareBackPress",() => alertConfirmation(navigation));
@@ -93,11 +94,10 @@ const ValasJualScreen = () => {
         <View
           style={{ backgroundColor: colors.primary.primaryThree, height: 4 }}
         />
-        <View>
-        <WalletSource
-            jenisRekening={transactionData.selectedRekening.type}
-            rekening={transactionData.selectedRekening.accountNumber}
-            saldo={formatNumber(transactionData.selectedRekening.balance)}
+        <View> 
+          <WalletValasSource
+            saldo={transactionData.selectedWallet.balance}
+            countryCode={transactionData.selectedWallet.currencyCode.toLowerCase()} 
           />
         </View>
 
@@ -111,7 +111,7 @@ const ValasJualScreen = () => {
       </View>
 
       <View style={styles.bottomContainer}>
-        {transactionData.inputValue === "" ? (
+        {transactionData.inputValue === "" || transactionData.selectedWallet.balance < transactionData.inputValue ? (
           <StyledButton
             mode="primary-disabled"
             title="Lanjut"

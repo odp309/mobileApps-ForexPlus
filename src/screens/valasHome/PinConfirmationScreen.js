@@ -15,51 +15,78 @@ import {
 import colors from "../../theme/colors";
 import ContentHeader from "../../components/valasHome/shared/ContentHeader";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { fetchValasPurchase } from "../../config/ValasConfig";
+import { fetchValasPurchase, fetchValasSell } from "../../config/ValasConfig";
 
-const PinConfirmationScreen = () => { 
+const PinConfirmationScreen = () => {
   const [pin, setPin] = useState("");
   const [pinStatus, setPinStatus] = useState(false);
   const navigation = useNavigation();
   const route = useRoute();
   const transactionData = route.params?.transactionData;
+  const transactionType = route.params?.transactionType;
   const handlePinChange = (text) => {
     if (text.length <= 6) {
       setPin(text);
     }
   };
 
-  const sendTransaction = async () => {
+  const buyTransaction = async () => {
     try {
       const beli = await fetchValasPurchase(
-        transactionData.selectedWallet.id,
+        transactionData.selectedWallet.walletId,
         transactionData.inputValue,
         pin
-      ); 
-      console.log('Transaction successful:', beli);
-      navigation.navigate('TransactionResult'); 
-    } catch (error) { 
-      console.error('Transaction failed:', error);
-      setPinStatus(false); 
+      );
+      if (beli) {
+        navigation.navigate("TransactionResult");
+        setPinStatus(true);
+        console.log("Transaction successful:", beli);
+      } else {
+        setPinStatus(false);
+      }
+    } catch (error) {
+      console.error("Transaction failed:", error);
+      setPinStatus(false);
     }
-  }
+  };
+
+  const sellTransaction = async () => {
+    try {
+      const jual = await fetchValasSell(
+        transactionData.selectedWallet.walletId,
+        transactionData.inputValue,
+        pin
+      );
+      if (jual) {
+        navigation.navigate("TransactionResult");
+        setPinStatus(true);
+        console.log("Transaction successful:", jual);
+      } else {
+        setPinStatus(false);
+      }
+    } catch (error) {
+      console.error("Transaction failed:", error);
+      setPinStatus(false);
+    }
+  };
 
   useEffect(() => {
     console.log(transactionData.selectedWallet.walletId);
-    console.log(transactionData.inputValue); 
-        transactionData.inputValue,
-        pin
+
+    console.log(transactionData.inputValue);
+    transactionData.inputValue, pin;
     setPinStatus(true);
-    if (pin.length === 6) { 
-       sendTransaction();
-      // if (pin === "654321") {
-      //   console.log("benar");
-      //   setPinStatus(true);
-      //   navigation.navigate("TransactionResult");
-      // } else {
-      //   console.log("salah");
-      //   setPinStatus(false);
-      // }
+    if (pin.length === 6) {
+      if(transactionType==="beli"){
+        buyTransaction();
+      }
+      else if(transactionType==="jual"){
+        sellTransaction();
+      }
+      else {
+        null;
+      }
+      
     }
   }, [pin]);
   return (
