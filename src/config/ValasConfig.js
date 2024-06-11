@@ -104,6 +104,20 @@ const fetchMinimumSell = async (currencyCode) => {
   }
 };
 
+const findBankAccountInfo = async (senderAccountNumber,recipientAccountNumber,currencyCode) => { 
+ // console.log(senderAccountNumber,recipientAccountNumber,currencyCode );
+  try {
+    const accountFind = await axiosInstance.post(
+      "/private/bank_account/get-with-wallet",
+      {senderAccountNumber,recipientAccountNumber,currencyCode }
+    );
+    return accountFind.data;
+  } catch (error) {
+    console.log(error.response.data.detail);
+    return null;
+  }
+};
+
 const alertConfirmation = (navigation) => {
   Alert.alert(
     "Anda Ingin Membatalkan Transaksi?",
@@ -137,5 +151,6 @@ export {
   fetchValasPurchase,
   fetchValasSell,
   fetchMinimumBuy,
-  fetchMinimumSell
+  fetchMinimumSell,
+  findBankAccountInfo
 };

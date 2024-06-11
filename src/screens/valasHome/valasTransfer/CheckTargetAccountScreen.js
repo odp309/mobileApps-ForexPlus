@@ -20,10 +20,13 @@ import {
 import colors from "../../../theme/colors";
 import Input from "../../../components/shared/Input";
 import StyledButton from "../../../components/shared/StyledButton";
-import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { useNavigation, useFocusEffect, useRoute } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
-import { alertConfirmation } from "../../../config/ValasConfig";
+import {
+  alertConfirmation,
+  findBankAccountInfo,
+} from "../../../config/ValasConfig";
 
 const dataRekening = [
   { id: "1", noRek: "123456789", nama: "Arfiandi Wijatmiko" },
@@ -35,6 +38,11 @@ const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
 const CheckTargetAccountScreen = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+  const currentCurrencyCode = route.params?.selectedWallet.currencyCode;
+  const currentRekening = route.params?.selectedRekening;
+  const currentWallet = route.params?.selectedWallet;
+
   const [inputRekening, setInputRekening] = useState("");
   const [isCheckingAccount, setIsCheckingAccount] = useState(false);
   const [hasChecked, setHasChecked] = useState(false);
@@ -46,18 +54,21 @@ const CheckTargetAccountScreen = () => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const translateYAnim = useRef(new Animated.Value(50)).current;
 
-  const findNoRek = (noRek) =>
-    dataRekening.find((item) => item.noRek === noRek);
+  const findNoRek = async (currentRek,noRek,currencyCode) => {
+    const hasil = await findBankAccountInfo(currentRek,noRek,currencyCode);
+    return hasil;
+  };
 
-  const handleFindNoRek = () => {
+  const handleFindNoRek = async () => {
     setHasChecked(true);
     setMessageStatus("Mengecek Nomor rekening tujuan...");
     setAccountCheckStatus("loading");
     setIsCheckingAccount(true);
     setButtonVisible(false);
-    setTimeout(() => {
-      const findResult = findNoRek(inputRekening);
 
+    try {
+      const findResult = await findNoRek(currentRekening.accountNumber,inputRekening,currentCurrencyCode);
+      console.log(findResult);
       if (findResult) {
         setAccountFind(findResult);
         setMessageStatus("Berhasil Menemukan");
@@ -72,8 +83,14 @@ const CheckTargetAccountScreen = () => {
         setAccountFind(null);
         setButtonVisible(true);
       }
-      setIsCheckingAccount(false);
-    }, 500);
+    } catch (error) {
+      console.error(error);
+      setMessageStatus("Terjadi kesalahan, coba lagi.");
+      setAccountCheckStatus("fail");
+      setAccountFind(null);
+      setButtonVisible(true);
+    }
+    setIsCheckingAccount(false);
   };
 
   const animateCardAccount = () => {
@@ -96,9 +113,8 @@ const CheckTargetAccountScreen = () => {
   useEffect(() => {
     if (accountFind) {
       const timer = setTimeout(() => {
-        navigation.navigate("EnterTransfer", { data: accountFind });
+        navigation.navigate("EnterTransfer", {accountFind,currentWallet });
       }, 800);
-
       return () => clearTimeout(timer);
     }
   }, [accountFind, navigation]);
@@ -145,7 +161,7 @@ const CheckTargetAccountScreen = () => {
           onChangeText={setInputRekening}
           placeholder={"Masukkan nomor rekening"}
           iconColor={colors.color.lightGrey}
-          onPress={()=> setInputRekening("")}
+          onPress={() => setInputRekening("")}
         />
 
         {hasChecked && (
@@ -204,26 +220,27 @@ const CheckTargetAccountScreen = () => {
           >
             <ImageBackground
               resizeMode="stretch"
-              source={require("../../../../assets/card-account.png")}
+              source={{ uri: "https://i.imgur.com/qcbAgDD.png" }}
               style={styles.cardContainer}
             >
               <View>
                 <Image
-                  source={require("../../../../assets/icon-user-he.png")}
+                  source={{ uri: "https://i.imgur.com/o1jPFSo.png" }}
                   style={{ width: 80, height: 80 }}
                 />
               </View>
               <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                <BodyLargeTextSemiBold
-                  style={{ color: colors.primary.primaryOne, fontSize: 20 }}
-                >
-                  {accountFind.nama}
-                </BodyLargeTextSemiBold>
+                
                 <BodyMediumTextSemiBold
                   style={{ color: colors.primary.primaryOne, fontSize: 18 }}
                 >
-                  {accountFind.noRek}
+                  Dompet Valas {currentCurrencyCode}
                 </BodyMediumTextSemiBold>
+                <BodyLargeTextSemiBold
+                  style={{ color: colors.primary.primaryOne, fontSize: 20 }}
+                >
+                  {accountFind.firstName + " " + accountFind.lastName}
+                </BodyLargeTextSemiBold>
               </View>
             </ImageBackground>
           </Animated.View>

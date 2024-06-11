@@ -20,7 +20,8 @@ const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
 const EnterTransferScreen = () => { 
   const route = useRoute();
-  const { data } = route.params;
+  const accountFind = route.params.accountFind;
+  const currentWallet = route.params.currentWallet;
 
   const [modalVisible, setModalVisible] = useState(false);
   const [nominal, setNominal] = useState(0);
@@ -43,14 +44,14 @@ const EnterTransferScreen = () => {
         </BodyXLTextBold>
         <View style={styles.contentContainer}>
           <Image
-            source={require("../../../../assets/icon-user-he.png")}
+            source={{uri:"https://imgur.com/o1jPFSo.png"}}
             style={{ width: 100, height: 100, borderRadius: 99 }}
           />
           <BodyLargeTextSemiBold style={{ marginTop: 10 }}>
             Wallet AUD
           </BodyLargeTextSemiBold>
 
-          <BodyXLTextSemiBold style={{}}>{data.nama}</BodyXLTextSemiBold>
+          <BodyXLTextSemiBold style={{}}>{accountFind.firstName + " " + accountFind.lastName}</BodyXLTextSemiBold>
 
           <InputCurrency
             countryCode={"aud"}
@@ -61,7 +62,7 @@ const EnterTransferScreen = () => {
 
         <View style={styles.walletContainer}>
           <WalletSource
-          countryCode={"jpy"} saldo={"2000"}
+          countryCode={currentWallet.currencyCode.toLowerCase()} saldo={currentWallet.balance}
           />
         </View>
       </View>
@@ -75,14 +76,14 @@ const EnterTransferScreen = () => {
           }}
         />
       </View>
-      <ConfirmationModal
+      {/* <ConfirmationModal
           title={"Konfirmasi Pembelian Valas"}
           isVisible={modalVisible}
           toggleBottomSheet={()=> setModalVisible(false)}  
-          namaPenerima={"aa"}
+          namaPenerima={accountFind.firstName+" "+accountFind.lastName}
           totalTransfer={nominal}
           transactionType={"transfer"}
-        />
+        /> */}
     </View>
   );
 };
