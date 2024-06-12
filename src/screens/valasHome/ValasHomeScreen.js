@@ -18,6 +18,7 @@ import CurrencyInformation from "../../components/valasHome/CurrencyInformation"
 import { fetchBankAccount, fetchNomorRekening } from "../../config/ValasConfig";
 import { userData } from "../../config/AuthConfig";
 import ValasCreateContent from "../../components/valasHome/ValasCreateContent";
+import AddWalletButton from "../../components/valasHome/AddWalletButton";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
@@ -61,9 +62,9 @@ const ValasHomeScreen = () => {
     }
   }, [selectedRekening]);
 
-  useEffect(()=>{
-    console.log("wallet: "+selectedWallet);
-  },[selectedWallet])
+  useEffect(() => {
+    console.log("wallet: " + selectedWallet);
+  }, [selectedWallet]);
 
   if (isLoading) {
     return (
@@ -98,47 +99,50 @@ const ValasHomeScreen = () => {
     },
     {
       id: "2",
-      view: () => (selectedWallet!=null ? ( 
+      view: () =>
+        selectedWallet != null ? (
           <WalletCard
             valasType={selectedWallet.currencyCode}
             selectedWallet={selectedWallet}
             setSelectedWallet={setSelectedWallet}
-          /> 
-      ) :(
-        <ValasCreateContent />
-      )),
+          />
+        ) : (
+          <ValasCreateContent selectedRekening={selectedRekening} />
+        ),
     },
     {
       id: "3",
-      view: () => (selectedWallet != null && (
+      view: () =>
+        selectedWallet != null && (
           <ValasFeatures
             selectedRekening={selectedRekening}
             selectedWallet={selectedWallet}
             selectedCurrency={selectedCurrency}
-          /> 
-      )),
+          />
+        ),
     },
     {
       id: "4",
-      view: () => (( selectedWallet != null) && (
-        <View
-          style={{
-            width: "100%",
-            paddingHorizontal: 20,
-            paddingTop: 10,
-            marginTop: 10,
-            borderTopWidth: 4,
-            borderTopColor: colors.primary.primaryThree,
-          }}
-        >
-          <BodyMediumTextSemiBold
-            style={{ color: colors.color.grey, marginBottom: 10 }}
+      view: () =>
+        selectedWallet != null && (
+          <View
+            style={{
+              width: "100%",
+              paddingHorizontal: 20,
+              paddingTop: 10,
+              marginTop: 10,
+              borderTopWidth: 4,
+              borderTopColor: colors.primary.primaryThree,
+            }}
           >
-            Daftar Reservasi Tarik
-          </BodyMediumTextSemiBold>
-          <ValasReservation />
-        </View>
-      )),
+            <BodyMediumTextSemiBold
+              style={{ color: colors.color.grey, marginBottom: 10 }}
+            >
+              Daftar Reservasi Tarik
+            </BodyMediumTextSemiBold>
+            <ValasReservation />
+          </View>
+        ),
     },
     {
       id: "5",
@@ -186,6 +190,11 @@ const ValasHomeScreen = () => {
           />
         </View>
       )}
+      {selectedWallet != null && (
+        <View style={styles.addWallet}>
+          <AddWalletButton selectedRekening={selectedRekening} />
+        </View>
+      )}
     </View>
   );
 };
@@ -200,6 +209,12 @@ const styles = StyleSheet.create({
   },
   content: {
     top: 0.22 * WINDOW_HEIGHT,
-    flex:0.78
+    flex: 0.78,
   },
+  addWallet:{
+    zIndex:10,
+    position:'absolute',
+    bottom:50,
+    right:26
+  }
 });

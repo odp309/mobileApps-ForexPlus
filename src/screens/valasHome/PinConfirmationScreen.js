@@ -18,7 +18,8 @@ import colors from "../../theme/colors";
 import ContentHeader from "../../components/valasHome/shared/ContentHeader";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import IncorrectPinMessage from "../../components/valasHome/IncorrectPinMessage";
-import { fetchValasPurchase, fetchValasSell } from "../../config/ValasConfig";
+import { fetchValasPurchase, fetchValasSell, fetchValasAddWallet } from "../../config/ValasConfig";
+import { userData } from "../../config/AuthConfig";
 
 const PinConfirmationScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -78,6 +79,29 @@ const PinConfirmationScreen = () => {
     }
   };
 
+  const addWalletTransaction = async () => {
+    try {
+          const addWallet = await fetchValasAddWallet (
+            userData.id,
+            transactionData.selectedRekening.accountNumber,
+            transactionData.selectedCurrency.currencyCode,
+            transactionData.inputValue,
+            pin
+          );
+          if (addWallet) {
+            setPinStatus(true);
+            console.log("Transaction Add Wallet successful:", addWallet);
+            navigation.navigate("TransactionResult",{transactionData,transactionType});
+          } else {
+            setPinStatus(false);
+          }
+        } catch (error) {
+          console.error("Transaction failed:", error);
+          setPinStatus(false);
+        }
+    
+    }
+
   useEffect(() => {
     console.log(transactionData.selectedWallet.walletId);
 
@@ -91,6 +115,9 @@ const PinConfirmationScreen = () => {
       else if(transactionType==="jual"){
         sellTransaction();
       }
+      else if(transactionType === "add wallet"){
+        addWalletTransaction();
+        }        
       else {
         null;
       }

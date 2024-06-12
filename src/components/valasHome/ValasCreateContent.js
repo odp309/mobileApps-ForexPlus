@@ -1,9 +1,12 @@
 import { Image, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BodyMediumText } from "../shared/StyledText";
 import StyledButton from "../shared/StyledButton";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
-const ValasCreateContent = () => {
+const ValasCreateContent = ({ selectedRekening }) => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <Image
@@ -11,14 +14,17 @@ const ValasCreateContent = () => {
         source={{ uri: "https://imgur.com/rlCuYCA.png" }}
         resizeMode="contain"
       />
-      <View style={{alignItems:'center',width:"70%"}}>
-        <BodyMediumText style={{textAlign:"center",marginTop:10}}>
+      <View style={{ alignItems: "center", width: "70%" }}>
+        <BodyMediumText style={{ textAlign: "center", marginTop: 10 }}>
           Hemat waktu, tanpa ribet! {"\n"}Buka dompet valas secara online.{" "}
         </BodyMediumText>
         <StyledButton
           title={"Buka Sekarang"}
           mode={"primary"}
-          style={{  marginVertical: 30 }}
+          style={{ marginVertical: 30 }}
+          onPress={() => {
+            navigation.navigate("ChooseWallet", { selectedRekening });
+          }}
         />
       </View>
     </View>

@@ -24,7 +24,7 @@ const ValasConversion = ({
           {firstInputTitle}
         </BodyRegularText>
         <InputCurrency
-          countryCode={transactionData.selectedWallet.currencyCode.toLowerCase()}
+          countryCode={transactionData.selectedCurrency.currencyCode.toLowerCase()}
           onChangeText={changeTextData}
         />
 

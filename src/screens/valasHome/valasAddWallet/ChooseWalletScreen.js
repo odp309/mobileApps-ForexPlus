@@ -12,32 +12,43 @@ import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
 import { fetchKurs } from "../../../config/ValasConfig";
 import { BodyLargeTextSemiBold } from "../../../components/shared/StyledText";
 import colors from "../../../theme/colors";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation,useRoute } from "@react-navigation/native";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
 const ChooseWalletScreen = () => {
+  const route = useRoute()
   const [valasList, setValasList] = useState(null);
-  const [chosenValas, setChosenValas] = useState(null);
   const navigation = useNavigation();
+  const [selectedRekening,setSelectedRekening] = useState(route.params.selectedRekening)
+  // const route = useRoute();
+  // const [transactionData,setTransactionData] = useState(transactionData)
 
   const getData = async () => {
     try {
       const data = await fetchKurs();
-      setValasList(data);
+      const excludeWallet = selectedRekening.listWallet;
+      
+      //Filter wallet if the account already have their wallet
+      const currencyCodeExclude = excludeWallet.map(item => item.currencyCode);
+      const filteredData = data.filter(item => !currencyCodeExclude.includes(item.currencyCode));
+
+      setValasList(filteredData);
     } catch (error) {
       console.error("Error di ChooseWalletScreen: " + error);
     }
   };
 
   useEffect(() => {
+    console.log("CHOOSEWALLET");
+    console.log(selectedRekening);
     getData();
   }, []);
 
   const ValasItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate("FirstTopUp",  {item} );
+        navigation.navigate("FirstTopUp",  {selectedRekening,item} );
       }}
       style={styles.itemContainer}
     >

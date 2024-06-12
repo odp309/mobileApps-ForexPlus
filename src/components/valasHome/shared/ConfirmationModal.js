@@ -70,16 +70,16 @@ const ConfirmationModal = ({
           >
             <View>
               <Image
-                source={{ uri: transactionData.selectedWallet.flagIcon }}
+                source={{ uri: transactionData.selectedCurrency.flagIcon }}
                 style={{ width: 50, height: 50, marginRight: 10 }}
               />
             </View>
             <View>
               <BodyLargeText style={{ fontWeight: "bold" }}>
-                {transactionData.selectedWallet.currencyName}
+                {transactionData.selectedCurrency.currencyName}
               </BodyLargeText>
               <BodyMediumText>
-                {transactionData.selectedWallet.currencyCode}
+                {transactionData.selectedCurrency.currencyCode}
               </BodyMediumText>
             </View>
           </View>
@@ -91,14 +91,14 @@ const ConfirmationModal = ({
                 <View style={styles.confirmationText}>
                   <BodyRegularText>Nominal Pembelian</BodyRegularText>
                   <BodyRegularText style={{ fontWeight: "bold" }}>
-                    {transactionData.selectedWallet.currencyCode}{" "}
+                    {transactionData.selectedCurrency.currencyCode}{" "}
                     {transactionData.inputValue}
                   </BodyRegularText>
                 </View>
                 <View style={styles.confirmationText}>
                   <BodyRegularText>Kurs Jual</BodyRegularText>
                   <BodyRegularText style={{ fontWeight: "bold" }}>
-                    {transactionData.selectedWallet.currencyCode} 1 = RP.{" "}
+                    {transactionData.selectedCurrency.currencyCode} 1 = RP.{" "}
                     {transactionType === "jual"
                       ? formatNumber(transactionData.selectedCurrency.sellRate)
                       : formatNumber(transactionData.selectedCurrency.buyRate)}
@@ -126,6 +126,31 @@ const ConfirmationModal = ({
                   </BodyRegularText>
                 </View>
               </View>
+            ) : transactionType === "add wallet" ? (
+              <View>
+                <View style={styles.confirmationText}>
+                  <BodyRegularText>Nominal Setoran</BodyRegularText>
+                  <BodyRegularText style={{ fontWeight: "bold" }}>
+                    {transactionData.selectedCurrency.currencyCode}{" "}
+                    {transactionData.inputValue}
+                  </BodyRegularText>
+                </View>
+                <View style={styles.confirmationText}>
+                  <BodyRegularText>Kurs Beli</BodyRegularText>
+                  <BodyRegularText style={{ fontWeight: "bold" }}>
+                    {transactionData.selectedCurrency.currencyCode} 1 = RP.{" "}
+                    {transactionType === "jual"
+                      ? formatNumber(transactionData.selectedCurrency.sellRate)
+                      : formatNumber(transactionData.selectedCurrency.buyRate)}
+                  </BodyRegularText>
+                </View>
+                <View style={styles.confirmationText}>
+                  <BodyRegularText>Total Transaksi</BodyRegularText>
+                  <BodyRegularText style={{ fontWeight: "bold" }}>
+                    IDR {formatNumber(transactionData.convertedValue)}
+                  </BodyRegularText>
+                </View>
+              </View>
             ) : null}
           </View>
 
@@ -143,6 +168,13 @@ const ConfirmationModal = ({
                 style={{ backgroundColor: colors.color.white }}
                 countryCode={transactionData.selectedWallet.currencyCode.toLowerCase()}
                 saldo={transactionData.selectedWallet.balance}
+              />
+            ) : transactionType === "add wallet" ? (
+              <WalletSource
+                style={{ backgroundColor: colors.color.white }}
+                rekening={transactionData.selectedRekening.accountNumber}
+                jenisRekening={transactionData.selectedRekening.type}
+                saldo={transactionData.selectedRekening.balance}
               />
             ) : (
               <WalletValasSource
