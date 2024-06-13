@@ -8,7 +8,7 @@ const ExchangeResult = ({value}) => {
     <View style={styles.container}>
       <View style={styles.countryContainer}>
         <Image
-          source={require("../../../../assets/icons/flags/Indonesia.png")}
+          source={{uri : "https://i.imgur.com/1ogMVPV.png"}}
           style={{ width: 20, height: 20, marginRight: 10 }}
         />
         <BodyMediumText
@@ -27,7 +27,7 @@ export default ExchangeResult;
 const styles = StyleSheet.create({
     container: {
         justifyContent: "center",
-        marginVertical: 10,
+        marginTop: 10,
         width: "100%",
         height:42,
         borderRadius: 100, // Adjust the border radius as needed

@@ -1,40 +1,86 @@
 import {
   Dimensions,
   StyleSheet,
-  View, 
+  View,
   Alert,
   BackHandler,
+  ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { 
+import {
   BodyMediumText,
-  BodyLargeText, 
+  BodyLargeText,
 } from "../../../components/shared/StyledText";
-import colors from "../../../theme/colors"; 
-import { FontAwesome } from "@expo/vector-icons"; 
-import StyledButton from "../../../components/shared/StyledButton"; 
-import { useNavigation } from "@react-navigation/core";
+import colors from "../../../theme/colors";
+import { FontAwesome } from "@expo/vector-icons";
+import StyledButton from "../../../components/shared/StyledButton";
 import ValasConversion from "../../../components/valasHome/shared/ValasConversion";
 
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
 import ConfirmationModal from "../../../components/valasHome/shared/ConfirmationModal";
+import {
+  alertConfirmation,
+  fetchMinimumSell,
+  formatNumber,
+} from "../../../config/ValasConfig";
+import WalletSource from "../../../components/valasHome/shared/WalletSource";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import WalletValasSource from "../../../components/valasHome/shared/WalletValasSource";
-import { alertConfirmation } from "../../../config/ValasConfig";
 
 const DIMENSION_HEIGHT = Dimensions.get("window").height;
 
 const ValasJualScreen = () => {
+  const route = useRoute();
   const navigation = useNavigation();
-  const [exchange, setExchange] = useState("");
-  const [inputValue, setInputValue] = useState("");
-  const [kurs, setKurs] = useState("103");
-  const [valas, setValas] = useState("JPY");
-  const [isVisible, setIsVisible] = useState(false); //Modal Visibility
+  const [minimumSell, setMinimumSell] = useState(null);
 
-  useEffect(()=>{
-    const backHandler = BackHandler.addEventListener("hardwareBackPress",() => alertConfirmation(navigation));
+  const [transactionData, setTransactionData] = useState({
+    selectedWallet: route.params?.selectedWallet,
+    selectedRekening: route.params?.selectedRekening,
+    selectedCurrency: route.params?.selectedCurrency,
+    inputValue: "",
+    convertedValue: "",
+  });
+
+  const [isVisible, setIsVisible] = useState(false);
+  const [inputError, setInputError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener("hardwareBackPress", () =>
+      alertConfirmation(navigation)
+    );
     return () => backHandler.remove();
-  },[])
+  }, []);
+
+  const setFetchMinimum = async () => {
+    try {
+      const minimumData = await fetchMinimumSell(
+        transactionData.selectedWallet.currencyCode.toUpperCase()
+      );
+      setMinimumSell(minimumData);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    setTimeout(() => {
+      setFetchMinimum();
+    }, 500);
+  }, []);
+
+  const isButtonDisabled = () => {
+    const inputValue = parseFloat(transactionData.inputValue);
+    const convertedValue = parseFloat(transactionData.convertedValue);
+    const balance = parseFloat(transactionData.selectedRekening.balance);
+
+    return (
+      transactionData.inputValue === "" ||
+      inputValue < minimumSell
+    );
+  };
 
   const toggleBottomSheet = () => {
     console.log(isVisible);
@@ -42,16 +88,61 @@ const ValasJualScreen = () => {
   };
 
   const kursCalculation = (data) => {
-    data === ""
-      ? setExchange("")
-      : setExchange(parseInt(data) * parseInt(kurs));
+    const kursResult =
+      parseInt(data) * parseInt(transactionData.selectedCurrency.sellRate);
+    setTransactionData((prevState) => ({
+      ...prevState,
+      convertedValue:
+        data === ""
+          ? ""
+          : (
+              parseInt(data) *
+              parseInt(transactionData.selectedCurrency.sellRate)
+            ).toString(),
+    }));
+    checkError(data);
+  };
+
+  const checkError = (data) => {
+    setTransactionData((prevState) => ({
+      ...prevState,
+      inputValue: "",
+    })); if (parseInt(data) < parseInt(minimumSell)) {
+      setInputError(
+        `Minimum penjualan valas ${transactionData.selectedCurrency.currencyCode} ${minimumSell}`
+      );
+    } else if (parseInt(data) > parseInt(minimumSell * 25000)) {
+      setInputError(
+        `Maksimum penjualan valas ${
+          transactionData.selectedCurrency.currencyCode
+        } ${minimumSell * 25000}`
+      );
+    } else {
+      setInputError("");
+      setTransactionData((prevState) => ({
+        ...prevState,
+        inputValue: data,
+      }));
+    }
   };
 
   const acceptInputCurrency = (data) => {
     console.log(data);
-    setInputValue(data);
+
+    setTransactionData((prevState) => ({
+      ...prevState,
+      inputValue: data,
+    }));
     kursCalculation(data);
   };
+
+  if (isLoading) {
+    return (
+      <View style={{ justifyContent: "center", flex: 1 }}>
+        <ActivityIndicator size="large" color={colors.primary.primaryOne} />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -65,8 +156,10 @@ const ValasJualScreen = () => {
           <ValasConversion
             firstInputTitle={"Nominal Penjualan"}
             secondInputTitle={"Nominal Pendapatan"}
-            exchange={exchange}
+            transactionData={transactionData}
             changeTextData={acceptInputCurrency}
+            firstError={inputError}
+            secondError={inputError}
           />
 
           {/* Kurs Jual */}
@@ -77,7 +170,8 @@ const ValasJualScreen = () => {
               Kurs Jual
             </BodyMediumText>
             <BodyLargeText style={styles.textStyle}>
-              {valas} 1.00 = Rp. {kurs}
+              {transactionData.selectedCurrency.currencyCode} 1.00 = IDR{" "}
+              {formatNumber(transactionData.selectedCurrency.sellRate)}
             </BodyLargeText>
           </View>
         </View>
@@ -85,36 +179,30 @@ const ValasJualScreen = () => {
           style={{ backgroundColor: colors.primary.primaryThree, height: 4 }}
         />
         <View>
-          <WalletValasSource countryCode="aud" saldo="20000" />
+          <WalletValasSource
+            saldo={transactionData.selectedWallet.balance}
+            selectedWallet={transactionData.selectedWallet}
+          />
         </View>
 
         <ConfirmationModal
           title={"Konfirmasi Penjualan Valas"}
+          transactionType={"jual"}
           isVisible={isVisible}
           toggleBottomSheet={toggleBottomSheet}
-          pendapatan={exchange}
-          kurs={kurs}
-          inputSaldo={inputValue}
+          transactionData={transactionData}
         />
       </View>
 
       <View style={styles.bottomContainer}>
-        {inputValue === "" ? (
-          <StyledButton
-            mode="primary-disabled"
-            title="Lanjut"
-            size={"lg"}
-            style={{ marginBottom: 20 }}
-          />
-        ) : (
-          <StyledButton
-            mode="primary"
-            title="Lanjut"
-            size={"lg"}
-            onPress={toggleBottomSheet}
-            style={{ marginBottom: 20 }}
-          />
-        )}
+        <StyledButton
+          mode={isButtonDisabled() ? "primary-disabled" : "primary"}
+          title="Lanjut"
+          size={"lg"}
+          onPress={toggleBottomSheet}
+          style={{ marginBottom: 20 }}
+          disabled={isButtonDisabled()}
+        />
       </View>
     </View>
   );
@@ -124,7 +212,7 @@ export default ValasJualScreen;
 
 const styles = StyleSheet.create({
   container: {
-    height: Dimensions.get("window").height*1.05, 
+    height: Dimensions.get("window").height * 1.05,
     justifyContent: "flex-start",
     backgroundColor: "white",
   },

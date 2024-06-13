@@ -1,10 +1,11 @@
 import { Dimensions, Image, StyleSheet, View } from "react-native";
 import colors from "../../../theme/colors";
 import { BodyMediumText, BodySmallText } from "../../shared/StyledText";
+import { formatNumber } from "../../../config/ValasConfig";
 
 const DIMENSION_HEIGHT = Dimensions.get("window").height;
 
-const WalletSource = ({ style, rekening,jenisRekening,saldo }) => {
+const WalletSource = ({ style,selectedRekening}) => {
   return (
     <View style={[styles.container, style]}>
       <BodyMediumText>Dompet Sumber</BodyMediumText>
@@ -13,18 +14,15 @@ const WalletSource = ({ style, rekening,jenisRekening,saldo }) => {
           <View style={styles.contentContainer}>
             <View style={styles.textContainer}>
               <BodyMediumText style={{ fontWeight: "bold" }}>
-                {jenisRekening}
+                {selectedRekening.type.toUpperCase()}
               </BodyMediumText>
-              <BodySmallText>{rekening}</BodySmallText>
+              <BodySmallText>{selectedRekening.accountNumber}</BodySmallText>
               <BodyMediumText style={{ fontWeight: "bold" }}>
-                {saldo}
+                Rp. {formatNumber(selectedRekening.balance)}
               </BodyMediumText>
             </View>
             <View style={styles.landmarkContainer}>
-                <Image
-                  resizeMode="contain" 
-                  style={{ width: 100}}
-                />
+              <Image resizeMode="contain" style={{ width: 100 }} />
             </View>
           </View>
         </View>
@@ -37,7 +35,7 @@ const WalletSource = ({ style, rekening,jenisRekening,saldo }) => {
               borderBottomRightRadius: 50,
               borderTopRightRadius: 50,
             }}
-            source={require("../../../../assets/Intersect.png")}
+            source={{uri:"https://imgur.com/WD5nbpF.png"}}
           />
         </View>
       </View>
@@ -52,7 +50,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingTop: 20,
     paddingBottom: 30,
-    paddingHorizontal: 20, 
+    paddingHorizontal: 20,
   },
   cardContainer: {
     height: 100,

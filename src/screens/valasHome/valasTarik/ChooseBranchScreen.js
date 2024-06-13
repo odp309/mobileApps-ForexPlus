@@ -6,85 +6,28 @@ import {
   FlatList,
 } from "react-native";
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
-import { HeadingSixText } from "../../../components/shared/StyledText";
+import { BodyMediumTextSemiBold, HeadingSixText } from "../../../components/shared/StyledText";
 import colors from "../../../theme/colors";
 import { FontAwesome } from "@expo/vector-icons";
-import { useState } from "react";
-import PullConfirmationModal from "../../../components/valasHome/valasTarik/PullConfirmationModal";
+import { useEffect, useState } from "react";
 import BranchItem from "../../../components/valasHome/valasTarik/BranchItem";
-import { useNavigation } from "@react-navigation/native";
-
-const branchDummy = [
-  {
-    id: "1",
-    branchName: "ASEMKA",
-    alamat: "DKI Jakarta, Jakarta Barat",
-  },
-  {
-    id: "2",
-    branchName: "KCP CENTRAL PARK",
-    alamat: "DKI Jakarta, Jakarta Barat",
-  },
-  {
-    id: "3",
-    branchName: "CITRA GARDEN 2",
-    alamat: "DKI Jakarta, Jakarta Barat",
-  },
-  {
-    id: "4",
-    branchName: "CITY RESORT",
-    alamat: "DKI Jakarta, Jakarta Barat",
-  },
-  {
-    id: "5",
-    branchName: "DAAN MOGOT BARU",
-    alamat: "DKI Jakarta, Jakarta Barat",
-  },
-  {
-    id: "6",
-    branchName: "DAAN MOGOT D/H TOMANG PLAZA LONG TEXT",
-    alamat: "DKI Jakarta, Jakarta Barat",
-  },
-  {
-    id: "7",
-    branchName: "MANGGA BESAR",
-    alamat: "DKI Jakarta, Jakarta Barat",
-  },
-  {
-    id: "8",
-    branchName: "BLOK M",
-    alamat: "DKI Jakarta, Jakarta Barat",
-  },
-  {
-    id: "9",
-    branchName: "1234567890123456789012345",
-    alamat: "DKI Jakarta, Jakarta Barat",
-  },
-];
+import { useNavigation, useRoute } from "@react-navigation/native";
+ 
 
 const ChooseBranchScreen = () => {
+  const route = useRoute();
   const [inputBranch, setInputBranch] = useState("");
-  const [modalVisibility, setModalVisibility] = useState(false);
-  const [selectedBranch, setSelectedBranch] = useState(branchDummy[0]);
   const navigation = useNavigation();
+  const {transactionData,location,getBranch} = route.params;
 
-  // const toggleBottomSheet = () => {
-  //   console.log("testing");
-  //   setModalVisibility(!modalVisibility);
-  // };
-
-  const receiveBranchData = (data) => {
-    // setModalVisibility(!modalVisibility);
-    setSelectedBranch(data);
-    const branchData = data;
-    console.log(branchData);
-    navigation.navigate('ChooseDate',{branchData});
+  const receiveBranchData = (branch) => {   
+    navigation.navigate('ChooseDate',{transactionData,selectedBranch:branch});
   };
 
   // Branch Item for Flatlist
   const renderedView = ({ item }) => (
     <BranchItem data={item} handleOnPress={receiveBranchData} />
-  );
+  ); 
 
   return (
     <View style={styles.container}>
@@ -119,20 +62,18 @@ const ChooseBranchScreen = () => {
 
         {/* Bank Branch Flatlist */}
         <View>
-          <FlatList
-            data={branchDummy}
+          {getBranch.length > 0 ? (
+            <FlatList
+            data={getBranch}
             key={(item) => {
               item.id;
             }}
             renderItem={renderedView}
           />
+          ):(
+            <BodyMediumTextSemiBold style={{textAlign : "center"}}>DATA KOSONG</BodyMediumTextSemiBold>
+          )}
         </View>
-
-        {/* <PullConfirmationModal
-          modalVisibility={modalVisibility}
-          toggleBottomSheet={toggleBottomSheet}
-          branchData={selectedBranch}
-        /> */}
       </View>
       <View style={styles.bottomContainer}></View>
     </View>

@@ -26,8 +26,9 @@ const ModalDaftarRekening = ({ modalVisible, setModalVisible, listRekening, sele
   }, [modalVisible, slideAnim]);
 
   useEffect(()=>{
-    console.log("Selected Rekening : " + selectedRekening);
-  },[selectedRekening])
+    // console.log("Selected Rekening : " + selectedRekening);
+  },[selectedRekening]);
+
   return (
     <View>
       <Modal

@@ -7,27 +7,38 @@ import {
   BodyLargeText,
   HeadingSixText,
 } from "../../shared/StyledText";
-import WalletSource from "./WalletValasSource";
+import WalletSource from "./WalletSource";
 import colors from "../../../theme/colors";
 import StyledButton from "../../shared/StyledButton";
 import { useNavigation } from "@react-navigation/native";
+import { formatNumber } from "../../../config/ValasConfig";
+import WalletValasSource from "./WalletValasSource";
+import { useEffect } from "react";
+import { userData } from "../../../config/AuthConfig";
+import SummaryConfirmation from "./SummaryConfirmation";
 
 const ConfirmationModal = ({
   isVisible,
   toggleBottomSheet,
   title,
-  pendapatan,
-  kurs,
-  inputSaldo,
-  transactionType,
   namaPenerima,
-  totalTransfer
+  transactionType,
+  transactionData,
 }) => {
   const navigation = useNavigation();
   const toPinVerification = () => {
     toggleBottomSheet();
-    navigation.navigate("PinConfirmation");
+    navigation.navigate("PinConfirmation", {
+      transactionData,
+      transactionType,
+    });
   };
+
+  useEffect(() => {
+    console.log(transactionData.selectedWallet.id);
+    console.log(transactionData.convertedValue);
+    console.log(userData);
+  }, [isVisible]);
   return (
     <BottomSheet isVisible={isVisible}>
       <View style={styles.container}>
@@ -60,66 +71,74 @@ const ConfirmationModal = ({
           >
             <View>
               <Image
-                source={require("../../../../assets/icons/flags/Japan.png")}
+                source={{ uri: transactionData.selectedCurrency.flagIcon }}
                 style={{ width: 50, height: 50, marginRight: 10 }}
               />
             </View>
             <View>
               <BodyLargeText style={{ fontWeight: "bold" }}>
-                Yen Jepang
+                {transactionData.selectedCurrency.currencyName}
               </BodyLargeText>
-              <BodyMediumText>JPY</BodyMediumText>
+              <BodyMediumText>
+                {transactionData.selectedCurrency.currencyCode}
+              </BodyMediumText>
             </View>
           </View>
 
           {/* SUMMARY */}
           <View style={styles.summaryContainer}>
-            {transactionType === "jual" || transactionType === "beli" ? (
-              <View>
-                <View style={styles.confirmationText}>
-                  <BodyRegularText>Nominal Pendapatan</BodyRegularText>
-                  <BodyRegularText style={{ fontWeight: "bold" }}>
-                    IDR {pendapatan}
-                  </BodyRegularText>
-                </View>
-                <View style={styles.confirmationText}>
-                  <BodyRegularText>Kurs Jual</BodyRegularText>
-                  <BodyRegularText style={{ fontWeight: "bold" }}>
-                    JPY 1 = RP. {kurs}
-                  </BodyRegularText>
-                </View>
-                <View style={styles.confirmationText}>
-                  <BodyRegularText>Total Transaksi</BodyRegularText>
-                  <BodyRegularText style={{ fontWeight: "bold" }}>
-                    JPY {inputSaldo}
-                  </BodyRegularText>
-                </View>
-              </View>
+            {transactionType === "jual" ||
+            transactionType === "beli" ||
+            transactionType == "add wallet" ? (
+              <SummaryConfirmation
+                transactionData={transactionData}
+                transactionType={transactionType}
+              />
             ) : transactionType === "transfer" ? (
               <View>
                 <View style={styles.confirmationText}>
                   <BodyRegularText>Nama Penerima</BodyRegularText>
                   <BodyRegularText style={{ fontWeight: "bold" }}>
-                    IDR {namaPenerima}
+                    {transactionData.accountFind.firstName +
+                      " " +
+                      transactionData.accountFind.lastName}
                   </BodyRegularText>
                 </View>
                 <View style={styles.confirmationText}>
                   <BodyRegularText>Total Transfer</BodyRegularText>
                   <BodyRegularText style={{ fontWeight: "bold" }}>
-                    {totalTransfer}
+                    {transactionData.inputValue}
                   </BodyRegularText>
-                </View> 
+                </View>
               </View>
             ) : null}
           </View>
 
           {/* DOMPET SUMBER */}
           <View>
-            <WalletSource
-              style={{ backgroundColor: colors.color.white }}
-              countryCode={"jpy"}
-              saldo={"2000"}
-            />
+            {transactionType === "beli" ? (
+              <WalletSource
+                style={{ backgroundColor: colors.color.white }}
+                selectedRekening={transactionData.selectedRekening}
+              />
+            ) : transactionType === "jual" ? (
+              <WalletValasSource
+                style={{ backgroundColor: colors.color.white }}
+                selectedWallet={transactionData.selectedWallet}
+              />
+            ) : transactionType === "add wallet" ? (
+              <WalletSource
+                style={{ backgroundColor: colors.color.white }}
+                selectedRekening={transactionData.selectedRekening}
+              />
+            ) : (
+              <WalletValasSource
+                style={{ backgroundColor: colors.color.white }}
+                selectedWallet={transactionData.selectedWallet}
+                countryCode={transactionData.selectedWallet.currencyCode.toLowerCase()}
+                saldo={formatNumber(transactionData.selectedWallet.balance)}
+              />
+            )}
           </View>
         </View>
 
@@ -127,7 +146,17 @@ const ConfirmationModal = ({
           {/* JUAL BUTTON */}
           <StyledButton
             mode={"primary"}
-            title={"Jual"}
+            title={
+              transactionType === "jual"
+                ? "Jual"
+                : transactionType === "beli"
+                ? "Beli"
+                : transactionType === "transfer"
+                ? "Transfer"
+                : transactionType === "add wallet"
+                ? "Setor"
+                : "Tarik"
+            }
             size={"lg"}
             onPress={toPinVerification}
             style={{ marginVertical: "5%" }}

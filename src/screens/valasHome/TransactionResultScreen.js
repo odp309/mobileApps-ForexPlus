@@ -1,12 +1,4 @@
-import {
-  StyleSheet,
-  View,
-  Dimensions,
-  Text,
-  Image,
-  ImageBackground,
-  BackHandler,
-} from "react-native";
+import { StyleSheet, View, BackHandler } from "react-native";
 import StyledButton from "../../components/shared/StyledButton";
 import {
   BodyLargeText,
@@ -15,21 +7,35 @@ import {
   HeadingSixText,
 } from "../../components/shared/StyledText";
 import colors from "../../theme/colors";
-import { useNavigation } from "@react-navigation/native";
-import { AntDesign } from "@expo/vector-icons";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { useEffect, useRef } from "react";
 import LottieView from "lottie-react-native";
 import ResultCard from "../../components/valasHome/ResultCard";
+import ResultTitleAndDate from "../../components/valasHome/shared/ResultTitleAndDate";
+import { country } from "../../config/CountryDataConfig";
 
-const TransactionResultScreen = ({
-  tipeTransaksi,
-  date,
-  tipeValas,
-  noRek,
-  transactionResult,
-}) => {
+// FORMAT transactionData:
+// const transactionData = {
+//   // Must
+//   isSetoranAwal: false, //boolean
+//   isTransfer: false, //boolean
+//   isSellOrPurchase: true, //boolean
+//   date: "29 Juni 2024",
+//   noRek: "1811209312",
+//   saldo: "1000", // Saldo transaksi
+//   tipeValas: "jpy", //jpy,aud,usd, dan lain lainnya
+
+//   // Depends on the Type of Transaction
+//   transactionType: "Penjualan",  //Pembelian || Penjualan
+//   namaPenerima: 'Adelia Kinanti',
+// };
+
+const TransactionResultScreen = () => {
   const navigation = useNavigation();
+  const route = useRoute();
   const animationRef = useRef(null); //Animation Variable
+  const transactionData = route.params?.transactionData;
+  const transactionType = route.params?.transactionType;
 
   const toHomeScreen = () => {
     navigation.navigate("ValasHome");
@@ -37,10 +43,16 @@ const TransactionResultScreen = ({
 
   // Animation Function
   useEffect(() => {
-    if (animationRef.current) { 
+    console.log("KOKO");
+    console.log(transactionData);
+    console.log(transactionType);
+    if (animationRef.current) {
       animationRef.current.play();
     }
-    const backHandler = BackHandler.addEventListener("hardwareBackPress", () => true);
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => true
+    );
     return () => backHandler.remove();
   }, []);
 
@@ -48,7 +60,7 @@ const TransactionResultScreen = ({
     <View style={styles.container}>
       <View style={styles.topContainer}></View>
 
-      <View style={styles.middleContainer}> 
+      <View style={styles.middleContainer}>
         <View style={{ width: "100%", alignItems: "center" }}>
           <LottieView
             ref={animationRef}
@@ -62,19 +74,49 @@ const TransactionResultScreen = ({
         <View
           style={{ width: "100%", alignItems: "center", paddingHorizontal: 40 }}
         >
-          <HeadingSixText style={{ fontWeight: "bold", textAlign: "center" }}>
-            Permintaan Penjualan Valas Berhasil
-          </HeadingSixText>
-          <BodySmallText style={{ color: colors.color.lightGrey }}>
-            7 Mei 2024 - 11.03
-          </BodySmallText>
+          {transactionType === "beli" ? (
+            <ResultTitleAndDate
+              title="Permintaan Pembelian Berhasil Terkirim"
+              date={transactionData.selectedCurrency.createdAt}
+            />
+          ) : transactionType === "jual" ? (
+            <ResultTitleAndDate
+              title="Permintaan Penjualan Berhasil Terkirim"
+              date={transactionData.selectedCurrency.createdAt}
+            />
+          ) : transactionType === "transfer" ? (
+            <ResultTitleAndDate
+              title="Permintaan Transfer Berhasil Terkirim"
+              date={transactionData.selectedCurrency.createdAt}
+            />
+          ) : transactionType === "tarik" ? (
+            <ResultTitleAndDate
+              title="Permintaan Tarik Berhasil Terkirim"
+              date={transactionData.selectedCurrency.createdAt}
+            />
+          ) : transactionType === "add wallet" ? (
+            <ResultTitleAndDate
+              title="Setoran Awal Berhasil"
+              subTitle={"Dompet Valas " + transactionData.selectedWallet.currencyName + " telah ditambahkan" }
+              date={transactionData.selectedCurrency.createdAt}
+            />
+          ) : null}
         </View>
         {/* Summary Result Card Component */}
-        <View style={{width:'100%',alignItems:'center',marginTop:'15%'}}>
-        <ResultCard />
+        <View style={{ width: "100%", alignItems: "center" }}>
+          <View
+            style={{ width: "100%", alignItems: "center", marginTop: "15%" }}
+          >
+            {transactionType != "transfer" ? (
+              <ResultCard
+                transactionType={transactionType}
+                transactionData={transactionData}
+              />
+            ) : null}
+          </View>
         </View>
       </View>
-      
+
       {/* To Homepage Button */}
       <View style={styles.bottomContainer}>
         <StyledButton
@@ -110,6 +152,7 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     flex: 0.15,
-    paddingHorizontal: 20,  
+    paddingHorizontal: 20,
+    paddingHorizontal: 20,
   },
 });

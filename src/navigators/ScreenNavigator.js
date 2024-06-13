@@ -8,15 +8,18 @@ import colors from "../theme/colors";
 import ValasHomeScreen from "../screens/valasHome/ValasHomeScreen";
 import CheckTargetAccountScreen from "../screens/valasHome/valasTransfer/CheckTargetAccountScreen";
 import ValasJualScreen from "../screens/valasHome/valasJual/ValasJualScreen";
-import EnterTransferScreen from "../screens/valasHome/valasTransfer/EnterTransferScreen"; 
-import PinConfirmationScreen from "../screens/valasHome/PinConfirmationScreen";  
+import EnterTransferScreen from "../screens/valasHome/valasTransfer/EnterTransferScreen";
+import PinConfirmationScreen from "../screens/valasHome/PinConfirmationScreen";
 import ValasBeliScreen from "../screens/valasHome/valasBeli/ValasBeliScreen.js";
-import ValasTarikScreen from "../screens/valasHome/valasTarik/ValasTarikScreen.js"
-import HistoryScreen from "../screens/valasHome/riwayatTransaksi/HistoryScreen.js";   
+import ValasTarikScreen from "../screens/valasHome/valasTarik/ValasTarikScreen.js";
+import HistoryScreen from "../screens/valasHome/riwayatTransaksi/HistoryScreen.js";
 import TransactionResultScreen from "../screens/valasHome/TransactionResultScreen";
 import ChooseBranchScreen from "../screens/valasHome/valasTarik/ChooseBranchScreen";
 import ValasRiwayatScreen from "../screens/valasHome/riwayat/ValasRiwayatScreen";
 import ChooseDateScreen from "../screens/valasHome/valasTarik/ChooseDateScreen";
+import ChooseWalletScreen from "../screens/valasHome/valasAddWallet/ChooseWalletScreen.js";
+import FirstTopUpScreen from "../screens/valasHome/valasAddWallet/FirstTopUpScreen.js";
+import ValasReservationScreen from "../screens/valasHome/reservasi/ValasReservationScreen.js";
 import DetailHistoryScreen from "../screens/valasHome/riwayatTransaksi/DetailHistoryScreen.js";
 
 const Stack = createNativeStackNavigator();
@@ -60,7 +63,7 @@ const ScreenNavigator = () => {
         name="PinConfirmation"
         component={PinConfirmationScreen}
         options={{ headerShown: false }}
-      /> 
+      />
       <Stack.Screen
         name="ValasBeli"
         component={ValasBeliScreen}
@@ -69,12 +72,12 @@ const ScreenNavigator = () => {
       <Stack.Screen
         name="TarikValas"
         component={ValasTarikScreen}
-        options={{ headerShown: false }} 
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="RiwayatTransaksi"
         component={HistoryScreen}
-        options={{ headerShown: false }} 
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="TransactionResult"
@@ -94,6 +97,21 @@ const ScreenNavigator = () => {
       <Stack.Screen
         name="ChooseDate"
         component={ChooseDateScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ChooseWallet"
+        component={ChooseWalletScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="FirstTopUp"
+        component={FirstTopUpScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ValasReservation"
+        component={ValasReservationScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen

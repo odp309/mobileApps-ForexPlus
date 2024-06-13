@@ -54,7 +54,7 @@ const ModalDaftarWallet = ({
   }, [modalVisible, slideAnim]);
 
   useEffect(() => {
-    console.log(selectedWallet);
+    // console.log(selectedWallet);
   }, [selectedWallet]);
 
   return (

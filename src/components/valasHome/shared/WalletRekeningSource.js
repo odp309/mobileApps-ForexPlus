@@ -1,33 +1,22 @@
-import { Dimensions, Image, StyleSheet, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 import colors from "../../../theme/colors";
 import { BodyMediumText, BodySmallText } from "../../shared/StyledText";
-import { useEffect } from "react";
-import { formatNumber } from "../../../config/ValasConfig";
 
-const DIMENSION_HEIGHT = Dimensions.get("window").height;
-
-const WalletValasSource = ({ style,selectedWallet}) => {
+const WalletRekeningSource = ({ containerStyle, balanceType, balanceNum, balance }) => {
   return (
-    <View style={[styles.container, style]}>
-      <BodyMediumText>Dompet Sumber</BodyMediumText>
+    <View style={[styles.container, containerStyle]}>
+      <BodyMediumText>Rekening Sumber</BodyMediumText>
       <View style={styles.cardContainer}>
         <View style={styles.borderContainer}>
           <View style={styles.contentContainer}>
             <View style={styles.textContainer}>
               <BodyMediumText style={{ fontWeight: "bold" }}>
-                Dompet Valas
+                {balanceType.toUpperCase()}
               </BodyMediumText>
-              <BodySmallText>{selectedWallet.currencyName}</BodySmallText>
+              <BodySmallText>{balanceNum}</BodySmallText>
               <BodyMediumText style={{ fontWeight: "bold" }}>
-                {selectedWallet.currencyCode} {formatNumber(selectedWallet.balance)}
+                Rp. {balance}
               </BodyMediumText>
-            </View>
-            <View style={styles.landmarkContainer}>
-                <Image
-                  resizeMode="contain"
-                  source={{uri: selectedWallet.landmarkIcon}}
-                  style={{ width: 100, height: "70%"}}
-                />
             </View>
           </View>
         </View>
@@ -40,7 +29,7 @@ const WalletValasSource = ({ style,selectedWallet}) => {
               borderBottomRightRadius: 50,
               borderTopRightRadius: 50,
             }}
-            source={{uri:"https://imgur.com/WD5nbpF.png"}}
+            source={require("../../../../assets/Intersect.png")}
           />
         </View>
       </View>
@@ -48,14 +37,15 @@ const WalletValasSource = ({ style,selectedWallet}) => {
   );
 };
 
-export default WalletValasSource;
+export default WalletRekeningSource;
 
 const styles = StyleSheet.create({
   container: {
     width: "100%",
     paddingTop: 20,
     paddingBottom: 30,
-    paddingHorizontal: 20, 
+    paddingHorizontal: 20,
+    backgroundColor: colors.color.white,
   },
   cardContainer: {
     height: 100,
@@ -92,16 +82,12 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
   },
   textContainer: {
+    width:'100%',
     paddingTop: 10,
     paddingBottom: 20,
-    paddingLeft: 15,
+    paddingLeft: 20,
     backgroundColor: colors.color.white,
     borderTopLeftRadius: 20,
-    borderBottomLeftRadius: 20,  
-    
-  },
-  landmarkContainer: {
-    justifyContent: "flex-end",
-    backgroundColor: colors.color.white, 
+    borderBottomLeftRadius: 20,
   },
 });

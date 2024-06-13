@@ -2,23 +2,19 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { BodyMediumText, BodySmallText } from "../../shared/StyledText";
 import colors from "../../../theme/colors";
+import { useEffect } from "react";
 
 const BRANCH_TEXT_LENGTH = 24;
 
 const BranchItem = ({ data, handleOnPress }) => {
-  // Function to return the longLengthBranchName to longLengthBr...
   const longText = (text) => {
     const newText = text.slice(0, BRANCH_TEXT_LENGTH);
     const textWithDot = newText + "...";
     return textWithDot;
-  };
-  // Function when press on of the item
-  const onPressItem = () => {
-    handleOnPress(data);
-  };
+  }; 
 
   return (
-    <TouchableOpacity style={styles.branchItem} onPress={onPressItem}>
+    <TouchableOpacity style={styles.branchItem} onPress={()=> handleOnPress(data)}>
       <View style={{ marginHorizontal: 15 }}>
         <FontAwesome
           name="bank"
@@ -28,18 +24,18 @@ const BranchItem = ({ data, handleOnPress }) => {
       </View>
       <View>
         {/* If the text is too long, then replace the 25 index to the last as ... */}
-        {data.branchName.length <= 24 ? (
+        {data.name.length <= 24 ? (
           <BodyMediumText style={{ fontWeight: "bold" }}>
-            {data.branchName}
+            {data.name}
           </BodyMediumText>
         ) : (
           <BodyMediumText style={{ fontWeight: "bold" }}>
-            {longText(data.branchName)}
+            {longText(data.name)}
           </BodyMediumText>
         )}
 
         <BodySmallText style={{ fontWeight: "bold", color: colors.color.grey }}>
-          {data.alamat}
+          {data.address}
         </BodySmallText>
       </View>
     </TouchableOpacity>

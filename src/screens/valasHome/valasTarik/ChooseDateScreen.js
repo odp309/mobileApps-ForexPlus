@@ -5,13 +5,15 @@ import { useEffect, useState } from "react";
 import PullConfirmationModal from "../../../components/valasHome/valasTarik/PullConfirmationModal";
 import CalendarComponent from "../../../components/valasHome/valasTarik/CalendarComponent";
 import TitleAndChooseButton from "../../../components/valasHome/valasTarik/TitleAndChooseButton";
+import { useRoute } from "@react-navigation/native";
 
 const RESERVATION_LENGTH = 6;
 
-const ChooseDateScreen = ({ route }) => {
+const ChooseDateScreen = () => {
+  const route = useRoute();
   const [isCalendarShown, setIsCalendarShown] = useState(false);
   const [modalVisibility, setModalVisibility] = useState(false);
-  const { branchData } = route.params;
+  const { transactionData,selectedBranch } = route.params;
 
   // For Calendar States
   const [selectedDate, setSelectedDate] = useState("");
@@ -19,6 +21,10 @@ const ChooseDateScreen = ({ route }) => {
   const [weekendsArray, setWeekendsArray] = useState([]);
   const [minDateState, setMinDateState] = useState("");
   const [maxDateState, setMaxDateState] = useState("");
+
+  useEffect(()=>{
+    console.log(selectedBranch)
+  },[])
 
   useEffect(() => {
     const today = new Date();
@@ -28,8 +34,9 @@ const ChooseDateScreen = ({ route }) => {
     const year = today.getFullYear();
     const month = today.getMonth();
     const hour = today.getHours();
-
     let minDate = today;
+
+    
     if (hour >= 15) {
       minDate = new Date(
         todayForMinDate.setDate(todayForMinDate.getDate() + 1)
@@ -75,6 +82,7 @@ const ChooseDateScreen = ({ route }) => {
   const onDateChange = (data) => {
     // Calendar
     setSelectedDate(data.dateString);
+    setIsCalendarShown(!isCalendarShown);
   };
 
   const onChooseDatePress = () => {
@@ -82,7 +90,6 @@ const ChooseDateScreen = ({ route }) => {
   };
 
   const toggleBottomSheet = () => {
-    console.log("testing");
     setModalVisibility(!modalVisibility);
   };
 
@@ -94,7 +101,7 @@ const ChooseDateScreen = ({ route }) => {
 
       <View style={styles.middleContainer}>
         {/* Title and Calendar Button */}
-        <TitleAndChooseButton onChooseDatePress={onChooseDatePress} />
+        <TitleAndChooseButton onChooseDatePress={onChooseDatePress} dateValue={selectedDate} />
 
         {/* Calendar */}
         <CalendarComponent
@@ -110,11 +117,10 @@ const ChooseDateScreen = ({ route }) => {
         <PullConfirmationModal
           modalVisibility={modalVisibility}
           toggleBottomSheet={toggleBottomSheet}
-          branchData={branchData}
+          branchData={selectedBranch}
+          transactionType={"tarik"}
           date={selectedDate}
-          pullBalance={1000}
-          valasType="Yen Jepang"
-          valasCode="JPY"
+          transactionData={transactionData}
         />
       </View>
 

@@ -1,39 +1,75 @@
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import {
-  BodyLargeText, 
-  BodyMediumText, 
+  BodyLargeText,
+  BodyMediumText,
 } from "../../../components/shared/StyledText";
 import StyledButton from "../../../components/shared/StyledButton";
 import colors from "../../../theme/colors";
 import {
-  View, 
-  StyleSheet, 
+  View,
+  StyleSheet,
   Dimensions,
   Alert,
   BackHandler,
+  Platform,
+  ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import ContentHeader from "../../../components/valasHome/shared/ContentHeader"; 
-import WalletSource from "../../../components/valasHome/shared/WalletSource"; 
+import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
+import WalletSource from "../../../components/valasHome/shared/WalletSource";
 import ValasConversion from "../../../components/valasHome/shared/ValasConversion";
 import ConfirmationModal from "../../../components/valasHome/shared/ConfirmationModal";
-import { alertConfirmation } from "../../../config/ValasConfig";
+import {
+  alertConfirmation,
+  fetchMinimumBuy,
+  formatNumber,
+} from "../../../config/ValasConfig";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
+
 export default function ValasBeliScreen() {
+  const route = useRoute();
   const navigation = useNavigation();
 
-  const [exchange, setExchange] = useState("");
-  const [inputValue, setInputValue] = useState("");
-  const [kurs, setKurs] = useState("103");
-  const [valas, setValas] = useState("JPY");
-  const [isVisible, setIsVisible] = useState(false); 
- 
-  useEffect(()=>{
-    const backHandler = BackHandler.addEventListener("hardwareBackPress",() => alertConfirmation(navigation));
+  const [minimumBuy, setMinimumBuy] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [transactionData, setTransactionData] = useState({
+    selectedWallet: route.params?.selectedWallet,
+    selectedRekening: route.params?.selectedRekening,
+    selectedCurrency: route.params?.selectedCurrency,
+    inputValue: "",
+    convertedValue: "",
+  });
+
+  const [isVisible, setIsVisible] = useState(false);
+  const [inputError, setInputError] = useState("");
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener("hardwareBackPress", () =>
+      alertConfirmation(navigation)
+    );
     return () => backHandler.remove();
-  },[]);
+  }, []);
+
+  const setFetchMinimum = async () => {
+    try {
+      const minimumData = await fetchMinimumBuy(
+        transactionData.selectedWallet.currencyCode.toUpperCase()
+      );
+      setMinimumBuy(minimumData);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setFetchMinimum();
+    }, 500);
+  }, []);
 
   const toggleBottomSheet = () => {
     console.log(isVisible);
@@ -41,27 +77,85 @@ export default function ValasBeliScreen() {
   };
 
   const kursCalculation = (data) => {
-    data === ""
-      ? setExchange("")
-      : setExchange(parseInt(data) * parseInt(kurs));
+    const kursResult =
+      parseInt(data) * parseInt(transactionData.selectedCurrency.buyRate);
+    setTransactionData((prevState) => ({
+      ...prevState,
+      convertedValue:
+        data === ""
+          ? ""
+          : (
+              parseInt(data) *
+              parseInt(transactionData.selectedCurrency.buyRate)
+            ).toString(),
+    }));
+    checkError(data, kursResult);
+  };
+
+  const checkError = (data, kursResult) => {
+    setTransactionData((prevState) => ({
+      ...prevState,
+      inputValue: "",
+    }));
+    if (kursResult > transactionData.selectedRekening.balance) {
+      setInputError("Jumlah melebihi Saldo Aktif Rupiah");
+    } else if (parseInt(data) < parseInt(minimumBuy)) {
+      setInputError(
+        `Minimum pembelian valas ${transactionData.selectedCurrency.currencyCode} ${minimumBuy}`
+      );
+    } else if (parseInt(data) > parseInt(minimumBuy * 25000)) {
+      setInputError(
+        `Maksimum pembelian valas ${
+          transactionData.selectedCurrency.currencyCode
+        } ${minimumBuy * 25000}`
+      );
+    } else {
+      setInputError("");
+      setTransactionData((prevState) => ({
+        ...prevState,
+        inputValue: data,
+      }));
+    }
   };
 
   const acceptInputCurrency = (data) => {
     console.log(data);
-    setInputValue(data);
+    setTransactionData((prevState) => ({
+      ...prevState,
+      inputValue: data,
+    }));
     kursCalculation(data);
-  }; 
+  };
+
+  const isButtonDisabled = () => {
+    const inputValue = parseFloat(transactionData.inputValue);
+    const convertedValue = parseFloat(transactionData.convertedValue);
+    const balance = parseFloat(transactionData.selectedRekening.balance);
+
+    return (
+      transactionData.inputValue === "" ||
+      inputValue < minimumBuy ||
+      balance < convertedValue
+    );
+  };
+
+  if (isLoading) {
+    return (
+      <View style={{ justifyContent: "center", flex: 1 }}>
+        <ActivityIndicator size="large" color={colors.primary.primaryOne} />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
       <ConfirmationModal
-          title={"Konfirmasi Pembelian Valas"}
-          isVisible={isVisible}
-          toggleBottomSheet={toggleBottomSheet}
-          pendapatan={exchange}
-          kurs={kurs}
-          inputSaldo={inputValue}
-        />
+        title={"Konfirmasi Pembelian Valas"}
+        transactionType={"beli"}
+        isVisible={isVisible}
+        toggleBottomSheet={toggleBottomSheet}
+        transactionData={transactionData}
+      />
       <View style={styles.topContainer}>
         <ContentHeader title={"Pembelian Valas"} hasConfirmation={true} />
       </View>
@@ -71,8 +165,10 @@ export default function ValasBeliScreen() {
           <ValasConversion
             firstInputTitle={"Nominal Pembelian"}
             secondInputTitle={"Nominal Asal"}
-            exchange={exchange}
+            transactionData={transactionData}
             changeTextData={acceptInputCurrency}
+            firstError={inputError}
+            secondError={inputError}
           />
           <View style={styles.kursBeliContainer}>
             <BodyMediumText
@@ -81,7 +177,8 @@ export default function ValasBeliScreen() {
               Kurs Beli
             </BodyMediumText>
             <BodyLargeText style={styles.textStyle}>
-              {valas} 1.00 = Rp. {kurs}
+              {transactionData.selectedCurrency.currencyCode} 1.00 = IDR{" "}
+              {formatNumber(transactionData.selectedCurrency.buyRate)}
             </BodyLargeText>
           </View>
         </View>
@@ -90,29 +187,19 @@ export default function ValasBeliScreen() {
         />
         <View style={styles.boxRekeningSumber}>
           <WalletSource
-            jenisRekening={"TAPLUS PEGAWAI"}
-            rekening={"13131313"}
-            saldo={200000}
+          selectedRekening={transactionData.selectedRekening}
           />
         </View>
       </View>
       <View style={styles.bottomContainer}>
-      {inputValue === "" ? (
-          <StyledButton
-            mode="primary-disabled"
-            title="Lanjut"
-            size={"lg"}
-            style={{ marginBottom: 20 }}
-          />
-        ) : (
-          <StyledButton
-            mode="primary"
-            title="Lanjut"
-            size={"lg"}
-            onPress={toggleBottomSheet}
-            style={{ marginBottom: 20 }}
-          />
-        )}
+        <StyledButton
+          mode={isButtonDisabled() ? "primary-disabled" : "primary"}
+          title="Lanjut"
+          size={"lg"}
+          onPress={toggleBottomSheet}
+          style={{ marginBottom: 20 }}
+          disabled={isButtonDisabled()}
+        />
       </View>
     </View>
   );
@@ -136,14 +223,13 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     width: "100%",
-    justifyContent: "center",
+    justifyContent: Platform.OS === "android" ? "center" : "flex-start",
     flex: 0.15,
     paddingHorizontal: 20,
   },
 
   arrowDownContainer: {
     alignItems: "center",
-
     marginTop: 8,
     marginBottom: 0,
   },
@@ -207,7 +293,6 @@ const styles = StyleSheet.create({
   },
   rekeningSumberImage: {
     width: "35%",
-    // borderWidth:1
   },
   bniImage: {
     width: "100%",

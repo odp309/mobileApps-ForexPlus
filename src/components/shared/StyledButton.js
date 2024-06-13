@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { Button } from "@rneui/themed";
 import colors from "../../theme/colors";
+import sizes from "../../theme/sizes";
 
 const StyledButton = ({ mode, title, onPress,size, style}) => {
   return mode === "primary" ? (
@@ -96,15 +97,22 @@ const styles = StyleSheet.create({
 
   labelPrimary: {
     color: colors.primary.primaryOne,
+    fontFamily:"poppins-semibold",
+    lineHeight: sizes.lineHeight.small
   },
   labelSecondary: {
     color: colors.secondary.secondaryOne,
+    fontFamily:"poppins-semibold",
+    lineHeight: sizes.lineHeight.small
   },
   labelDisabled: {
     color: colors.color.white,
+    fontFamily:"poppins-semibold",
+    lineHeight: sizes.lineHeight.small
   },
 
   titleStyle: {
-    fontFamily: "poppins-semibold",
+    fontFamily:"poppins-semibold",
+    lineHeight: sizes.lineHeight.small
   },
 });

@@ -14,9 +14,7 @@ const NavigasiRekeningWallet = ({
 }) => {
   const [modalWalletVisible, setModalWalletVisible] = useState(false);
   const [modalRekeningVisible, setModalRekeningVisible] = useState(false);
-
-  useState(() => { 
-  }, []);
+ 
   return (
     <View style={styles.container}>
       <View style={styles.section}>
@@ -31,10 +29,12 @@ const NavigasiRekeningWallet = ({
           />
         )}
       </View>
-      <View style={styles.divider} />
-      <View style={styles.section}>
-        <BodySmallText style={styles.text}>Dompet Valas</BodySmallText>
-        {selectedWallet && (
+
+      {selectedWallet && <View style={styles.divider} />}
+
+      {selectedWallet && (
+        <View style={styles.section}>
+          <BodySmallText style={styles.text}>Dompet Valas</BodySmallText>
           <ModalDaftarWallet
             modalVisible={modalWalletVisible}
             setModalVisible={setModalWalletVisible}
@@ -42,8 +42,8 @@ const NavigasiRekeningWallet = ({
             selectedWallet={selectedWallet}
             setSelectedWallet={setSelectedWallet}
           />
-        )}
-      </View>
+        </View>
+      )}
     </View>
   );
 };
