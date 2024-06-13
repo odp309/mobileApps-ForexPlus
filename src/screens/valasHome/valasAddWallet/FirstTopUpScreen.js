@@ -1,6 +1,6 @@
 import { BackHandler, Dimensions, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
 import {
   BodyLargeText,
@@ -8,7 +8,7 @@ import {
   BodySmallTextSemiBold,
 } from "../../../components/shared/StyledText";
 import ValasConversion from "../../../components/valasHome/shared/ValasConversion";
-import { alertConfirmation } from "../../../config/ValasConfig";
+import { alertConfirmation, formatNumber } from "../../../config/ValasConfig";
 import StyledButton from "../../../components/shared/StyledButton";
 import WalletSource from "../../../components/valasHome/shared/WalletSource";
 import WalletValasSource from "../../../components/valasHome/shared/WalletValasSource";
@@ -18,6 +18,7 @@ import ConfirmationModal from "../../../components/valasHome/shared/Confirmation
 
 const FirstTopUpScreen = () => {
   const route = useRoute();
+  const navigation = useNavigation();
   const [inputError, setInputError] = useState("");
   const [isVisible, setIsVisible] = useState(false);
 
@@ -101,7 +102,6 @@ const FirstTopUpScreen = () => {
             <ValasConversion
               firstInputTitle={"Nominal Setoran"}
               secondInputTitle={"Nominal Asal"}
-              // exchange={exchange}
               changeTextData={acceptInputCurrency}
               transactionData={transactionData}
               firstError={inputError}
@@ -115,15 +115,13 @@ const FirstTopUpScreen = () => {
               Kurs Beli
             </BodyMediumText>
             <BodyLargeText style={styles.textStyle}>
-            {transactionData.selectedCurrency.currencyCode} 1.00 = Rp. {transactionData.selectedCurrency.buyRate}
+            {transactionData.selectedCurrency.currencyCode} 1.00 = Rp. {formatNumber(transactionData.selectedCurrency.buyRate)}
             </BodyLargeText>
           </View>
         </View>
         <View style={styles.sourceContainer}>
           <WalletSource
-            rekening={transactionData.selectedRekening.accountNumber}
-            jenisRekening={transactionData.selectedRekening.type}
-            saldo={transactionData.selectedRekening.balance}
+          selectedRekening={transactionData.selectedRekening}
           />
         </View>
         <ConfirmationModal

@@ -6,10 +6,11 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  BackHandler,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
-import { fetchKurs } from "../../../config/ValasConfig";
+import { alertConfirmation, fetchKurs } from "../../../config/ValasConfig";
 import { BodyLargeTextSemiBold } from "../../../components/shared/StyledText";
 import colors from "../../../theme/colors";
 import { useNavigation,useRoute } from "@react-navigation/native";
@@ -21,8 +22,6 @@ const ChooseWalletScreen = () => {
   const [valasList, setValasList] = useState(null);
   const navigation = useNavigation();
   const [selectedRekening,setSelectedRekening] = useState(route.params.selectedRekening)
-  // const route = useRoute();
-  // const [transactionData,setTransactionData] = useState(transactionData)
 
   const getData = async () => {
     try {
@@ -42,6 +41,9 @@ const ChooseWalletScreen = () => {
   useEffect(() => {
     console.log("CHOOSEWALLET");
     console.log(selectedRekening);
+    const backHandler = BackHandler.addEventListener("hardwareBackPress", () =>
+      alertConfirmation(navigation)
+    );
     getData();
   }, []);
 

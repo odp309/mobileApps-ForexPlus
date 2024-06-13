@@ -45,8 +45,6 @@ const ValasJualScreen = () => {
   };
 
   const kursCalculation = (data) => {
-    const kursResult =
-      parseInt(data) * parseInt(transactionData.selectedCurrency.buyRate);
     setTransactionData((prevState) => ({
       ...prevState,
       convertedValue:
@@ -57,10 +55,10 @@ const ValasJualScreen = () => {
               parseInt(transactionData.selectedCurrency.sellRate)
             ).toString(),
     }));
-    checkError(data, kursResult);
+    checkError(data);
   };
 
-  const checkError = (data, kursResult) => {
+  const checkError = (data) => {
     setTransactionData((prevState) => ({
       ...prevState,
       inputValue: "",
@@ -86,10 +84,6 @@ const ValasJualScreen = () => {
 
   const acceptInputCurrency = (data) => {
     console.log(data);
-    // setTransactionData((prevState) => ({
-    //   ...prevState,
-    //   inputValue: data,
-    // }));
     kursCalculation(data);
   };
 
@@ -130,7 +124,7 @@ const ValasJualScreen = () => {
         <View>
           <WalletValasSource
             saldo={transactionData.selectedWallet.balance}
-            countryCode={transactionData.selectedWallet.currencyCode.toLowerCase()}
+            selectedWallet={transactionData.selectedWallet}
           />
         </View>
 
