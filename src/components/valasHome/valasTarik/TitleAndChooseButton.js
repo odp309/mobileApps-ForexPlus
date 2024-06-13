@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { BodyMediumText, HeadingSixText } from "../../shared/StyledText";
 
 
-const TitleAndChooseButton = ({ onChooseDatePress }) => {
+const TitleAndChooseButton = ({ onChooseDatePress,dateValue }) => {
     return (
       <View style={styles.titleSearchContainer}>
         {/* Title */}
@@ -21,7 +21,7 @@ const TitleAndChooseButton = ({ onChooseDatePress }) => {
         {/* Choose Date */}
         <TouchableOpacity style={styles.chooseDate} onPress={onChooseDatePress}>
           <BodyMediumText style={{ color: colors.color.grey }}>
-            Pilih Tanggal
+            {dateValue==="" ? "Pilih Tanggal" : dateValue}
           </BodyMediumText>
           <View>
             <MaterialCommunityIcons

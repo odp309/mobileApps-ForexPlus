@@ -13,6 +13,7 @@ import {
   Alert,
   BackHandler,
   Platform,
+  ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
@@ -32,6 +33,7 @@ export default function ValasBeliScreen() {
   const navigation = useNavigation();
 
   const [minimumBuy, setMinimumBuy] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [transactionData, setTransactionData] = useState({
     selectedWallet: route.params?.selectedWallet,
     selectedRekening: route.params?.selectedRekening,
@@ -51,14 +53,22 @@ export default function ValasBeliScreen() {
   }, []);
 
   const setFetchMinimum = async () => {
-    const minimumData = await fetchMinimumBuy(
-      transactionData.selectedWallet.currencyCode.toUpperCase()
-    );
-    setMinimumBuy(minimumData);
+    try {
+      const minimumData = await fetchMinimumBuy(
+        transactionData.selectedWallet.currencyCode.toUpperCase()
+      );
+      setMinimumBuy(minimumData);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
-    setFetchMinimum();
+    setTimeout(() => {
+      setFetchMinimum();
+    }, 500);
   }, []);
 
   const toggleBottomSheet = () => {
@@ -67,7 +77,8 @@ export default function ValasBeliScreen() {
   };
 
   const kursCalculation = (data) => {
-    const kursResult = parseInt(data) * parseInt(transactionData.selectedCurrency.buyRate);
+    const kursResult =
+      parseInt(data) * parseInt(transactionData.selectedCurrency.buyRate);
     setTransactionData((prevState) => ({
       ...prevState,
       convertedValue:
@@ -94,7 +105,9 @@ export default function ValasBeliScreen() {
       );
     } else if (parseInt(data) > parseInt(minimumBuy * 25000)) {
       setInputError(
-        `Maksimum pembelian valas ${transactionData.selectedCurrency.currencyCode} ${minimumBuy*25000}`
+        `Maksimum pembelian valas ${
+          transactionData.selectedCurrency.currencyCode
+        } ${minimumBuy * 25000}`
       );
     } else {
       setInputError("");
@@ -126,6 +139,14 @@ export default function ValasBeliScreen() {
     );
   };
 
+  if (isLoading) {
+    return (
+      <View style={{ justifyContent: "center", flex: 1 }}>
+        <ActivityIndicator size="large" color={colors.primary.primaryOne} />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <ConfirmationModal
@@ -156,7 +177,7 @@ export default function ValasBeliScreen() {
               Kurs Beli
             </BodyMediumText>
             <BodyLargeText style={styles.textStyle}>
-              {transactionData.selectedCurrency.currencyCode} 1.00 = Rp.{" "}
+              {transactionData.selectedCurrency.currencyCode} 1.00 = IDR{" "}
               {formatNumber(transactionData.selectedCurrency.buyRate)}
             </BodyLargeText>
           </View>
@@ -166,9 +187,9 @@ export default function ValasBeliScreen() {
         />
         <View style={styles.boxRekeningSumber}>
           <WalletSource
-            jenisRekening={"TAPLUS PEGAWAI"}
-            rekening={"13131313"}
-            saldo={200000}
+            jenisRekening={transactionData.selectedRekening.type}
+            rekening={transactionData.selectedRekening.accountNumber}
+            saldo={formatNumber(transactionData.selectedRekening.balance)}
           />
         </View>
       </View>

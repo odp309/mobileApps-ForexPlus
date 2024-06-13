@@ -1,14 +1,10 @@
-import {
-  Dimensions,
-  FlatList,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Dimensions, FlatList, StyleSheet, View } from "react-native";
 import React from "react";
 import { ImageBackground } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { BodyMediumText, BodyRegularText } from "../shared/StyledText";
 import { Skeleton } from "@rneui/themed";
+import { formatNumber } from "../../config/ValasConfig";
 
 const { width } = Dimensions.get("window");
 
@@ -19,7 +15,7 @@ const dataPocket = [
     saldo: "50.000.000",
     rekening: "19281918921",
     jenisRek: "TAPLUS PEGAWAI BNI",
-  }, 
+  },
   {
     id: "2",
     imgResource: "https://i.imgur.com/AEaI34r.png",
@@ -29,17 +25,23 @@ const dataPocket = [
   },
 ];
 
-const ListPocket = ({ item, index, user,cardWidth,wrapperWidth }) => {
-  
-
+const ListPocket = ({ item, index, user, cardWidth, wrapperWidth }) => {
   return (
     <View style={[styles.cardWrapper, { width: wrapperWidth }]}>
       {user === null ? (
-        <Skeleton source={item.imgResource} style={[styles.cardContainer, { width: cardWidth }]} />
+        <Skeleton
+          source={item.imgResource}
+          style={[styles.cardContainer, { width: cardWidth }]}
+        />
       ) : (
         <ImageBackground
           resizeMode="stretch"
-          source={{ uri: item.imgResource }}
+          source={{
+            uri:
+              item.type == "TAPLUS MUDA"
+                ? "https://i.imgur.com/sf6Di0f.png"
+                : "https://i.imgur.com/AEaI34r.png",
+          }}
           style={[styles.cardContainer, { width: cardWidth }]}
         >
           <View
@@ -53,7 +55,7 @@ const ListPocket = ({ item, index, user,cardWidth,wrapperWidth }) => {
               Rp{" "}
             </BodyMediumText>
             <BodyMediumText style={{ color: "white", fontSize: 28 }}>
-              {item.saldo}
+              {formatNumber(item.balance)}
             </BodyMediumText>
             <Ionicons
               name="lock-closed-outline"
@@ -62,16 +64,14 @@ const ListPocket = ({ item, index, user,cardWidth,wrapperWidth }) => {
               style={{ marginHorizontal: 10, height: "100%", marginTop: "3%" }}
             />
           </View>
-          <View
+          <View 
             style={{
               width: "100%",
               flexDirection: "row",
               justifyContent: "flex-end",
             }}
           >
-            <View style={{ height: 15 }}>
-               
-            </View>
+            <View style={{ height: 15 }}></View>
           </View>
           <View
             style={{
@@ -81,7 +81,7 @@ const ListPocket = ({ item, index, user,cardWidth,wrapperWidth }) => {
             }}
           >
             <BodyMediumText style={{ color: "white", fontSize: 20 }}>
-              {item.rekening}
+              {item.accountNumber}
             </BodyMediumText>
             <Ionicons
               name="copy-outline"
@@ -98,7 +98,7 @@ const ListPocket = ({ item, index, user,cardWidth,wrapperWidth }) => {
             }}
           >
             <BodyRegularText style={{ color: "white", fontSize: 18 }}>
-              {item.jenisRek}
+              {item.type}
             </BodyRegularText>
           </View>
         </ImageBackground>
@@ -107,24 +107,30 @@ const ListPocket = ({ item, index, user,cardWidth,wrapperWidth }) => {
   );
 };
 
-const Pocket = ({ user }) => {
-  const isSingleItem = dataPocket.length === 1;
+const Pocket = ({ user, accountNumbers }) => {
+  const isSingleItem = accountNumbers.length === 1;
   const cardWidth = isSingleItem ? width * 0.9 : width * 0.85;
   const wrapperWidth = isSingleItem ? width : width * 0.9;
   return (
     <View style={styles.container}>
       <FlatList
-        data={dataPocket}
+        data={accountNumbers}
         renderItem={({ item, index }) => (
-          <ListPocket item={item} index={index} user={user}  cardWidth={cardWidth} wrapperWidth={wrapperWidth} />
+          <ListPocket
+            item={item}
+            index={index}
+            user={user}
+            cardWidth={cardWidth}
+            wrapperWidth={wrapperWidth}
+          />
         )}
         keyExtractor={(item) => item.id}
-        horizontal={true} 
-        snapToInterval={width * 0.9} 
+        horizontal={true}
+        snapToInterval={width * 0.9}
         snapToAlignment="start"
         decelerationRate="fast"
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: isSingleItem ? 0 : 10 }} 
+        contentContainerStyle={{ paddingHorizontal: isSingleItem ? 0 : 10 }}
       />
     </View>
   );

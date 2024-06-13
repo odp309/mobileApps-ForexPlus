@@ -1,8 +1,10 @@
 import { Dimensions, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
 import {
   BodyLargeTextSemiBold,
+  BodySmallText,
+  BodySmallTextSemiBold,
   BodyXLTextBold,
   BodyXLTextSemiBold,
 } from "../../../components/shared/StyledText";
@@ -14,23 +16,74 @@ import WalletSource from "../../../components/valasHome/shared/WalletValasSource
 import ModalTransferConfirmation from "../../../components/valasHome/valasTransfer/ModalTransferConfirmation";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import ConfirmationModal from "../../../components/valasHome/shared/ConfirmationModal";
-
+import { fetchMinimumTransfer } from "../../../config/ValasConfig";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
-const EnterTransferScreen = () => { 
+const EnterTransferScreen = () => {
   const route = useRoute();
-  const accountFind = route.params.accountFind;
   const currentWallet = route.params.currentWallet;
+  const [minimumTransfer, setMinimumTransfer] = useState("");
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [nominal, setNominal] = useState(0);
   const navigation = useNavigation();
+  const [errorMessage, setErrorMessage] = useState("");
+  const [transactionData, setTransactionData] = useState({
+    selectedWallet: route.params?.currentWallet,
+    selectedRekening: route.params?.currentRekening,
+    selectedCurrency: route.params?.currentCurrency,
+    accountFind: route.params?.accountFind,
+    inputValue: "",
+  });
 
-  const handleMoveToPin = () =>{
+  const handleMoveToPin = () => {
     setModalVisible(false);
     navigation.navigate("PinConfirmation");
-  }
+  };
+
+  const toggleBottomSheet = () => {
+    console.log(modalVisible);
+    setModalVisible(!modalVisible);
+  };
+
+  const acceptInputCurrency = (data) => {
+    setTransactionData((prevState) => ({
+      ...prevState,
+      inputValue: data,
+    }));
+  };
+
+  const setFetchMinimum = async () => {
+    const minimumData = await fetchMinimumTransfer(
+      transactionData.selectedWallet.currencyCode.toUpperCase()
+    );
+    setMinimumTransfer(minimumData);
+  };
+
+  const isButtonDisabled = () => {
+    const inputValue = parseFloat(transactionData.inputValue);
+    const balance = parseFloat(transactionData.selectedWallet.balance);
+
+    return (
+      transactionData.inputValue === "" ||
+      inputValue < minimumTransfer ||
+      balance < inputValue
+    );
+  };
+
+  useEffect(() => {
+    setFetchMinimum();
+  }, []);
+
+  useEffect(() => {
+    if (transactionData.inputValue > transactionData.selectedWallet.balance) 
+    { 
+      setErrorMessage("Saldo Anda tidak mencukupi");
+    }
+    else{
+      setErrorMessage("");
+    }
+  }, [transactionData.inputValue]);
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
@@ -44,25 +97,35 @@ const EnterTransferScreen = () => {
         </BodyXLTextBold>
         <View style={styles.contentContainer}>
           <Image
-            source={{uri:"https://imgur.com/o1jPFSo.png"}}
+            source={{ uri: "https://imgur.com/o1jPFSo.png" }}
             style={{ width: 100, height: 100, borderRadius: 99 }}
           />
           <BodyLargeTextSemiBold style={{ marginTop: 10 }}>
             Wallet AUD
           </BodyLargeTextSemiBold>
 
-          <BodyXLTextSemiBold style={{}}>{accountFind.firstName + " " + accountFind.lastName}</BodyXLTextSemiBold>
+          <BodyXLTextSemiBold style={{}}>
+            {transactionData.accountFind.firstName +
+              " " +
+              transactionData.accountFind.lastName}
+          </BodyXLTextSemiBold>
 
           <InputCurrency
-            countryCode={"aud"}
-            value={nominal}
-            onChangeText={setNominal}
-          ></InputCurrency>
+            countryCode={transactionData.selectedWallet.currencyCode.toLowerCase()}
+            value={transactionData.inputValue}
+            onChangeText={acceptInputCurrency}
+          />
+          <View style={{width:"100%"}}>
+            <BodySmallText style={{textAlign:"flex-start", color:"red"}}>{errorMessage}</BodySmallText>
+          </View>
         </View>
-
+        <View
+          style={{ height: 4, backgroundColor: colors.primary.primaryThree }}
+        />
         <View style={styles.walletContainer}>
           <WalletSource
-          countryCode={currentWallet.currencyCode.toLowerCase()} saldo={currentWallet.balance}
+            countryCode={currentWallet.currencyCode.toLowerCase()}
+            saldo={currentWallet.balance}
           />
         </View>
       </View>
@@ -70,20 +133,20 @@ const EnterTransferScreen = () => {
         <StyledButton
           title={"Lanjut"}
           size={"lg"}
-          mode={"primary"}
+          mode={isButtonDisabled() ? "primary-disabled" : "primary"}
           onPress={() => {
             setModalVisible(!modalVisible);
           }}
+          disabled={isButtonDisabled()}
         />
       </View>
-      {/* <ConfirmationModal
-          title={"Konfirmasi Pembelian Valas"}
-          isVisible={modalVisible}
-          toggleBottomSheet={()=> setModalVisible(false)}  
-          namaPenerima={accountFind.firstName+" "+accountFind.lastName}
-          totalTransfer={nominal}
-          transactionType={"transfer"}
-        /> */}
+      <ConfirmationModal
+        title={"Konfirmasi Transfer Valas"}
+        transactionType={"transfer"}
+        isVisible={modalVisible}
+        toggleBottomSheet={toggleBottomSheet}
+        transactionData={transactionData}
+      />
     </View>
   );
 };

@@ -11,11 +11,10 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(async (config) => {
   try {
-    const accessToken = await AsyncStorage.getItem("accessToken"); ;
-    // console.log("Token AxiosConfig : "+token);
+    const accessToken = await AsyncStorage.getItem("accessToken"); ; 
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
-      console.log( "Bearer : " + config.headers.Authorization);
+      console.log( config.headers.Authorization);
     } else { 
       await AsyncStorage.removeItem("accessToken"); 
     }

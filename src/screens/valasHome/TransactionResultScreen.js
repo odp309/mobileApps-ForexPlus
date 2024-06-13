@@ -38,7 +38,7 @@ const TransactionResultScreen = () => {
   const transactionType = route.params?.transactionType;
 
   const toHomeScreen = () => {
-    navigation.reset({ index: 0, routes: [{ name: "ValasHome" }] });
+    navigation.navigate("ValasHome");
   };
 
   // Animation Function
@@ -89,10 +89,15 @@ const TransactionResultScreen = () => {
               title="Permintaan Transfer Berhasil Terkirim"
               date={transactionData.selectedCurrency.createdAt}
             />
+          ) : transactionType === "tarik" ? (
+            <ResultTitleAndDate
+              title="Permintaan Tarik Berhasil Terkirim"
+              date={transactionData.selectedCurrency.createdAt}
+            />
           ) : null}
         </View>
         {/* Summary Result Card Component */}
-        <View style={{ width: "100%", alignItems: "center"}}>
+        <View style={{ width: "100%", alignItems: "center" }}>
           <View
             style={{ width: "100%", alignItems: "center", marginTop: "15%" }}
           >

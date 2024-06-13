@@ -18,7 +18,12 @@ import colors from "../../theme/colors";
 import ContentHeader from "../../components/valasHome/shared/ContentHeader";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import IncorrectPinMessage from "../../components/valasHome/IncorrectPinMessage";
-import { fetchValasPurchase, fetchValasSell } from "../../config/ValasConfig";
+import {
+  fetchValasPurchase,
+  fetchValasSell,
+  fetchValasTransfer,
+  fetchValasWithdraw,
+} from "../../config/ValasConfig";
 
 const PinConfirmationScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -29,6 +34,10 @@ const PinConfirmationScreen = () => {
   const route = useRoute();
   const transactionData = route.params?.transactionData;
   const transactionType = route.params?.transactionType;
+  const branchData = route.params?.branchData;
+  const dateTransaction = route.params?.date;
+
+
   const handlePinChange = (text) => {
     if (text.length <= 6) {
       setPin(text);
@@ -43,7 +52,10 @@ const PinConfirmationScreen = () => {
         pin
       );
       if (beli) {
-        navigation.navigate("TransactionResult",{transactionData,transactionType});
+        navigation.navigate("TransactionResult", {
+          transactionData,
+          transactionType,
+        });
         setPinStatus(true);
         console.log("Transaction successful:", beli);
       } else {
@@ -66,7 +78,10 @@ const PinConfirmationScreen = () => {
         // navigation.navigate("TransactionResult");
         setPinStatus(true);
         console.log("Transaction successful:", jual);
-        navigation.navigate("TransactionResult", { transactionData, transactionType });
+        navigation.navigate("TransactionResult", {
+          transactionData,
+          transactionType,
+        });
       } else {
         console.log("salah");
         setErrorVisible(!errorVisible);
@@ -78,23 +93,75 @@ const PinConfirmationScreen = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(transactionData.selectedWallet.walletId);
+  const transferTransaction = async () => {
+    try {
+      const transfer = await fetchValasTransfer(
+        transactionData.selectedWallet.walletId,
+        transactionData.accountFind.wallet.accountNumber,
+        transactionData.inputValue,
+        pin
+      );
+      if (transfer) {
+        setPinStatus(true);
+        console.log("Transaction successful:", transfer);
+        navigation.navigate("TransactionResult", {
+          transactionData,
+          transactionType,
+        });
+      } else {
+        console.log("salah");
+        setErrorVisible(!errorVisible);
+        setPinStatus(false);
+      }
+    } catch (error) {
+      console.error("Transaction failed:", error);
+      setPinStatus(false);
+    }
+  };
 
-    console.log(transactionData.inputValue);
-    transactionData.inputValue, pin;
+  const withdrawTransaction = async () => {
+    try {
+      const tarik = await fetchValasWithdraw(
+        transactionData.selectedWallet.walletId,
+        transactionData.inputValue,
+        dateTransaction,
+        branchData.code,
+        pin
+      );
+      if (tarik) {
+        navigation.navigate("TransactionResult", {
+          transactionData,
+          transactionType,
+        });
+        setPinStatus(true);
+        console.log("Transaction successful:", tarik);
+      } else {
+        setPinStatus(false);
+      }
+    } catch (error) {
+      console.error("Transaction failed:", error);
+      setPinStatus(false);
+    }
+  };
+
+  useEffect(() => {
+    // console.log(transactionData.selectedWallet.walletId);
+
+    // console.log(transactionData.inputValue);
+    // transactionData.inputValue, pin;
     setPinStatus(true);
     if (pin.length === 6) {
-      if(transactionType==="beli"){
+      if (transactionType === "beli") {
         buyTransaction();
-      }
-      else if(transactionType==="jual"){
+      } else if (transactionType === "jual") {
         sellTransaction();
-      }
-      else {
+      } else if (transactionType == "transfer") {
+        transferTransaction();
+      } else if (transactionType == "tarik") {
+        withdrawTransaction();
+      } else {
         null;
       }
-      
     }
   }, [pin]);
   return (

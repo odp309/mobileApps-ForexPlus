@@ -1,36 +1,91 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
 import { Dimensions } from "react-native";
 import {
   BodyXLTextBold,
   BodySmallText,
+  BodySmallTextSemiBold,
+  BodyLargeText,
 } from "../../../components/shared/StyledText";
 import colors from "../../../theme/colors";
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import InputCurrency from "../../../components/valasHome/shared/InputCurrency";
 import WalletValasSource from "../../../components/valasHome/shared/WalletValasSource";
 import StyledButton from "../../../components/shared/StyledButton";
+import * as Location from "expo-location";
+import { fetchRelatedBranch } from "../../../config/ValasConfig";
 
-const DIMENSION_HEIGHT = Dimensions.get("screen").height;
+const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
 const ValasTarikScreen = () => {
   const navigation = useNavigation();
-  const onContinue = () => {
-    // setShowModal(true);
-    navigation.navigate("ChooseBranch", { inputNominal });
+  const route = useRoute();
+  const { selectedRekening, selectedWallet, selectedCurrency } = route.params;
+
+  const [transactionData, setTransactionData] = useState({
+    selectedWallet: selectedWallet,
+    selectedRekening: selectedRekening,
+    selectedCurrency: selectedCurrency,
+    inputValue: "",
+  });
+
+  const [loading, setLoading] = useState(true);
+  const [location, setLocation] = useState("");
+
+  const getLocation = async () => {
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert("Permission to access location was denied");
+        return;
+      }
+      const location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.High,
+      });
+      setLocation(location);
+      console.log(location);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
-  const [inputNominal, setInputNominal] = useState("");
-  const saldo = 15000;
+
+  const onContinue = async () => {
+    try {
+      const getBranch = await fetchRelatedBranch(
+        location.coords.latitude,
+        location.coords.longitude,
+        transactionData.inputValue,
+        transactionData.selectedWallet.currencyCode
+      );
+      if (getBranch) {
+        console.log(getBranch);
+        navigation.navigate("ChooseBranch", { transactionData, getBranch });
+      }
+    } catch (error) {}
+  };
 
   const [errorText, setErrorText] = useState("");
+
+  useEffect(() => {
+    // console.log(selectedRekening);
+    // console.log(selectedWallet);
+    // console.log(selectedCurrency);
+    getLocation();
+  }, []);
+
   function onChangeText(e) {
     setErrorText("");
-    setInputNominal(e);
+    setTransactionData((prevData) => ({
+      ...prevData,
+      inputValue: e,
+    }));
     if (e === "") {
       return;
     }
-    if (parseInt(e) > saldo) {
+    if (parseInt(e) > selectedWallet.balance) {
       setErrorText("Saldo Anda tidak mencukupi");
       return;
     }
@@ -38,71 +93,86 @@ const ValasTarikScreen = () => {
       setErrorText("Nominal penarikan harus dalam kelipatan 100");
       return;
     }
-    if (parseInt(e) >= 33600) {
-      setErrorText("Maksimum penarikan setiap bulan adalah SGD 33600");
-      return;
-    }
   }
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.topContainer}>
-        <ContentHeader title={"Tarik Valas"} />
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color={colors.primary.primaryOne} />
       </View>
+    );
+  }
+  return (
+    location && (
+      <View style={styles.container}>
+        <View style={styles.topContainer}>
+          <ContentHeader title={"Tarik Valas"} hasConfirmation={true} />
+        </View>
 
-      <View style={styles.middleContainer}>
-        <View style={{ marginLeft: "0%", marginVertical: "2%" }}>
-          <BodyXLTextBold style={{ color: colors.primary.primaryOne }}>
+        <View style={styles.middleContainer}>
+          <BodyXLTextBold
+            style={{ color: colors.primary.primaryOne, marginHorizontal: "5%" }}
+          >
             Masukkan Jumlah Penarikan
           </BodyXLTextBold>
-          <BodySmallText style={{ fontSize: 16, marginTop: 5 }}>
-            Silahkan masukkan jumlah uang yang ingin{"\n"}Anda tarik dengan
-            minimum penarikan SGD 100.
-          </BodySmallText>
-          <InputCurrency
-            countryCode="sgd"
-            onChangeText={(e) => onChangeText(e)}
-          />
-          {errorText !== "" && (
-            <View style={styles.errorContainer}>
-              <View style={styles.errorIconContainer}>
-                <Text style={styles.errorIcon}>!</Text>
+          <View style={{ marginHorizontal: "5%" }}>
+            <BodySmallText style={{ fontSize: 15, marginVertical: 8 }}>
+              Silahkan masukkan jumlah uang yang ingin{"\n"}Anda tarik dengan
+              <BodySmallTextSemiBold
+                style={{ fontSize: 15, color: colors.primary.primaryOne }}
+              >
+                {" "}
+                minimum penarikan {selectedWallet.currencyCode} 100
+              </BodySmallTextSemiBold>
+              .
+            </BodySmallText>
+            <InputCurrency
+              countryCode={selectedWallet.currencyCode.toLowerCase()}
+              onChangeText={onChangeText}
+            />
+            {errorText !== "" && (
+              <View style={styles.errorContainer}>
+                <View style={styles.errorIconContainer}>
+                  <Text style={styles.errorIcon}>!</Text>
+                </View>
+                <Text style={styles.errorText}>{errorText}</Text>
               </View>
-              <Text style={styles.errorText}>{errorText}</Text>
-            </View>
-          )}
+            )}
+          </View>
           <View style={styles.lineContainer}>
             <View style={styles.line} />
             <View style={styles.boxRekeningSumber}>
               <WalletValasSource
                 style={{ backgroundColor: "white" }}
-                countryCode={"usd"}
-                saldo={`SGD ${saldo}`}
+                countryCode={selectedWallet.currencyCode.toLowerCase()}
+                saldo={selectedWallet.balance}
               />
             </View>
           </View>
-
-          <View style={styles.bottomContainer}>
-            {inputNominal === "" || inputNominal % 100 != 0 ? (
-              <StyledButton
-                mode="primary-disabled"
-                title="Lanjut"
-                size={"lg"}
-                style={{ marginBottom: "25%", marginHorizontal: "0%" }}
-              />
-            ) : (
-              <StyledButton
-                mode="primary"
-                title="Lanjut"
-                size={"lg"}
-                onPress={onContinue}
-                style={{ marginBottom: "25%", marginHorizontal: "0%" }}
-              />
-            )}
-          </View>
+        </View>
+        <View style={styles.bottomContainer}>
+          {transactionData.inputValue === "" ||
+          transactionData.inputValue % 100 != 0 ||
+          transactionData.inputValue >
+            transactionData.selectedWallet.balance ? (
+            <StyledButton
+              mode="primary-disabled"
+              title="Lanjut"
+              size={"lg"}
+              style={{ marginHorizontal: "5%" }}
+            />
+          ) : (
+            <StyledButton
+              mode="primary"
+              title="Lanjut"
+              size={"lg"}
+              onPress={onContinue}
+              style={{ marginHorizontal: "5%" }}
+            />
+          )}
         </View>
       </View>
-    </View>
+    )
   );
 };
 
@@ -110,9 +180,11 @@ export default ValasTarikScreen;
 
 const styles = StyleSheet.create({
   container: {
-    height: Dimensions.get("screen").height,
-    justifyContent: "flex-start",
+    height: WINDOW_HEIGHT,
+    justifyContent: "center",
     backgroundColor: "white",
+    width: "100%",
+    alignItems: "center",
   },
   topContainer: {
     width: "100%",
@@ -123,11 +195,10 @@ const styles = StyleSheet.create({
   middleContainer: {
     width: "100%",
     flex: 0.75,
-    paddingHorizontal: 20,
   },
   bottomContainer: {
+    flex: 0.15,
     width: "100%",
-    height: "69%",
     justifyContent: "center",
   },
   errorContainer: {
@@ -155,20 +226,14 @@ const styles = StyleSheet.create({
   },
   lineContainer: {
     width: "100%",
-    paddingHorizontal: "0%",
-    marginTop: "8%",
-    right: "10%",
+    marginTop: "5%",
   },
   line: {
     height: 4,
-    width: "120%",
     backgroundColor: "#FDE7DF",
     borderColor: "#FDE7DF",
-    borderWidth: 2,
   },
   boxRekeningSumber: {
     backgroundColor: "#EF5C26",
-    marginLeft: "5%",
-    marginRight: "-14%",
   },
 });

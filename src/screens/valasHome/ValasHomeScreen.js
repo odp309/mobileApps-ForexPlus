@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import colors from "../../theme/colors";
 import ValasHeader from "../../components/valasHome/ValasHeader";
 import {
@@ -22,7 +22,7 @@ import CurrencyInformation from "../../components/valasHome/CurrencyInformation"
 import { fetchBankAccount, fetchNomorRekening } from "../../config/ValasConfig";
 import { userData } from "../../config/AuthConfig";
 import ValasCreateContent from "../../components/valasHome/ValasCreateContent";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
@@ -39,8 +39,17 @@ const ValasHomeScreen = () => {
     try {
       const data = await fetchBankAccount(userData.id);
       setListRekening(data);
+      let currentSelectedRekening = null;
 
-      const currentSelectedRekening = data[0];
+      if(selectedRekening === null){
+        // console.log("Selected Rekening null")
+         currentSelectedRekening= data[data.length-1];
+      }
+      else{
+        // console.log("Selected Rekening ada" + selectedRekening.id-1)
+        currentSelectedRekening = data[selectedRekening.id];
+      }
+      
       setSelectedRekening(currentSelectedRekening);
 
       if (
@@ -56,24 +65,22 @@ const ValasHomeScreen = () => {
     }
   };
 
-  useEffect(() => {
-    getData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getData();
+    }, [])
+  );
 
   useEffect(() => {
     if (selectedRekening != null) {
-      console.log("Ganti Wallet");
+      // console.log("Ganti Wallet");
       setSelectedWallet(selectedRekening.listWallet[0]);
     }
   }, [selectedRekening]);
-
-  useEffect(() => {
-    console.log("wallet: " + selectedWallet);
-  }, [selectedWallet]);
-
+ 
   if (isLoading) {
     return (
-      <View style={{ justifyContent: "flex-start", flex: 1 }}>
+      <View style={{ justifyContent: "center", flex: 1 }}>
         <ActivityIndicator size="large" color={colors.primary.primaryOne} />
       </View>
     );

@@ -17,7 +17,7 @@ const WalletSource = ({ style, rekening, jenisRekening, saldo }) => {
               </BodyMediumText>
               <BodySmallText>{rekening}</BodySmallText>
               <BodyMediumText style={{ fontWeight: "bold" }}>
-                {saldo}
+                IDR {saldo}
               </BodyMediumText>
             </View>
             <View style={styles.landmarkContainer}>

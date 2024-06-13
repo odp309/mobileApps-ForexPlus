@@ -12,6 +12,9 @@ import { StyleSheet, View, TouchableOpacity, Image, Modal } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../../../theme/colors";
 import { useNavigation } from "@react-navigation/native";
+import { useEffect } from "react";
+import WalletValasSource from "../shared/WalletValasSource";
+import { formatNumber } from "../../../config/ValasConfig";
 
 const BRANCH_TEXT_LENGTH = 16;
 
@@ -20,12 +23,11 @@ const PullConfirmationModal = ({
   toggleBottomSheet,
   branchData,
   date,
-  pullBalance,
-  valasType,
-  valasCode
+  transactionData,
+  transactionType,
 }) => {
   const navigation = useNavigation();
-
+  const formattedDate = new Date(date);
   // Function to return the longLengthBranchName to longLengthBr...
   const longText = (text) => {
     const newText = text.slice(0, BRANCH_TEXT_LENGTH);
@@ -33,19 +35,17 @@ const PullConfirmationModal = ({
     return textWithDot;
   };
 
-  const toPinVerification = () => {
+  const toPinVerification = (transactionData) => {
     toggleBottomSheet();
-    navigation.navigate("PinConfirmation");
+    navigation.navigate("PinConfirmation",{transactionType,transactionData,date,branchData});
   };
-
+ 
   return (
     <BottomSheet isVisible={modalVisibility}>
       <View style={styles.modalContent}>
         <View style={styles.topContainer}>
           {/* CLOSE BUTTON */}
-          <View
-            style={{ width: "100%", alignItems: "flex-end", }}
-          >
+          <View style={{ width: "100%", alignItems: "flex-end" }}>
             <TouchableOpacity onPress={toggleBottomSheet}>
               <AntDesign name="close" size={24} color="black" />
             </TouchableOpacity>
@@ -62,29 +62,30 @@ const PullConfirmationModal = ({
           <View style={styles.infoContainer}>
             <View style={styles.iconContainer}>
               <Image
-                source={require("../../../../assets/icons/flags/Japan.png")}
+                source={{ uri: transactionData.selectedWallet.flagIcon }}
                 style={{ width: 50, height: 50, marginRight: 10 }}
               />
             </View>
             <View>
               <BodyLargeText style={{ fontWeight: "bold" }}>
-                {valasType}
+                {transactionData.selectedWallet.currencyName}
               </BodyLargeText>
-              <BodyMediumText>{valasCode}</BodyMediumText>
+              <BodyMediumText>
+                {transactionData.selectedWallet.currencyCode}
+              </BodyMediumText>
             </View>
           </View>
 
           {/* Kantor Tujuan */}
           <View style={styles.textContainer}>
             <BodyRegularText>Cabang Penarikan</BodyRegularText>
-            {/* If the text is too long, then replace the 25 index to the last as ... */}
-            {branchData.branchName.length <= BRANCH_TEXT_LENGTH ? (
+            {branchData.name.length <= BRANCH_TEXT_LENGTH ? (
               <BodyRegularText style={{ fontWeight: "bold" }}>
-                {branchData.branchName}
+                KCP {branchData.name}
               </BodyRegularText>
             ) : (
               <BodyRegularText style={{ fontWeight: "bold" }}>
-                {longText(branchData.branchName)}
+                {longText(branchData.name)}
               </BodyRegularText>
             )}
           </View>
@@ -93,7 +94,11 @@ const PullConfirmationModal = ({
           <View style={styles.textContainer}>
             <BodyRegularText>Tanggal Penarikan</BodyRegularText>
             <BodyRegularText style={{ fontWeight: "bold" }}>
-              {date}
+              {formattedDate.toLocaleDateString("id-ID", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
             </BodyRegularText>
           </View>
 
@@ -101,17 +106,16 @@ const PullConfirmationModal = ({
           <View style={styles.totalPenarikan}>
             <BodyRegularText>Total Penarikan</BodyRegularText>
             <BodyRegularText style={{ fontWeight: "bold" }}>
-              {pullBalance}
+              {transactionData.selectedWallet.currencyCode}{" "}
+              {transactionData.inputValue}
             </BodyRegularText>
           </View>
 
           {/* Dompet SUMBER */}
-          <WalletSource
-          jenisRekening={"TAPLUS PEGAWAI"}
-          rekening={"121212"}
+          <WalletValasSource
             style={{ backgroundColor: colors.color.white }}
-            countryCode="jpy"
-            saldo="20000"
+            countryCode={transactionData.selectedWallet.currencyCode.toLowerCase()}
+            saldo={formatNumber(transactionData.selectedWallet.balance)}
           />
         </View>
 
@@ -121,7 +125,7 @@ const PullConfirmationModal = ({
             mode="primary"
             title="Tarik"
             size={"lg"}
-            onPress={toPinVerification}
+            onPress={() => toPinVerification(transactionData)}
           />
         </View>
       </View>

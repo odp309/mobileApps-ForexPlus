@@ -30,17 +30,13 @@ const fetchBankAccount = async (userId) => {
     const dataBank = await axiosInstance.post("/private/bank_account/get-all", {
       userId,
     });
-    // console.log(dataBank.data);
     return dataBank.data;
   } catch (error) {
     console.log(error);
   }
 };
 const fetchValasPurchase = async (walletId, amountToBuy, pin) => {
-  try {
-    // console.log("Wallet ID : "+walletId);
-    // console.log("Amount : "+amountToBuy);
-    // console.log("Pin : " + pin);
+  try { 
     const response = await axiosInstance.post("/private/buy-valas/buy", {
       walletId,
       amountToBuy,
@@ -58,10 +54,7 @@ const fetchValasPurchase = async (walletId, amountToBuy, pin) => {
 };
 
 const fetchValasSell = async (walletId, amountToSell, pin) => {
-  try {
-    // console.log("Wallet ID : "+walletId);
-    // console.log("Amount : "+amountToSell);
-    // console.log("Pin : " + pin);
+  try { 
     const response = await axiosInstance.post("/private/sell-valas/sell", {
       walletId,
       amountToSell,
@@ -78,6 +71,38 @@ const fetchValasSell = async (walletId, amountToSell, pin) => {
   }
 };
 
+const fetchValasTransfer = async (senderWalletId, recipientAccountNumber,amountToTransfer, pin) => {
+  console.log(senderWalletId, recipientAccountNumber,amountToTransfer, pin)
+  try { 
+    const response = await axiosInstance.post("/private/transfer-valas/transfer", {
+      senderWalletId,
+      recipientAccountNumber,
+      amountToTransfer,
+      pin,
+    });
+    console.log(response.data);
+    if (response) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const fetchRelatedBranch = async (latitude,longitude,amountToWithdraw,currencyCode) => {
+  console.log(latitude,longitude,amountToWithdraw,currencyCode);
+  try {
+    const allBranches = await axiosInstance.post(
+      "/private/branch/get",
+      { latitude,longitude,amountToWithdraw,currencyCode }
+    );
+    return allBranches.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
 const fetchMinimumBuy = async (currencyCode) => {
   // console.log(currencyCode);
   try {
@@ -104,8 +129,19 @@ const fetchMinimumSell = async (currencyCode) => {
   }
 };
 
-const findBankAccountInfo = async (senderAccountNumber,recipientAccountNumber,currencyCode) => { 
- // console.log(senderAccountNumber,recipientAccountNumber,currencyCode );
+const fetchMinimumTransfer = async (currencyCode) => { 
+  try {
+    const dataMinimumTransfer = await axiosInstance.post(
+      "/private/currency/minimum-transfer/get",
+      { currencyCode }
+    );
+    return dataMinimumTransfer.data.minimum;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const findBankAccountInfo = async (senderAccountNumber,recipientAccountNumber,currencyCode) => {  
   try {
     const accountFind = await axiosInstance.post(
       "/private/bank_account/get-with-wallet",
@@ -117,6 +153,20 @@ const findBankAccountInfo = async (senderAccountNumber,recipientAccountNumber,cu
     return null;
   }
 };
+
+const fetchValasWithdraw = async (walletId,amountToWithdraw,reservationDate,branchCode,pin) => {
+  console.log(walletId,amountToWithdraw,reservationDate,branchCode,pin)
+  try {
+    const dataWithdraw = await axiosInstance.post(
+      "/private/withdraw-valas/withdraw",
+      {walletId,amountToWithdraw,reservationDate,branchCode,pin}
+    );
+    return dataWithdraw.data;
+  } catch (error) {
+    console.log(error.response.data.detail);
+    return null;
+  }
+}
 
 const alertConfirmation = (navigation) => {
   Alert.alert(
@@ -150,7 +200,11 @@ export {
   formatNumber,
   fetchValasPurchase,
   fetchValasSell,
+  fetchValasTransfer,
   fetchMinimumBuy,
   fetchMinimumSell,
-  findBankAccountInfo
+  fetchMinimumTransfer,
+  findBankAccountInfo,
+  fetchRelatedBranch,
+  fetchValasWithdraw
 };

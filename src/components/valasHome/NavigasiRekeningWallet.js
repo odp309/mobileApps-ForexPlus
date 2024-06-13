@@ -14,8 +14,7 @@ const NavigasiRekeningWallet = ({
 }) => {
   const [modalWalletVisible, setModalWalletVisible] = useState(false);
   const [modalRekeningVisible, setModalRekeningVisible] = useState(false);
-
-  useState(() => {}, []);
+ 
   return (
     <View style={styles.container}>
       <View style={styles.section}>

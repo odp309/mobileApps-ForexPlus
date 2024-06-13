@@ -20,7 +20,11 @@ import {
 import colors from "../../../theme/colors";
 import Input from "../../../components/shared/Input";
 import StyledButton from "../../../components/shared/StyledButton";
-import { useNavigation, useFocusEffect, useRoute } from "@react-navigation/native";
+import {
+  useNavigation,
+  useFocusEffect,
+  useRoute,
+} from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
 import {
@@ -42,6 +46,7 @@ const CheckTargetAccountScreen = () => {
   const currentCurrencyCode = route.params?.selectedWallet.currencyCode;
   const currentRekening = route.params?.selectedRekening;
   const currentWallet = route.params?.selectedWallet;
+  const currentCurrency = route.params?.selectedCurrency;
 
   const [inputRekening, setInputRekening] = useState("");
   const [isCheckingAccount, setIsCheckingAccount] = useState(false);
@@ -50,12 +55,12 @@ const CheckTargetAccountScreen = () => {
   const [messageStatus, setMessageStatus] = useState("");
   const [accountFind, setAccountFind] = useState(null);
   const [buttonVisible, setButtonVisible] = useState(true);
-
+  const [isLoading,setIsLoading]= useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const translateYAnim = useRef(new Animated.Value(50)).current;
 
-  const findNoRek = async (currentRek,noRek,currencyCode) => {
-    const hasil = await findBankAccountInfo(currentRek,noRek,currencyCode);
+  const findNoRek = async (currentRek, noRek, currencyCode) => {
+    const hasil = await findBankAccountInfo(currentRek, noRek, currencyCode);
     return hasil;
   };
 
@@ -67,7 +72,11 @@ const CheckTargetAccountScreen = () => {
     setButtonVisible(false);
 
     try {
-      const findResult = await findNoRek(currentRekening.accountNumber,inputRekening,currentCurrencyCode);
+      const findResult = await findNoRek(
+        currentRekening.accountNumber,
+        inputRekening,
+        currentCurrencyCode
+      );
       console.log(findResult);
       if (findResult) {
         setAccountFind(findResult);
@@ -113,7 +122,12 @@ const CheckTargetAccountScreen = () => {
   useEffect(() => {
     if (accountFind) {
       const timer = setTimeout(() => {
-        navigation.navigate("EnterTransfer", {accountFind,currentWallet });
+        navigation.navigate("EnterTransfer", {
+          accountFind,
+          currentWallet,
+          currentRekening,
+          currentCurrency,
+        });
       }, 800);
       return () => clearTimeout(timer);
     }
@@ -126,6 +140,13 @@ const CheckTargetAccountScreen = () => {
     return () => backHandler.remove();
   }, []);
 
+
+  useEffect(()=>{
+    setIsLoading(true)
+    setTimeout(()=>{
+      setIsLoading(false)
+    },300) 
+  },[])
   useFocusEffect(
     useCallback(() => {
       setHasChecked(false);
@@ -136,6 +157,13 @@ const CheckTargetAccountScreen = () => {
     }, [])
   );
 
+  if (isLoading) {
+    return (
+      <View style={{ justifyContent: "center", flex: 1 }}>
+        <ActivityIndicator size="large" color={colors.primary.primaryOne} />
+      </View>
+    );
+  }
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topContainer}>
@@ -230,7 +258,6 @@ const CheckTargetAccountScreen = () => {
                 />
               </View>
               <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                
                 <BodyMediumTextSemiBold
                   style={{ color: colors.primary.primaryOne, fontSize: 18 }}
                 >

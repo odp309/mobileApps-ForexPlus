@@ -6,18 +6,21 @@ import { BodySmallText } from "../../../components/shared/StyledText";
 
 const dummyData = [
   {
+    id : "1",
     cabang: "BNI Cabang 1 (Surabaya)",
     tanggal: "7 September 2024",
     status: "Terjadwal",
     kode: "RES140524003",
   },
   {
+    id : "2",
     cabang: "BNI Cabang 1 (Depok)",
     tanggal: "13 Agustus 2024",
     status: "Terjadwal",
     kode: "RES140524002",
   },
   {
+    id : "3",
     cabang: "BNI Cabang 1 (Jakarta Barat)",
     tanggal: "28 Juni 2024",
     status: "Terjadwal",

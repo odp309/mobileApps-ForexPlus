@@ -1,4 +1,11 @@
-import { Dimensions, StyleSheet, View, Alert, BackHandler } from "react-native";
+import {
+  Dimensions,
+  StyleSheet,
+  View,
+  Alert,
+  BackHandler,
+  ActivityIndicator,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import {
   BodyMediumText,
@@ -34,8 +41,10 @@ const ValasJualScreen = () => {
     inputValue: "",
     convertedValue: "",
   });
+
   const [isVisible, setIsVisible] = useState(false);
   const [inputError, setInputError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener("hardwareBackPress", () =>
@@ -45,13 +54,21 @@ const ValasJualScreen = () => {
   }, []);
 
   const setFetchMinimum = async () => {
-    const minimumData = await fetchMinimumSell(
-      transactionData.selectedWallet.currencyCode.toUpperCase()
-    );
-    setMinimumSell(minimumData);
+    try {
+      const minimumData = await fetchMinimumSell(
+        transactionData.selectedWallet.currencyCode.toUpperCase()
+      );
+      setMinimumSell(minimumData);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
   useEffect(() => {
-    setFetchMinimum();
+    setTimeout(() => {
+      setFetchMinimum();
+    }, 500);
   }, []);
 
   const isButtonDisabled = () => {
@@ -61,8 +78,7 @@ const ValasJualScreen = () => {
 
     return (
       transactionData.inputValue === "" ||
-      inputValue < minimumSell ||
-      balance < convertedValue
+      inputValue < minimumSell
     );
   };
 
@@ -91,10 +107,7 @@ const ValasJualScreen = () => {
     setTransactionData((prevState) => ({
       ...prevState,
       inputValue: "",
-    }));
-    if (data > transactionData.selectedWallet.balance) {
-      setInputError("Jumlah melebihi Saldo Wallet");
-    } else if (parseInt(data) < parseInt(minimumSell)) {
+    })); if (parseInt(data) < parseInt(minimumSell)) {
       setInputError(
         `Minimum penjualan valas ${transactionData.selectedCurrency.currencyCode} ${minimumSell}`
       );
@@ -123,6 +136,14 @@ const ValasJualScreen = () => {
     kursCalculation(data);
   };
 
+  if (isLoading) {
+    return (
+      <View style={{ justifyContent: "center", flex: 1 }}>
+        <ActivityIndicator size="large" color={colors.primary.primaryOne} />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
@@ -149,7 +170,7 @@ const ValasJualScreen = () => {
               Kurs Jual
             </BodyMediumText>
             <BodyLargeText style={styles.textStyle}>
-              {transactionData.selectedCurrency.currencyCode} 1.00 = Rp.{" "}
+              {transactionData.selectedCurrency.currencyCode} 1.00 = IDR{" "}
               {formatNumber(transactionData.selectedCurrency.sellRate)}
             </BodyLargeText>
           </View>
