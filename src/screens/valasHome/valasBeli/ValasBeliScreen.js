@@ -187,9 +187,7 @@ export default function ValasBeliScreen() {
         />
         <View style={styles.boxRekeningSumber}>
           <WalletSource
-            jenisRekening={transactionData.selectedRekening.type}
-            rekening={transactionData.selectedRekening.accountNumber}
-            saldo={formatNumber(transactionData.selectedRekening.balance)}
+          selectedRekening={transactionData.selectedRekening}
           />
         </View>
       </View>

@@ -100,10 +100,10 @@ const ValasJualScreen = () => {
               parseInt(transactionData.selectedCurrency.sellRate)
             ).toString(),
     }));
-    checkError(data, kursResult);
+    checkError(data);
   };
 
-  const checkError = (data, kursResult) => {
+  const checkError = (data) => {
     setTransactionData((prevState) => ({
       ...prevState,
       inputValue: "",
@@ -181,7 +181,7 @@ const ValasJualScreen = () => {
         <View>
           <WalletValasSource
             saldo={transactionData.selectedWallet.balance}
-            countryCode={transactionData.selectedWallet.currencyCode.toLowerCase()}
+            selectedWallet={transactionData.selectedWallet}
           />
         </View>
 

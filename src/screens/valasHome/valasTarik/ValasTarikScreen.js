@@ -127,7 +127,7 @@ const ValasTarikScreen = () => {
               .
             </BodySmallText>
             <InputCurrency
-              countryCode={selectedWallet.currencyCode.toLowerCase()}
+              selectedCurrency={transactionData.selectedCurrency}
               onChangeText={onChangeText}
             />
             {errorText !== "" && (
@@ -144,8 +144,7 @@ const ValasTarikScreen = () => {
             <View style={styles.boxRekeningSumber}>
               <WalletValasSource
                 style={{ backgroundColor: "white" }}
-                countryCode={selectedWallet.currencyCode.toLowerCase()}
-                saldo={selectedWallet.balance}
+                selectedWallet={selectedWallet}
               />
             </View>
           </View>

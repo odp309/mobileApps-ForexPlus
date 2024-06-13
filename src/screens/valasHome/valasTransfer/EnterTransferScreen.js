@@ -12,7 +12,7 @@ import colors from "../../../theme/colors";
 import StyledButton from "../../../components/shared/StyledButton";
 import { Image } from "react-native";
 import InputCurrency from "../../../components/valasHome/shared/InputCurrency";
-import WalletSource from "../../../components/valasHome/shared/WalletValasSource";
+import WalletValasSource from "../../../components/valasHome/shared/WalletValasSource";
 import ModalTransferConfirmation from "../../../components/valasHome/valasTransfer/ModalTransferConfirmation";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import ConfirmationModal from "../../../components/valasHome/shared/ConfirmationModal";
@@ -112,6 +112,7 @@ const EnterTransferScreen = () => {
 
           <InputCurrency
             countryCode={transactionData.selectedWallet.currencyCode.toLowerCase()}
+            selectedCurrency={transactionData.selectedCurrency}
             value={transactionData.inputValue}
             onChangeText={acceptInputCurrency}
           />
@@ -123,9 +124,8 @@ const EnterTransferScreen = () => {
           style={{ height: 4, backgroundColor: colors.primary.primaryThree }}
         />
         <View style={styles.walletContainer}>
-          <WalletSource
-            countryCode={currentWallet.currencyCode.toLowerCase()}
-            saldo={currentWallet.balance}
+          <WalletValasSource
+            selectedWallet={currentWallet}
           />
         </View>
       </View>

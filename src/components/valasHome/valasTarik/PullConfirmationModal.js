@@ -114,8 +114,7 @@ const PullConfirmationModal = ({
           {/* Dompet SUMBER */}
           <WalletValasSource
             style={{ backgroundColor: colors.color.white }}
-            countryCode={transactionData.selectedWallet.currencyCode.toLowerCase()}
-            saldo={formatNumber(transactionData.selectedWallet.balance)}
+            selectedWallet={transactionData.selectedWallet}
           />
         </View>
 

@@ -22,6 +22,7 @@ import CurrencyInformation from "../../components/valasHome/CurrencyInformation"
 import { fetchBankAccount, fetchNomorRekening } from "../../config/ValasConfig";
 import { userData } from "../../config/AuthConfig";
 import ValasCreateContent from "../../components/valasHome/ValasCreateContent";
+import AddWalletButton from "../../components/valasHome/AddWalletButton";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
@@ -77,6 +78,11 @@ const ValasHomeScreen = () => {
       setSelectedWallet(selectedRekening.listWallet[0]);
     }
   }, [selectedRekening]);
+
+  useEffect(() => {
+    console.log("wallet: " + selectedWallet);
+  }, [selectedWallet]);
+
  
   if (isLoading) {
     return (
@@ -119,7 +125,7 @@ const ValasHomeScreen = () => {
             setSelectedWallet={setSelectedWallet}
           />
         ) : (
-          <ValasCreateContent />
+          <ValasCreateContent selectedRekening={selectedRekening} />
         ),
     },
     {
@@ -205,6 +211,11 @@ const ValasHomeScreen = () => {
           />
         </View>
       )}
+      {selectedWallet != null && (
+        <View style={styles.addWallet}>
+          <AddWalletButton selectedRekening={selectedRekening} />
+        </View>
+      )}
     </View>
   );
 };
@@ -221,4 +232,10 @@ const styles = StyleSheet.create({
     top: 0.22 * WINDOW_HEIGHT,
     flex: 0.78,
   },
+  addWallet:{
+    zIndex:10,
+    position:'absolute',
+    bottom:50,
+    right:26
+  }
 });

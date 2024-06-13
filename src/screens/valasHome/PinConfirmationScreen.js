@@ -18,11 +18,13 @@ import colors from "../../theme/colors";
 import ContentHeader from "../../components/valasHome/shared/ContentHeader";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import IncorrectPinMessage from "../../components/valasHome/IncorrectPinMessage";
+import { userData } from "../../config/AuthConfig";
 import {
   fetchValasPurchase,
   fetchValasSell,
   fetchValasTransfer,
   fetchValasWithdraw,
+  fetchValasAddWallet,
 } from "../../config/ValasConfig";
 
 const PinConfirmationScreen = () => {
@@ -36,7 +38,6 @@ const PinConfirmationScreen = () => {
   const transactionType = route.params?.transactionType;
   const branchData = route.params?.branchData;
   const dateTransaction = route.params?.date;
-
 
   const handlePinChange = (text) => {
     if (text.length <= 6) {
@@ -144,6 +145,31 @@ const PinConfirmationScreen = () => {
     }
   };
 
+  const addWalletTransaction = async () => {
+    try {
+      const addWallet = await fetchValasAddWallet(
+        userData.id,
+        transactionData.selectedRekening.accountNumber,
+        transactionData.selectedCurrency.currencyCode,
+        transactionData.inputValue,
+        pin
+      );
+      if (addWallet) {
+        setPinStatus(true);
+        console.log("Transaction Add Wallet successful:", addWallet);
+        navigation.navigate("TransactionResult", {
+          transactionData,
+          transactionType,
+        });
+      } else {
+        setPinStatus(false);
+      }
+    } catch (error) {
+      console.error("Transaction failed:", error);
+      setPinStatus(false);
+    }
+  };
+
   useEffect(() => {
     // console.log(transactionData.selectedWallet.walletId);
 
@@ -155,6 +181,8 @@ const PinConfirmationScreen = () => {
         buyTransaction();
       } else if (transactionType === "jual") {
         sellTransaction();
+      } else if (transactionType === "add wallet") {
+        addWalletTransaction();
       } else if (transactionType == "transfer") {
         transferTransaction();
       } else if (transactionType == "tarik") {

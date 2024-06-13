@@ -15,6 +15,7 @@ import { formatNumber } from "../../../config/ValasConfig";
 import WalletValasSource from "./WalletValasSource";
 import { useEffect } from "react";
 import { userData } from "../../../config/AuthConfig";
+import SummaryConfirmation from "./SummaryConfirmation";
 
 const ConfirmationModal = ({
   isVisible,
@@ -70,47 +71,29 @@ const ConfirmationModal = ({
           >
             <View>
               <Image
-                source={{ uri: transactionData.selectedWallet.flagIcon }}
+                source={{ uri: transactionData.selectedCurrency.flagIcon }}
                 style={{ width: 50, height: 50, marginRight: 10 }}
               />
             </View>
             <View>
               <BodyLargeText style={{ fontWeight: "bold" }}>
-                {transactionData.selectedWallet.currencyName}
+                {transactionData.selectedCurrency.currencyName}
               </BodyLargeText>
               <BodyMediumText>
-                {transactionData.selectedWallet.currencyCode}
+                {transactionData.selectedCurrency.currencyCode}
               </BodyMediumText>
             </View>
           </View>
 
           {/* SUMMARY */}
           <View style={styles.summaryContainer}>
-            {transactionType === "jual" || transactionType === "beli" ? (
-              <View>
-                <View style={styles.confirmationText}>
-                  <BodyRegularText>Nominal Pembelian</BodyRegularText>
-                  <BodyRegularText style={{ fontWeight: "bold" }}>
-                    {transactionData.selectedWallet.currencyCode}{" "}
-                    {transactionData.inputValue}
-                  </BodyRegularText>
-                </View>
-                <View style={styles.confirmationText}>
-                  <BodyRegularText>Kurs Jual</BodyRegularText>
-                  <BodyRegularText style={{ fontWeight: "bold" }}>
-                    {transactionData.selectedWallet.currencyCode} 1 = IDR{" "}
-                    {transactionType === "jual"
-                      ? formatNumber(transactionData.selectedCurrency.sellRate)
-                      : formatNumber(transactionData.selectedCurrency.buyRate)}
-                  </BodyRegularText>
-                </View>
-                <View style={styles.confirmationText}>
-                  <BodyRegularText>Total Transaksi</BodyRegularText>
-                  <BodyRegularText style={{ fontWeight: "bold" }}>
-                    IDR {formatNumber(transactionData.convertedValue)}
-                  </BodyRegularText>
-                </View>
-              </View>
+            {transactionType === "jual" ||
+            transactionType === "beli" ||
+            transactionType == "add wallet" ? (
+              <SummaryConfirmation
+                transactionData={transactionData}
+                transactionType={transactionType}
+              />
             ) : transactionType === "transfer" ? (
               <View>
                 <View style={styles.confirmationText}>
@@ -136,19 +119,22 @@ const ConfirmationModal = ({
             {transactionType === "beli" ? (
               <WalletSource
                 style={{ backgroundColor: colors.color.white }}
-                rekening={transactionData.selectedRekening.accountNumber}
-                jenisRekening={transactionData.selectedRekening.type}
-                saldo={formatNumber(transactionData.selectedRekening.balance)}
+                selectedRekening={transactionData.selectedRekening}
               />
             ) : transactionType === "jual" ? (
               <WalletValasSource
                 style={{ backgroundColor: colors.color.white }}
-                countryCode={transactionData.selectedWallet.currencyCode.toLowerCase()}
-                saldo={formatNumber(transactionData.selectedWallet.balance)}
+                selectedWallet={transactionData.selectedWallet}
+              />
+            ) : transactionType === "add wallet" ? (
+              <WalletSource
+                style={{ backgroundColor: colors.color.white }}
+                selectedRekening={transactionData.selectedRekening}
               />
             ) : (
               <WalletValasSource
                 style={{ backgroundColor: colors.color.white }}
+                selectedWallet={transactionData.selectedWallet}
                 countryCode={transactionData.selectedWallet.currencyCode.toLowerCase()}
                 saldo={formatNumber(transactionData.selectedWallet.balance)}
               />
@@ -167,6 +153,8 @@ const ConfirmationModal = ({
                 ? "Beli"
                 : transactionType === "transfer"
                 ? "Transfer"
+                : transactionType === "add wallet"
+                ? "Setor"
                 : "Tarik"
             }
             size={"lg"}

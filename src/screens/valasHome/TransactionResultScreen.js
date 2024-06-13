@@ -94,6 +94,12 @@ const TransactionResultScreen = () => {
               title="Permintaan Tarik Berhasil Terkirim"
               date={transactionData.selectedCurrency.createdAt}
             />
+          ) : transactionType === "add wallet" ? (
+            <ResultTitleAndDate
+              title="Setoran Awal Berhasil"
+              subTitle={"Dompet Valas " + transactionData.selectedWallet.currencyName + " telah ditambahkan" }
+              date={transactionData.selectedCurrency.createdAt}
+            />
           ) : null}
         </View>
         {/* Summary Result Card Component */}

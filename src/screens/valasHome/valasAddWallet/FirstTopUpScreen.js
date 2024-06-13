@@ -1,6 +1,6 @@
 import { BackHandler, Dimensions, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
 import {
   BodyLargeText,
@@ -8,7 +8,7 @@ import {
   BodySmallTextSemiBold,
 } from "../../../components/shared/StyledText";
 import ValasConversion from "../../../components/valasHome/shared/ValasConversion";
-import { alertConfirmation } from "../../../config/ValasConfig";
+import { alertConfirmation, formatNumber } from "../../../config/ValasConfig";
 import StyledButton from "../../../components/shared/StyledButton";
 import WalletSource from "../../../components/valasHome/shared/WalletSource";
 import WalletValasSource from "../../../components/valasHome/shared/WalletValasSource";
@@ -18,23 +18,25 @@ import ConfirmationModal from "../../../components/valasHome/shared/Confirmation
 
 const FirstTopUpScreen = () => {
   const route = useRoute();
-  const [exchange, setExchange] = useState("");
-  const [inputValue, setInputValue] = useState("");
+  const navigation = useNavigation();
   const [inputError, setInputError] = useState("");
-
-  const [kurs, setKurs] = useState("103");
-  const [valas, setValas] = useState("JPY");
   const [isVisible, setIsVisible] = useState(false);
 
-  const [currentBalance, setCurrentBalance] = useState("10000000");
   const [minPurchase, setMinPurchase] = useState("10");
   const [maxPurchase, setMaxPurchase] = useState("25000");
 
-  const chosenWallet = route.params.item;
+  const transactionType = 'add wallet';
+  const [transactionData, setTransactionData] = useState({
+    selectedWallet: "",
+    selectedRekening: route.params?.selectedRekening,
+    selectedCurrency: route.params?.item,
+    inputValue: "",
+    convertedValue: "",
+  });
 
   useEffect(() => {
-    setKurs(chosenWallet.buyRate);
-    setValas(chosenWallet.currencyCode);
+    console.log("First Top Up");
+    console.log(transactionData);
     const backHandler = BackHandler.addEventListener("hardwareBackPress", () =>
       alertConfirmation(navigation)
     );
@@ -47,25 +49,37 @@ const FirstTopUpScreen = () => {
   };
 
   const kursCalculation = (data) => {
-    const kursResult = parseInt(data) * parseInt(kurs);
-    data === "" ? setExchange("") : setExchange(kursResult);
+    const kursResult = parseInt(data) *parseInt(transactionData.selectedCurrency.buyRate);
+    setTransactionData((prevState) => ({
+      ...prevState,
+      convertedValue:
+        data === ""
+          ? ""
+          : (
+              parseInt(data) *
+              parseInt(transactionData.selectedCurrency.buyRate)
+            ).toString(),
+    }));
     checkError(data, kursResult);
   };
 
   const checkError = (data, kursResult) => {
-    if (kursResult > parseInt(currentBalance)) {
+    setTransactionData((prevState) => ({
+      ...prevState,
+      inputValue: "",
+    }));
+    if (kursResult > parseInt(transactionData.selectedRekening.balance)) {
       setInputError("Jumlah melebihi Saldo Aktif Rupiah");
-      setInputValue("");
     } else if (parseInt(data) < parseInt(minPurchase)) {
-      setInputError(`Minimum setoran valas ${valas} ${minPurchase}`);
-      setInputValue("");
+      setInputError(`Minimum setoran valas ${transactionData.selectedCurrency.currencyCode} ${minPurchase}`);
     } else if (parseInt(data) > parseInt(maxPurchase)) {
-      setInputError(`Maksimum setoran valas ${valas} ${maxPurchase}`);
-      setInputValue("");
+      setInputError(`Maksimum setoran valas ${transactionData.selectedCurrency.currencyCode} ${maxPurchase}`);
     } else {
       setInputError("");
-      setInputValue(data);
-    }
+      setTransactionData((prevState) => ({
+        ...prevState,
+        inputValue: data,
+      }));    }
   };
 
   const acceptInputCurrency = (data) => {
@@ -81,17 +95,15 @@ const FirstTopUpScreen = () => {
       <View style={styles.middleContainer}>
         <View style={styles.mainContent}>
           <BodySmallTextSemiBold style={{ textAlign: "center" }}>
-            Setor mulai dari {valas} 10 atau lebih agar Dompet Valas bisa
+            Setor mulai dari {transactionData.selectedCurrency.currencyCode} 10 atau lebih agar Dompet Valas bisa
             langsung digunakan untuk transaksi
           </BodySmallTextSemiBold>
           <View style={{ marginTop: 20 }}>
             <ValasConversion
               firstInputTitle={"Nominal Setoran"}
               secondInputTitle={"Nominal Asal"}
-              exchange={exchange}
               changeTextData={acceptInputCurrency}
-              kurs={kurs}
-              inputSaldo={inputValue}
+              transactionData={transactionData}
               firstError={inputError}
               secondError={inputError}
             />
@@ -103,28 +115,25 @@ const FirstTopUpScreen = () => {
               Kurs Beli
             </BodyMediumText>
             <BodyLargeText style={styles.textStyle}>
-              {valas} 1.00 = Rp. {kurs}
+            {transactionData.selectedCurrency.currencyCode} 1.00 = Rp. {formatNumber(transactionData.selectedCurrency.buyRate)}
             </BodyLargeText>
           </View>
         </View>
         <View style={styles.sourceContainer}>
           <WalletSource
-            rekening="18191239194"
-            jenisRekening="Taplus Pegawai BNI"
-            saldo={currentBalance}
+          selectedRekening={transactionData.selectedRekening}
           />
         </View>
         <ConfirmationModal
-          title={"Konfirmasi Pembelian Valas"}
+          title={"Konfirmasi Setoran Awal"}
           isVisible={isVisible}
           toggleBottomSheet={toggleBottomSheet}
-          pendapatan={exchange}
-          kurs={kurs}
-          inputSaldo={inputValue}
+          transactionData={transactionData}
+          transactionType={transactionType}
         />
       </View>
       <View style={styles.bottomContainer}>
-        {inputValue === "" ? (
+        {transactionData.inputValue === "" ? (
           <StyledButton
             mode="primary-disabled"
             title="Lanjut"
