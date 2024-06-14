@@ -224,6 +224,43 @@ const fetchValasWithdraw = async (
   }
 };
 
+const fetchHistory = async (walletId) => {
+  try {
+    console.log("Wallet ID : " + walletId);
+    const response = await axiosInstance.post("/private/history/get-all", {
+     walletId
+    });
+    console.log("History Data:");
+    console.log(response.data);
+    if (response) {
+      return response.data;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const fetchHistoryDetail = async (trxId) => {
+  try {
+    console.log("trx ID : " + trxId);
+    const response = await axiosInstance.post("/private/history/get-detail", {
+      trxId
+    });
+    console.log("trx Data:");
+    console.log(response.data);
+    if (response) {
+      return response.data;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
 const alertConfirmation = (navigation) => {
   Alert.alert(
     "Anda Ingin Membatalkan Transaksi?",
@@ -265,4 +302,6 @@ export {
   fetchRelatedBranch,
   fetchValasWithdraw,
   fetchValasAddWallet,
+  fetchHistory,
+  fetchHistoryDetail,
 };

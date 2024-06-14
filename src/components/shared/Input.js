@@ -47,6 +47,7 @@ const Input = ({
         placeholderTextColor={colors.primary.primaryOne}
         onChangeText={onChangeText}
         keyboardType={keyboardType}
+        returnKeyType="done"
       />
       {hasRightIcon && (
         <View style={{ position: "absolute", marginLeft: "89%" }}>
@@ -75,6 +76,7 @@ const Input = ({
         placeholderTextColor={colors.secondary.secondaryOne}
         onChangeText={onChangeText}
         keyboardType={keyboardType}
+        returnKeyType="done"
       />
     </View>
   ) : mode === "error" ? (
@@ -90,6 +92,7 @@ const Input = ({
           value={value}
           onChangeText={onChangeText}
           keyboardType={keyboardType}
+          returnKeyType="done"
         />
       </View>
       <Text style={styles.errorText}>{errorState}</Text>
