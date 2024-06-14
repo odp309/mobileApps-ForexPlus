@@ -11,6 +11,7 @@ import { useEffect } from "react";
 
 const ResultCard = ({ transactionType, transactionData }) => {
   useEffect(() => {
+    console.log("transactionDataKOKO:");
     console.log(transactionData);
   });
   return (
@@ -24,29 +25,28 @@ const ResultCard = ({ transactionType, transactionData }) => {
           style={styles.imageContainer}
         >
           {transactionType === "transfer" ? (
-            <View style={{ height: "100%", justifyContent: "space-evenly" }}>
-              <View style={{ alignItems: "center" }}>
+            <View style={{justifyContent: "space-evenly",paddingVertical:20 }}>
+              <View style={{ alignItems: "center",marginBottom:20 }}>
                 <BodyRegularText style={{ color: colors.color.lightGrey }}>
                   Nama Penerima
                 </BodyRegularText>
                 <BodyLargeText
                   style={{ color: colors.color.black, fontWeight: "bold" }}
                 >
-                  {transactionData.namaPenerima}
+                  {transactionData.accountFind.firstName} {transactionData.accountFind.lastName}
                 </BodyLargeText>
                 <BodyRegularText style={{ color: colors.color.lightGrey }}>
-                  {transactionData.noRek}
+                  {transactionData.accountFind.wallet.accountNumber}
                 </BodyRegularText>
               </View>
               <View style={{ alignItems: "center" }}>
                 <BodyRegularText style={{ color: colors.color.lightGrey }}>
-                  {transactionData.noRek}
+                  Nominal yang Ditransfer
                 </BodyRegularText>
                 <BodyLargeText
                   style={{ color: colors.color.black, fontWeight: "bold" }}
                 >
-                  {country[transactionData.tipeValas].code}{" "}
-                  {transactionData.saldo}
+                  {transactionData.accountFind.wallet.currencyCode}{" "}{transactionData.inputValue}
                 </BodyLargeText>
               </View>
             </View>

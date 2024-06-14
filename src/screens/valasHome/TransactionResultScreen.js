@@ -107,12 +107,10 @@ const TransactionResultScreen = () => {
           <View
             style={{ width: "100%", alignItems: "center", marginTop: "15%" }}
           >
-            {transactionType != "transfer" ? (
               <ResultCard
                 transactionType={transactionType}
                 transactionData={transactionData}
               />
-            ) : null}
           </View>
         </View>
       </View>

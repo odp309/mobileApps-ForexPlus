@@ -98,7 +98,7 @@ const ValasFeatures = ({
       />
       <FeatureButton
         namaFitur="Riwayat"
-        onPress={() => navigation.navigate("Riwayat")}
+        onPress={() => navigation.navigate("Riwayat", { selectedWallet })}
       />
       <FeatureButton
         namaFitur="Tarik"
