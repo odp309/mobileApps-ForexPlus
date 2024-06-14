@@ -140,7 +140,7 @@ export default Pocket;
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: "2%",
+    marginVertical: 10,
   },
   cardWrapper: {
     alignItems: "center",
@@ -148,8 +148,8 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     height: 160,
-    paddingTop: "10%",
-    paddingHorizontal: "5%",
-    paddingBottom: "5%",
+    paddingTop: 30,
+    paddingHorizontal: 20,
+    paddingBottom: 20,
   },
 });

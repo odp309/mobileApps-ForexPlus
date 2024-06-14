@@ -27,6 +27,7 @@ const login = async (
   navigation
 ) => {
   try {
+    email = email.toLowerCase();
     const response = await axiosInstance.post("/public/user/login", {
       email,
       password,

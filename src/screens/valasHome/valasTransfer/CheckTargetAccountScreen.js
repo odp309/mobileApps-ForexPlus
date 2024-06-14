@@ -190,6 +190,7 @@ const CheckTargetAccountScreen = () => {
           placeholder={"Masukkan nomor rekening"}
           iconColor={colors.color.lightGrey}
           onPress={() => setInputRekening("")}
+          rightIconStyle={{position: "absolute", marginLeft: "89%"}}
         />
 
         {hasChecked && (

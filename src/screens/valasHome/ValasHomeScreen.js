@@ -24,6 +24,7 @@ import { userData } from "../../config/AuthConfig";
 import ValasCreateContent from "../../components/valasHome/ValasCreateContent";
 import AddWalletButton from "../../components/valasHome/AddWalletButton";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
@@ -199,8 +200,8 @@ const ValasHomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <ValasHeader />
-      {selectedRekening && (
+      <StatusBar style="light" translucent={true} backgroundColor="transparent" />
+      <ValasHeader /> 
         <View style={styles.content}>
           <FlatList
             data={data}
@@ -209,9 +210,8 @@ const ValasHomeScreen = () => {
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
           />
-        </View>
-      )}
-      {selectedWallet != null && (
+        </View> 
+      {selectedWallet && (
         <View style={styles.addWallet}>
           <AddWalletButton selectedRekening={selectedRekening} />
         </View>

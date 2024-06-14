@@ -20,6 +20,7 @@ import {
   useNavigation,
 } from "@react-navigation/native";
 import { fetchBankAccount } from "../../config/ValasConfig";
+import { StatusBar } from "expo-status-bar";
 
 const renderedView = ({ item }) => <View>{item.view()}</View>;
 const HomeScreen = () => {
@@ -84,6 +85,7 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
+      <StatusBar style="dark" translucent={true} backgroundColor="transparent" />
       <FlatList
         data={data(user, fullName)}
         renderItem={renderedView}

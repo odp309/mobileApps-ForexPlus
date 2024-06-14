@@ -63,8 +63,9 @@ export default PromoInformasi;
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: "5%",
-    marginHorizontal: "5%",
+    marginTop: 20,
+    marginHorizontal: 20,
+    marginBottom:60
   },
   cardContainer: {
     height: 150,

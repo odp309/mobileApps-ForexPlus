@@ -1,12 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { Dimensions, Modal, ScrollView, StyleSheet, TouchableOpacity, View, Animated } from "react-native";
+import {
+  Dimensions,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Animated,
+} from "react-native";
 import { BodyLargeTextSemiBold, BodyMediumText } from "../shared/StyledText";
 import colors from "../../theme/colors";
 import { Ionicons } from "@expo/vector-icons";
 
 const screenHeight = Dimensions.get("screen").height;
 
-const ModalDaftarRekening = ({ modalVisible, setModalVisible, listRekening, selectedRekening, setSelectedRekening }) => {
+const ModalDaftarRekening = ({
+  modalVisible,
+  setModalVisible,
+  listRekening,
+  selectedRekening,
+  setSelectedRekening,
+}) => {
   const slideAnim = useState(new Animated.Value(screenHeight))[0]; // Initial position is off-screen
 
   useEffect(() => {
@@ -25,9 +39,9 @@ const ModalDaftarRekening = ({ modalVisible, setModalVisible, listRekening, sele
     }
   }, [modalVisible, slideAnim]);
 
-  useEffect(()=>{
+  useEffect(() => {
     // console.log("Selected Rekening : " + selectedRekening);
-  },[selectedRekening]);
+  }, [selectedRekening]);
 
   return (
     <View>
@@ -39,35 +53,58 @@ const ModalDaftarRekening = ({ modalVisible, setModalVisible, listRekening, sele
         onRequestClose={() => setModalVisible(!modalVisible)}
       >
         <View style={styles.modalContainer}>
-          <TouchableOpacity style={styles.backgroundOverlay} onPress={() => setModalVisible(!modalVisible)} />
-          <Animated.View style={[styles.modalView, { transform: [{ translateY: slideAnim }] }]}>
-            <TouchableOpacity style={{ alignSelf: "flex-end" }} onPress={() => setModalVisible(!modalVisible)}>
+          <TouchableOpacity
+            style={styles.backgroundOverlay}
+            onPress={() => setModalVisible(!modalVisible)}
+          />
+          <Animated.View
+            style={[
+              styles.modalView,
+              { transform: [{ translateY: slideAnim }] },
+            ]}
+          >
+            <TouchableOpacity
+              style={{ alignSelf: "flex-end" }}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
               <Ionicons name="close" size={28} color={"black"} />
             </TouchableOpacity>
-            <BodyLargeTextSemiBold style={styles.modalTitle}>Rekening</BodyLargeTextSemiBold>
-            <ScrollView style={{ width: "100%" }}>
-              {listRekening.map((item) => (
-                <TouchableOpacity
-                  style={styles.rekeningItem}
-                  key={item.id}
-                  onPress={() => {
-                    setSelectedRekening(item); 
-                    setModalVisible(false);
-                  }}
-                >
-                  <BodyMediumText>{item.accountNumber}</BodyMediumText>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
+            <BodyLargeTextSemiBold style={styles.modalTitle}>
+              Rekening
+            </BodyLargeTextSemiBold>
+            {listRekening && (
+              <ScrollView style={{ width: "100%" }}>
+                {listRekening.map((item) => (
+                  <TouchableOpacity
+                    style={styles.rekeningItem}
+                    key={item.id}
+                    onPress={() => {
+                      setSelectedRekening(item);
+                      setModalVisible(false);
+                    }}
+                  >
+                    <BodyMediumText>{item.accountNumber}</BodyMediumText>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            )}
           </Animated.View>
         </View>
       </Modal>
-      <TouchableOpacity style={styles.selectedRekening} onPress={() => setModalVisible(!modalVisible)}>
+      <TouchableOpacity
+        style={styles.selectedRekening}
+        onPress={() => setModalVisible(!modalVisible)}
+      >
         <View>
           <BodyMediumText>{selectedRekening.accountNumber}</BodyMediumText>
           <BodyMediumText>{selectedRekening.type}</BodyMediumText>
         </View>
-        <Ionicons name="chevron-down" size={22} color={colors.primary.primaryOne} style={{ marginTop: 3 }} />
+        <Ionicons
+          name="chevron-down"
+          size={22}
+          color={colors.primary.primaryOne}
+          style={{ marginTop: 3 }}
+        />
       </TouchableOpacity>
     </View>
   );

@@ -106,8 +106,8 @@ const ConfirmationModal = ({
                 </View>
                 <View style={styles.confirmationText}>
                   <BodyRegularText>Total Transfer</BodyRegularText>
-                  <BodyRegularText style={{ fontWeight: "bold" }}>
-                    {transactionData.inputValue}
+                  <BodyRegularText style={{ fontWeight: "bold" }}>  
+                    {transactionData.selectedWallet.currencyCode} {transactionData.inputValue}
                   </BodyRegularText>
                 </View>
               </View>

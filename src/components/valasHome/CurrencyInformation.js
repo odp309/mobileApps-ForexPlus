@@ -8,7 +8,7 @@ import { Image } from "react-native";
 const CurrencyInformation = ({dataCurrency,setDataCurrency,selectedWallet,setSelectedCurrency}) => {
 
   const filteredKurs = useMemo(() => {
-    if (dataCurrency != null && selectedWallet!=null) {
+    if (dataCurrency && selectedWallet) {
       return dataCurrency.find((item) =>
         item.currencyCode.toLowerCase().includes(selectedWallet.currencyCode.toLowerCase())
       );

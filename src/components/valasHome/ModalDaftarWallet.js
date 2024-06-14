@@ -98,27 +98,29 @@ const ModalDaftarWallet = ({
                 onChangeText={(text) => setSearchQuery(text)}
               />
             </View>
-            <ScrollView style={{ width: "100%" }}>
-              {filteredWallet.map((item) => (
-                <TouchableOpacity
-                  style={styles.walletItem}
-                  key={item.id}
-                  onPress={() => {
-                    setSelectedWallet(item);
-                    setModalVisible(false);
-                  }}
-                >
-                  <Image
-                    resizeMode="stretch"
-                    style={{ width: 30, height: 30, marginRight: 15 }}
-                    source={{uri: item.flagIcon}}
-                  />
-                  <BodyMediumText>
-                    {item.currencyName} ({item.currencyCode})
-                  </BodyMediumText>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
+            {filteredWallet && (
+              <ScrollView style={{ width: "100%" }}>
+                {filteredWallet.map((item) => (
+                  <TouchableOpacity
+                    style={styles.walletItem}
+                    key={item.id}
+                    onPress={() => {
+                      setSelectedWallet(item);
+                      setModalVisible(false);
+                    }}
+                  >
+                    <Image
+                      resizeMode="stretch"
+                      style={{ width: 30, height: 30, marginRight: 15 }}
+                      source={{ uri: item.flagIcon }}
+                    />
+                    <BodyMediumText>
+                      {item.currencyName} ({item.currencyCode})
+                    </BodyMediumText>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            )}
           </Animated.View>
         </View>
       </Modal>
@@ -130,7 +132,7 @@ const ModalDaftarWallet = ({
           <Image
             resizeMode="stretch"
             style={{ width: 30, height: 30, marginRight: 15 }}
-            source={{uri : selectedWallet.flagIcon}}
+            source={{ uri: selectedWallet.flagIcon }}
           />
           <BodyXLTextBold style={{ color: colors.primary.primaryOne }}>
             {selectedWallet.currencyCode}

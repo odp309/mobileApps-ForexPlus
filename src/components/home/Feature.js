@@ -193,7 +193,7 @@ const Feature = ({ user }) => {
               }}
             >
               <BodyMediumText>
-                {showAll ? "Tampilkan Lebih Sedikit" : "Tampilkan Semua"}
+                {showAll ? "Tutup" : "Lainnya"}
               </BodyMediumText>
               <Ionicons
                 name={showAll ? "chevron-up-outline" : "chevron-down-outline"}
@@ -213,7 +213,7 @@ export default Feature;
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: "5%",
+    marginHorizontal: 20,
   },
   borderedObject: {
     flexDirection: "row",
@@ -228,3 +228,4 @@ const styles = StyleSheet.create({
     color: colors.primary.primaryOne,
   },
 });
+ 

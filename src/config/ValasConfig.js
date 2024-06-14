@@ -10,7 +10,7 @@ const fetchNomorRekening = async (accountNumber) => {
     });
     console.log(response.data);
   } catch (err) {
-    console.log(err);
+    console.log("gagal fetch noRek : " , err);
   } finally {
     console.log("berhasil");
   }
@@ -21,7 +21,7 @@ const fetchKurs = async () => {
     const dataKurs = await axiosInstance.get("/public/exchange_rate/get-all");
     return dataKurs.data;
   } catch (error) {
-    console.log(error);
+    console.log("gagal fetch kurs : " ,error);
   }
 };
 
@@ -32,7 +32,7 @@ const fetchBankAccount = async (userId) => {
     });
     return dataBank.data;
   } catch (error) {
-    console.log(error);
+    console.log("gagal fetch Bank Account : " ,error);
   }
 };
 const fetchValasPurchase = async (walletId, amountToBuy, pin) => {
@@ -49,7 +49,7 @@ const fetchValasPurchase = async (walletId, amountToBuy, pin) => {
       return false;
     }
   } catch (err) {
-    console.log(err);
+    console.log("gagal fetch Valas beli : " , err);
   }
 };
 
@@ -67,7 +67,7 @@ const fetchValasSell = async (walletId, amountToSell, pin) => {
       return false;
     }
   } catch (err) {
-    console.log(err);
+    console.log("gagal fetch valas jual : " , err);
   }
 };
 
@@ -95,7 +95,7 @@ const fetchValasTransfer = async (
       return false;
     }
   } catch (err) {
-    console.log(err);
+    console.log("gagal fetch valas transfer : " , err);
   }
 };
 
@@ -126,7 +126,7 @@ const fetchValasAddWallet = async (
       return false;
     }
   } catch (err) {
-    console.log(err);
+    console.log("gagal fetch add wallet : " ,err);
   }
 };
 
@@ -146,11 +146,10 @@ const fetchRelatedBranch = async (
     });
     return allBranches.data;
   } catch (error) {
-    console.log(error);
+    console.log("gagal fetch related branch : " , error);
   }
 };
-const fetchMinimumBuy = async (currencyCode) => {
-  // console.log(currencyCode);
+const fetchMinimumBuy = async (currencyCode) => { 
   try {
     const dataMinimumBuy = await axiosInstance.post(
       "/private/currency/minimum-buy/get",
@@ -158,7 +157,7 @@ const fetchMinimumBuy = async (currencyCode) => {
     );
     return dataMinimumBuy.data.minimum;
   } catch (error) {
-    console.log(error);
+    console.log("gagal fetch minim beli : " ,error);
   }
 };
 
@@ -171,7 +170,7 @@ const fetchMinimumSell = async (currencyCode) => {
     );
     return dataMinimumSell.data.minimum;
   } catch (error) {
-    console.log(error);
+    console.log("gagal fetch minim jual : " ,error);
   }
 };
 
@@ -183,7 +182,7 @@ const fetchMinimumTransfer = async (currencyCode) => {
     );
     return dataMinimumTransfer.data.minimum;
   } catch (error) {
-    console.log(error);
+    console.log("gagal fetch minim transfer : " ,error);
   }
 };
 

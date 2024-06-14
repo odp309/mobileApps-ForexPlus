@@ -5,24 +5,54 @@ import {
   BodyRegularText,
   BodyRegularTextBold,
   BodyRegularTextSemiBold,
+  BodyXLTextSemiBold,
 } from "../shared/StyledText";
-import { Ionicons } from "@expo/vector-icons"; 
+import { Ionicons } from "@expo/vector-icons";
 import { Skeleton } from "@rneui/themed";
+import colors from "../../theme/colors";
 
-const HeaderProfile = ({user,fullName}) => {
-
+const HeaderProfile = ({ user, fullName }) => {
   return (
     <View style={styles.container}>
       {user === null ? (
-        <Skeleton variant="circular" style={{borderRadius:99,height:60,width:60,backgroundColor:'lightGrey'}} />
+        <Skeleton
+          variant="circular"
+          style={{
+            borderRadius: 99,
+            height: 60,
+            width: 60,
+            backgroundColor: "lightGrey",
+          }}
+        />
       ) : (
-        <Ionicons name="person-circle-outline" size={60} color={"grey"} />
+        <View
+          style={{
+            height: 50,
+            width: 50,
+            borderRadius: 99,
+            backgroundColor: colors.primary.primaryTwo,
+            justifyContent:"center", 
+            alignItems:"center"
+          }}
+        >
+          <BodyXLTextSemiBold style={{fontSize:30,textAlign:"center",color:"white"}}>{fullName.substring(0, 1)}</BodyXLTextSemiBold>
+        </View>
       )}
       <View style={{ marginLeft: 25, justifyContent: "center" }}>
         {user === null ? (
           <View>
-            <Skeleton style={{ backgroundColor: 'lightGrey' }} variant="circular" width={120} height={20} />
-            <Skeleton style={{ backgroundColor: 'lightGrey' }} variant="rectangular" width={150} height={25} />
+            <Skeleton
+              style={{ backgroundColor: "lightGrey" }}
+              variant="circular"
+              width={120}
+              height={20}
+            />
+            <Skeleton
+              style={{ backgroundColor: "lightGrey" }}
+              variant="rectangular"
+              width={150}
+              height={25}
+            />
           </View>
         ) : (
           <>
@@ -42,8 +72,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     width: "100%",
-    margin: "2%",
-    marginHorizontal: "5%",
+    margin: 8,
+    marginHorizontal: 20,
   },
   logoStyle: {},
 });
