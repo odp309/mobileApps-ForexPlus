@@ -17,14 +17,14 @@ import {
 import React, { useCallback, useEffect, useState } from "react";
 import StyledButton from "../../components/shared/StyledButton";
 import { useNavigation } from "@react-navigation/native";
-import {
-  BodyRegularText,
-  BodySmallText,
-  HeadingFiveText,
+import { Ionicons } from "@expo/vector-icons";
+import { 
+  BodySmallText, 
 } from "../../components/shared/StyledText";
 import Input from "../../components/shared/Input";
-import { cleanupToken, login } from "../../config/AuthConfig";
-import colors from "../../theme/colors"; 
+import { JwtDecoder, cleanupToken, login, userData } from "../../config/AuthConfig";
+import colors from "../../theme/colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const screenHeight = Dimensions.get("window").height * 1.05;
 const screenWidth = Dimensions.get("screen").width;
@@ -35,11 +35,73 @@ const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const slideAnim = useState(new Animated.Value(screenHeight))[0]; // Animation value for modal content
+  const slideAnim = useState(new Animated.Value(screenHeight))[0];
+  const [isLoading, setIsLoading] = useState(false);
+  const [wrongValidation, setWrongValidation] = useState(false);
+  const expiredTime = 60 * 15 * 1000; // 15 minutes in milliseconds
+  const [remainingTime, setRemainingTime] = useState(expiredTime);
 
   useEffect(() => {
     cleanupToken();
   }, []);
+
+  useEffect(() => {
+    console.log("Expired Time:", expiredTime);
+  }, [expiredTime]);
+
+  const handleLogin = async () => {
+    setIsLoading(true);
+
+    try {
+      const fetchLogin = await login(email, password);
+      await handleSuccessfulLogin(fetchLogin);
+    } catch (error) {
+      handleLoginError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSuccessfulLogin = async (fetchLogin) => {  
+    if (userData) {
+      setModalVisible(!modalVisible);
+      navigation.navigate("HomePage");
+    }
+
+    setTimeout(() => {
+      cleanupToken();
+      Alert.alert("Token expired", "Your session has expired.", [
+        { onPress: () => navigation.navigate("Login") },
+      ]);
+    }, expiredTime);
+    // const intervalId = setInterval(() => {
+    //   setRemainingTime((prevRemainingTime) => {
+    //     if (prevRemainingTime <= 1000) {
+    //       clearInterval(intervalId);
+    //       cleanupToken();
+    //       Alert.alert("Token expired", "Your session has expired.", [
+    //         { onPress: () => navigation.navigate("Login") },
+    //       ]);
+    //       return 0;
+    //     } else {
+    //       console.log(`Remaining time: ${prevRemainingTime / 1000} seconds`);
+    //       return prevRemainingTime - 1000;
+    //     }
+    //   });
+    // }, 1000);
+  };
+
+  const handleLoginError = (error) => {
+    console.log(error);
+    if (error.response?.status === 401) {
+      setWrongValidation(true);
+      setTimeout(() => {
+        setWrongValidation(false);
+      }, 5000);
+    } else {
+      Alert.alert("Network Error", "Check your connection");
+    }
+  };
 
   useEffect(() => {
     if (modalVisible) {
@@ -77,7 +139,7 @@ const LoginScreen = () => {
             size={"lg"}
             onPress={() => setModalVisible(true)}
           />
-          
+
           <ScrollView
             horizontal={true}
             scrollEnabled={false}
@@ -121,6 +183,20 @@ const LoginScreen = () => {
           setModalVisible(!modalVisible);
         }}
       >
+        {wrongValidation && (
+          <View style={styles.accountCheckerContainer}>
+            <Ionicons
+              name="alert-circle-outline"
+              size={20}
+              style={{ marginTop: 1, marginRight: 4 }}
+              color={"white"}
+            ></Ionicons>
+            <BodySmallText style={{ color: "white" }}>
+              Username dan password yang Anda masukkan salah. Silakan coba
+              kembali.
+            </BodySmallText>
+          </View>
+        )}
         <KeyboardAvoidingView
           style={styles.modalContainer}
           behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -172,24 +248,25 @@ const LoginScreen = () => {
               onChangeText={setPassword}
               onPress={() => setPasswordVisible(!passwordVisible)}
               style={{ paddingLeft: 50, paddingRight: 50 }}
-              rightIconStyle={{position: "absolute", marginLeft: "87%"}}
+              rightIconStyle={{ position: "absolute", marginLeft: "87%" }}
             />
 
-            <StyledButton
-              mode={"primary-gradient"}
-              title={"Login"}
-              size={"lg"}
-              onPress={() =>
-                login(
-                  email,
-                  password,
-                  setModalVisible,
-                  modalVisible,
-                  navigation
-                )
-              }
-              style={{ marginVertical: "5%" }}
-            />
+            {isLoading ? (
+              <StyledButton
+                mode={"primary-disabled"}
+                title={"Loading"}
+                size={"lg"}
+                style={{ marginVertical: "5%" }}
+              />
+            ) : (
+              <StyledButton
+                mode={"primary-gradient"}
+                title={"Login"}
+                size={"lg"}
+                onPress={() => handleLogin()}
+                style={{ marginVertical: "5%" }}
+              />
+            )}
           </Animated.View>
         </KeyboardAvoidingView>
       </Modal>
@@ -258,5 +335,18 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+  },
+  accountCheckerContainer: {
+    width: "90%",
+    borderRadius: 10,
+    minHeight: 50,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    marginTop: 50,
+    flexDirection: "row",
+    position: "absolute",
+    zIndex: 1,
+    backgroundColor: "red",
+    alignSelf: "center",
   },
 });

@@ -158,7 +158,7 @@ export default function ValasBeliScreen() {
         transactionData={transactionData}
       />
       <View style={styles.topContainer}>
-        <ContentHeader title={"Pembelian Valas"} hasConfirmation={true} />
+        <ContentHeader title={"Beli Valas"} hasConfirmation={true} />
       </View>
 
       <View style={styles.middleContainer}>

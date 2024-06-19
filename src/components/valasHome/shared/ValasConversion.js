@@ -26,6 +26,7 @@ const ValasConversion = ({
         <InputCurrency
           selectedCurrency={transactionData.selectedCurrency}
           onChangeText={changeTextData}
+          value={transactionData.inputValue}
         />
 
         <BodySmallText style={{ color: colors.color.error, fontSize: 12 }}>
@@ -34,10 +35,10 @@ const ValasConversion = ({
       </View>
 
       {/* DownArrowButton */}
-      <View style={{ alignItems: "center", marginVertical: 5 }}>
+      <View style={{ alignItems: "center"}}>
         <FontAwesome
           name="long-arrow-down"
-          size={24}
+          size={20}
           color={colors.primary.primaryOne}
         />
       </View>

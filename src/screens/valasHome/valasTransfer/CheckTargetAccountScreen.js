@@ -15,6 +15,7 @@ import {
   BodyLargeTextSemiBold,
   BodyMediumTextSemiBold,
   BodySmallText,
+  BodySmallTextSemiBold,
   BodyXLTextBold,
 } from "../../../components/shared/StyledText";
 import colors from "../../../theme/colors";
@@ -55,7 +56,7 @@ const CheckTargetAccountScreen = () => {
   const [messageStatus, setMessageStatus] = useState("");
   const [accountFind, setAccountFind] = useState(null);
   const [buttonVisible, setButtonVisible] = useState(true);
-  const [isLoading,setIsLoading]= useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const translateYAnim = useRef(new Animated.Value(50)).current;
 
@@ -80,7 +81,7 @@ const CheckTargetAccountScreen = () => {
       console.log(findResult);
       if (findResult) {
         setAccountFind(findResult);
-        setMessageStatus("Berhasil Menemukan");
+        setMessageStatus("Rekening Ditemukan");
         setAccountCheckStatus("success");
         animateCardAccount();
         setButtonVisible(false);
@@ -140,13 +141,12 @@ const CheckTargetAccountScreen = () => {
     return () => backHandler.remove();
   }, []);
 
-
-  useEffect(()=>{
-    setIsLoading(true)
-    setTimeout(()=>{
-      setIsLoading(false)
-    },300) 
-  },[])
+  useEffect(() => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 300);
+  }, []);
   useFocusEffect(
     useCallback(() => {
       setHasChecked(false);
@@ -176,8 +176,13 @@ const CheckTargetAccountScreen = () => {
             Cek Rekening Tujuan
           </BodyXLTextBold>
           <BodySmallText style={{ fontSize: 16, marginTop: 5 }}>
-            Silahkan masukkan dan periksa{"\n"}nomor rekening tujuan anda
-            dibawah ini.
+            Silakan masukkan dan periksa{"\n"}nomor{" "}
+            <BodySmallTextSemiBold
+              style={{ fontSize: 16, color: colors.primary.primaryOne }}
+            >
+              rekening BNI tujuan
+            </BodySmallTextSemiBold>{" "}
+            Anda dibawah ini.
           </BodySmallText>
         </View>
         <Input
@@ -190,7 +195,8 @@ const CheckTargetAccountScreen = () => {
           placeholder={"Masukkan nomor rekening"}
           iconColor={colors.color.lightGrey}
           onPress={() => setInputRekening("")}
-          rightIconStyle={{position: "absolute", marginLeft: "89%"}}
+          rightIconStyle={{ position: "absolute", marginLeft: "89%" }}
+          style={{fontSize:16}}
         />
 
         {hasChecked && (

@@ -2,6 +2,7 @@ import { StyleSheet, View,Image } from "react-native";
 import React from "react";
 import { BodyRegularText,BodyMediumText } from "../../shared/StyledText";
 import colors from "../../../theme/colors";
+import { formatNumber } from "../../../config/ValasConfig";
 
 const ExchangeResult = ({value}) => {
   return (
@@ -17,7 +18,7 @@ const ExchangeResult = ({value}) => {
           IDR
         </BodyMediumText>
       </View>
-      <BodyRegularText style={styles.resultStyle}>{value}</BodyRegularText>
+      <BodyRegularText style={styles.resultStyle}>{formatNumber(value)}</BodyRegularText>
     </View>
   );
 };
@@ -31,9 +32,9 @@ const styles = StyleSheet.create({
         width: "100%",
         height:42,
         borderRadius: 100, // Adjust the border radius as needed
-        backgroundColor: colors.color.lightGrey,
+        backgroundColor: colors.color.veryLightGrey,
         borderWidth: 2,
-        borderColor:  colors.color.lightGrey,
+        borderColor:  colors.color.veryLightGrey,
       },
       countryContainer: {
         position: "absolute",
@@ -47,9 +48,11 @@ const styles = StyleSheet.create({
       },
       resultStyle: {
         paddingLeft: 100,
+        paddingRight:10,
         borderRadius: 100,
         borderColor: colors.primary.primaryOne,
         color: colors.color.grey,
-        fontFamily: "poppins-regular",
+        fontFamily: "poppins-regular", 
+        textAlign:"right"
       },
 });

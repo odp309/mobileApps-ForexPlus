@@ -13,24 +13,30 @@ import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
 import { alertConfirmation, fetchKurs } from "../../../config/ValasConfig";
 import { BodyLargeTextSemiBold } from "../../../components/shared/StyledText";
 import colors from "../../../theme/colors";
-import { useNavigation,useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
 const ChooseWalletScreen = () => {
-  const route = useRoute()
+  const route = useRoute();
   const [valasList, setValasList] = useState(null);
   const navigation = useNavigation();
-  const [selectedRekening,setSelectedRekening] = useState(route.params.selectedRekening)
+  const [selectedRekening, setSelectedRekening] = useState(
+    route.params.selectedRekening
+  );
 
   const getData = async () => {
     try {
       const data = await fetchKurs();
       const excludeWallet = selectedRekening.listWallet;
-      
+
       //Filter wallet if the account already have their wallet
-      const currencyCodeExclude = excludeWallet.map(item => item.currencyCode);
-      const filteredData = data.filter(item => !currencyCodeExclude.includes(item.currencyCode));
+      const currencyCodeExclude = excludeWallet.map(
+        (item) => item.currencyCode
+      );
+      const filteredData = data.filter(
+        (item) => !currencyCodeExclude.includes(item.currencyCode)
+      );
 
       setValasList(filteredData);
     } catch (error) {
@@ -50,7 +56,7 @@ const ChooseWalletScreen = () => {
   const ValasItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate("FirstTopUp",  {selectedRekening,item} );
+        navigation.navigate("FirstTopUp", { selectedRekening, item });
       }}
       style={styles.itemContainer}
     >
@@ -105,7 +111,7 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     marginBottom: 20,
-    marginHorizontal:20,
+    marginHorizontal: 20,
     padding: 10,
     flexDirection: "row",
     alignItems: "center",

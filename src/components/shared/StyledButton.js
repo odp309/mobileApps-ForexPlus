@@ -5,13 +5,13 @@ import colors from "../../theme/colors";
 import sizes from "../../theme/sizes";
 import { LinearGradient } from "expo-linear-gradient";
 
-const StyledButton = ({ mode, title, onPress, size, style }) => {
+const StyledButton = ({ mode, title, onPress, size, style,titleStyle }) => {
   return mode === "primary" ? (
     <Button
       title={title}
       size={size}
       buttonStyle={[styles.bgPrimary, style]}
-      titleStyle={styles.titleStyle}
+      titleStyle={[styles.titleStyle,titleStyle]}
       onPress={onPress}
       containerStyle={{ width: "100%" }}
     />
@@ -20,7 +20,7 @@ const StyledButton = ({ mode, title, onPress, size, style }) => {
       title={title}
       size={size}
       buttonStyle={[styles.bgPrimary, style]}
-      titleStyle={styles.titleStyle}
+      titleStyle={[styles.titleStyle,titleStyle]}
       onPress={onPress}
       containerStyle={{ width: "100%" }}
       linearGradientProps={{
@@ -35,7 +35,7 @@ const StyledButton = ({ mode, title, onPress, size, style }) => {
       title={title}
       size={size}
       onPress={onPress}
-      titleStyle={styles.titleStyle}
+      titleStyle={[styles.titleStyle,titleStyle]}
       buttonStyle={[styles.bgSecondary, style]}
       containerStyle={{ width: "100%" }}
     />
@@ -46,7 +46,7 @@ const StyledButton = ({ mode, title, onPress, size, style }) => {
       size={size}
       onPress={onPress}
       buttonStyle={[styles.bgPrimaryOutlined, style]}
-      titleStyle={styles.labelPrimary}
+      titleStyle={[styles.labelPrimary,titleStyle]}
       containerStyle={{ width: "100%" }}
     />
   ) : mode === "secondary-outlined" ? (
@@ -55,7 +55,7 @@ const StyledButton = ({ mode, title, onPress, size, style }) => {
       type="outline"
       size={size}
       onPress={onPress}
-      titleStyle={styles.titleStyle}
+      titleStyle={[styles.titleStyle,titleStyle]}
       buttonStyle={[styles.bgSecondaryOutlined, style]}
       containerStyle={{ width: "100%" }}
     />
@@ -64,15 +64,16 @@ const StyledButton = ({ mode, title, onPress, size, style }) => {
       title={title}
       size={size}
       buttonStyle={[styles.bgPrimarydDisabled, style]}
-      titleStyle={[styles.labelDisabled, styles, styles.titleStyle]}
+      titleStyle={[styles.labelDisabled, styles, styles.titleStyle,titleStyle]}
       disabled={true}
+      containerStyle={{width:"100%"}}
     />
   ) : mode === "secondary-disabled" ? (
     <Button
       title={title}
       size={size}
       buttonStyle={[styles.bgSecondarydDisabled, style]}
-      titleStyle={[styles.labelDisabled, styles.titleStyle]}
+      titleStyle={[styles.labelDisabled, styles.titleStyle,titleStyle]}
       containerStyle={{ width: "100%" }}
       disabled={true}
     />

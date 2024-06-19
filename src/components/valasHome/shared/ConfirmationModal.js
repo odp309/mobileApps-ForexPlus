@@ -6,6 +6,7 @@ import {
   BodyMediumText,
   BodyLargeText,
   HeadingSixText,
+  BodyXLTextBold,
 } from "../../shared/StyledText";
 import WalletSource from "./WalletSource";
 import colors from "../../../theme/colors";
@@ -16,6 +17,7 @@ import WalletValasSource from "./WalletValasSource";
 import { useEffect } from "react";
 import { userData } from "../../../config/AuthConfig";
 import SummaryConfirmation from "./SummaryConfirmation";
+import { StatusBar } from "expo-status-bar";
 
 const ConfirmationModal = ({
   isVisible,
@@ -41,6 +43,11 @@ const ConfirmationModal = ({
   }, [isVisible]);
   return (
     <BottomSheet isVisible={isVisible}>
+      <StatusBar
+        style="dark"
+        translucent={true}
+        backgroundColor="rgba(0,0,0,0.2)"
+      />
       <View style={styles.container}>
         <View style={styles.topContainer}>
           <View
@@ -52,9 +59,9 @@ const ConfirmationModal = ({
           </View>
 
           <View style={{ width: "100%", alignItems: "center" }}>
-            <HeadingSixText style={styles.confirmationTextTitle}>
+            <BodyXLTextBold style={styles.confirmationTextTitle}>
               {title}
-            </HeadingSixText>
+            </BodyXLTextBold>
           </View>
         </View>
 
@@ -183,8 +190,8 @@ const styles = StyleSheet.create({
   },
   middleContainer: { width: "100%" },
   confirmationTextTitle: {
-    color: colors.primary.primaryOne,
-    fontWeight: "bold",
+    color: colors.primary.primaryOne, 
+    fontSize:21
   },
   bottomContainer: {
     width: "100%",

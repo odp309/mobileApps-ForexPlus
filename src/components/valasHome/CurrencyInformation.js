@@ -1,34 +1,49 @@
-import { Dimensions, StyleSheet, Text, View } from "react-native";
-import { BodySmallText, BodySmallTextSemiBold } from "../shared/StyledText";
+import {
+  ActivityIndicator,
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { BodyMediumText, BodyMediumTextSemiBold, BodySmallText, BodySmallTextSemiBold } from "../shared/StyledText";
 import colors from "../../theme/colors";
 import { useEffect, useMemo, useState } from "react";
 import { fetchKurs, formatNumber } from "../../config/ValasConfig";
 import { Image } from "react-native";
- 
-const CurrencyInformation = ({dataCurrency,setDataCurrency,selectedWallet,setSelectedCurrency}) => {
+import { useNavigation } from "@react-navigation/native";
 
+const CurrencyInformation = ({
+  dataCurrency,
+  setDataCurrency,
+  selectedWallet,
+  setSelectedCurrency,
+}) => {
+  const navigation = useNavigation(); 
   const filteredKurs = useMemo(() => {
     if (dataCurrency && selectedWallet) {
       return dataCurrency.find((item) =>
-        item.currencyCode.toLowerCase().includes(selectedWallet.currencyCode.toLowerCase())
+        item.currencyCode
+          .toLowerCase()
+          .includes(selectedWallet.currencyCode.toLowerCase())
       );
     }
-    return null; 
+    return null;
   }, [dataCurrency, selectedWallet]);
 
   useEffect(() => {
     if (filteredKurs) {
       // console.log(filteredKurs.sellRate);
-      setSelectedCurrency(filteredKurs)
+      setSelectedCurrency(filteredKurs);
     } else {
-      console.log('No matching currency code found');
-    } 
+      console.log("No matching currency code found");
+    }
   }, [filteredKurs, selectedWallet]);
 
   const getData = async () => {
     try {
-      const data = await fetchKurs(); 
-      setDataCurrency(data); 
+      const data = await fetchKurs();
+      setDataCurrency(data);
       // setSelectedCurrency(filteredKurs);
       //console.log(data);
     } catch (error) {
@@ -42,54 +57,73 @@ const CurrencyInformation = ({dataCurrency,setDataCurrency,selectedWallet,setSel
 
   if (!dataCurrency) {
     return (
-      <View style={styles.container}>
-        <BodySmallText>Loading...</BodySmallText>
+      <View style={{ justifyContent: "center", flex: 1 }}>
+        <ActivityIndicator size="large" color={colors.primary.primaryOne} />
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <View style={{ flexDirection: "row" }}>
-        <View style={styles.row}>
-          <BodySmallTextSemiBold style={{ color: colors.color.grey }}>
-            Kurs
-          </BodySmallTextSemiBold>
-        </View>
-        <View style={styles.row}>
-          <BodySmallTextSemiBold style={{ color: colors.color.grey }}>
-            Beli
-          </BodySmallTextSemiBold>
-        </View>
-        <View style={styles.row}>
-          <BodySmallTextSemiBold style={{ color: colors.color.grey }}>
-            Jual
-          </BodySmallTextSemiBold>
-        </View>
-      </View>
-
-      {dataCurrency.map((currency, index) => (
-        <View key={index} style={{ flexDirection: "row" }}>
+    <View style={{ marginBottom: 20 }}>
+      <View style={styles.container}>
+        <View style={{ flexDirection: "row" }}>
           <View style={styles.row}>
-            <View style={{flexDirection:"row",alignItems:'center',justifyContent:'center'}}>
-            <Image style={{width:25,height:25,marginRight:10}} source={{uri : currency.flagIcon}} />
-            <BodySmallText style={{ color: colors.color.grey }}>
-              {currency.currencyCode}
-            </BodySmallText>
+            <BodyMediumTextSemiBold style={{ color: colors.color.grey }}>
+              Kurs
+            </BodyMediumTextSemiBold>
+          </View>
+          <View style={styles.row}>
+            <BodyMediumTextSemiBold style={{ color: colors.color.grey }}>
+              Beli
+            </BodyMediumTextSemiBold>
+          </View>
+          <View style={styles.row}>
+            <BodyMediumTextSemiBold style={{ color: colors.color.grey }}>
+              Jual
+            </BodyMediumTextSemiBold>
+          </View>
+        </View>
+
+        {dataCurrency.slice(0,4).map((currency, index) => (
+          <View key={index} style={{ flexDirection: "row" }}>
+            <View style={styles.row}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Image
+                  style={{ width: 25, height: 25, marginRight: 10 }}
+                  source={{ uri: currency.flagIcon }}
+                />
+                <BodyMediumText style={{ color: colors.color.grey }}>
+                  {currency.currencyCode}
+                </BodyMediumText>
+              </View>
+            </View>
+            <View style={styles.row}>
+              <BodyMediumText style={{ color: colors.color.grey }}>
+                {formatNumber(currency.buyRate)}
+              </BodyMediumText>
+            </View>
+            <View style={styles.row}>
+              <BodyMediumText style={{ color: colors.color.grey }}>
+                {formatNumber(currency.sellRate)}
+              </BodyMediumText>
             </View>
           </View>
-          <View style={styles.row}>
-            <BodySmallText style={{ color: colors.color.grey }}>
-              {formatNumber(currency.buyRate)}
-            </BodySmallText>
-          </View>
-          <View style={styles.row}>
-            <BodySmallText style={{ color: colors.color.grey }}>
-              {formatNumber(currency.sellRate)}
-            </BodySmallText>
-          </View>
-        </View>
-      ))}
+        ))}
+      </View>
+
+      <TouchableOpacity onPress={()=> navigation.navigate("CurrencyInformation",{dataCurrency})}>
+        <BodySmallText
+          style={{ color: colors.primary.primaryOne, textAlign: "center" }}
+        >
+          Lihat Selengkapnya
+        </BodySmallText>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -100,9 +134,9 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     borderRadius: 20,
-    marginBottom: 20,
+    marginBottom: 5,
     borderWidth: 1,
-    borderColor:colors.primary.primaryOne,
+    borderColor: colors.primary.primaryOne,
   },
   row: {
     padding: 10,

@@ -30,7 +30,7 @@ const Input = ({
   return mode === "active" ? (
     <View style={styles.activeContainer}>
       {hasLeftIcon && (
-        <View style={{ position: "absolute", marginLeft: "5%" }}>
+        <View style={{ position: "absolute", marginLeft: "5%",zIndex:1 }}>
           <Icon name={leftIconName} size={24} color={iconColor} />
         </View>
       )}

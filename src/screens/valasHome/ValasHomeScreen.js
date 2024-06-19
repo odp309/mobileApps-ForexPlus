@@ -19,12 +19,12 @@ import ValasReservation from "../../components/valasHome/ValasReservation";
 import WalletCard from "../../components/valasHome/WalletCard";
 import NavigasiRekeningWallet from "../../components/valasHome/NavigasiRekeningWallet";
 import CurrencyInformation from "../../components/valasHome/CurrencyInformation";
-import { fetchBankAccount, fetchNomorRekening } from "../../config/ValasConfig";
-import { userData } from "../../config/AuthConfig";
+import { fetchBankAccount, fetchNomorRekening } from "../../config/ValasConfig"; 
 import ValasCreateContent from "../../components/valasHome/ValasCreateContent";
 import AddWalletButton from "../../components/valasHome/AddWalletButton";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
+import { userData } from "../../config/AuthConfig";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
@@ -33,9 +33,10 @@ const ValasHomeScreen = () => {
   const [selectedRekening, setSelectedRekening] = useState(null);
   const [selectedWallet, setSelectedWallet] = useState(null);
   const [selectedCurrency, setSelectedCurrency] = useState(null);
+  const [reservation, setReservation] = useState(null);
   const [listRekening, setListRekening] = useState(null);
   const [dataCurrency, setDataCurrency] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true); 
 
   const getData = async () => {
     try {
@@ -143,7 +144,7 @@ const ValasHomeScreen = () => {
     {
       id: "4",
       view: () =>
-        selectedWallet != null && (
+        reservation != null && (
           <View
             style={{
               width: "100%",
@@ -182,7 +183,7 @@ const ValasHomeScreen = () => {
           <BodyMediumTextSemiBold
             style={{ color: colors.color.grey, marginBottom: 10 }}
           >
-            Daftar Kurs Mata Uang
+            Info Kurs Mata Uang
           </BodyMediumTextSemiBold>
           <CurrencyInformation
             dataCurrency={dataCurrency}

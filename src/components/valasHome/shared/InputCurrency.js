@@ -1,9 +1,16 @@
 import { Image, StyleSheet, View, TextInput } from "react-native";
-import React, { useState } from "react";
-import { BodyMediumText } from "../../shared/StyledText";
+import React, { useEffect, useState } from "react";
+import { BodyMediumText, BodyMediumTextSemiBold } from "../../shared/StyledText";
 import colors from "../../../theme/colors";
+import { Text } from "react-native";
 
 const InputCurrency = ({  style,selectedCurrency, onChangeText,value}) => {  
+  const [isFocused, setIsFocused] = useState(false);
+  
+  useEffect(()=> {
+    console.log(isFocused);
+    console.log(value);
+  },[value])
   return (
     <View style={styles.container}>
       <View style={styles.countryContainer}>
@@ -17,14 +24,18 @@ const InputCurrency = ({  style,selectedCurrency, onChangeText,value}) => {
           {selectedCurrency.currencyCode}
         </BodyMediumText>
       </View>
-      <TextInput
-        placeholder="Masukkan Nominal" 
+      {(!isFocused && !value) && (
+        <BodyMediumTextSemiBold style={styles.placeholderText}>Masukkan Nominal</BodyMediumTextSemiBold>
+      )}
+      <TextInput 
         value={value}
         style={[styles.inputStyle, style]}
-        keyboardType="numeric"
-        placeholderTextColor={colors.primary.primaryThree}
+        keyboardType="numeric" 
         onChangeText={onChangeText}
         returnKeyType="done"
+        textAlign="right"
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
       />
     </View>
   );
@@ -35,7 +46,7 @@ export default InputCurrency;
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
-    marginVertical: 10,
+    marginTop: 10,
     width: "100%",
     height:42,
     color: colors.primary.primaryOne,
@@ -57,12 +68,18 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary.primaryThree
   },
   inputStyle: {
-    paddingLeft: 100,
+    paddingRight:20,
     borderRadius: 100,
     borderColor: colors.primary.primaryOne,
     fontFamily: "poppins-semibold",
     color:colors.primary.primaryOne,
     fontSize:16,
-    paddingTop:5,
+    paddingTop:5, 
+  },
+  placeholderText: {
+    position: 'absolute',
+    right: 20,
+    color: colors.primary.primaryThree,
+    top:8
   },
 });

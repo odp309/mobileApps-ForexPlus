@@ -21,6 +21,7 @@ import ChooseWalletScreen from "../screens/valasHome/valasAddWallet/ChooseWallet
 import FirstTopUpScreen from "../screens/valasHome/valasAddWallet/FirstTopUpScreen.js";
 import ValasReservationScreen from "../screens/valasHome/reservasi/ValasReservationScreen.js";
 import DetailHistoryScreen from "../screens/valasHome/riwayatTransaksi/DetailHistoryScreen.js";
+import CurrencyInformationScreen from "../screens/valasHome/currencyInformation/CurrencyInformationScreen.js";
 
 const Stack = createNativeStackNavigator();
 
@@ -117,6 +118,11 @@ const ScreenNavigator = () => {
       <Stack.Screen
         name="DetailHistory"
         component={DetailHistoryScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="CurrencyInformation"
+        component={CurrencyInformationScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

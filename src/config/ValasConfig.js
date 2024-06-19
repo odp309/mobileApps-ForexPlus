@@ -5,7 +5,7 @@ import { Alert } from "react-native";
 
 const fetchNomorRekening = async (accountNumber) => {
   try {
-    const response = await axiosInstance.post("/private/bank_account/get", {
+    const response = await axiosInstance.post("/v1/private/bank_account/get", {
       accountNumber,
     });
     console.log(response.data);
@@ -18,7 +18,7 @@ const fetchNomorRekening = async (accountNumber) => {
 
 const fetchKurs = async () => {
   try {
-    const dataKurs = await axiosInstance.get("/public/exchange_rate/get-all");
+    const dataKurs = await axiosInstance.get("/v1/public/exchange_rate/get-all");
     return dataKurs.data;
   } catch (error) {
     console.log("gagal fetch kurs : " ,error);
@@ -27,7 +27,7 @@ const fetchKurs = async () => {
 
 const fetchBankAccount = async (userId) => {
   try {
-    const dataBank = await axiosInstance.post("/private/bank_account/get-all", {
+    const dataBank = await axiosInstance.post("/v1/private/bank_account/get-all", {
       userId,
     });
     return dataBank.data;
@@ -37,7 +37,7 @@ const fetchBankAccount = async (userId) => {
 };
 const fetchValasPurchase = async (walletId, amountToBuy, pin) => {
   try {
-    const response = await axiosInstance.post("/private/buy-valas/buy", {
+    const response = await axiosInstance.post("/v1/private/buy-valas/buy", {
       walletId,
       amountToBuy,
       pin,
@@ -55,7 +55,7 @@ const fetchValasPurchase = async (walletId, amountToBuy, pin) => {
 
 const fetchValasSell = async (walletId, amountToSell, pin) => {
   try {
-    const response = await axiosInstance.post("/private/sell-valas/sell", {
+    const response = await axiosInstance.post("/v1/private/sell-valas/sell", {
       walletId,
       amountToSell,
       pin,
@@ -80,7 +80,7 @@ const fetchValasTransfer = async (
   console.log(senderWalletId, recipientAccountNumber, amountToTransfer, pin);
   try {
     const response = await axiosInstance.post(
-      "/private/transfer-valas/transfer",
+      "/v1/private/transfer-valas/transfer",
       {
         senderWalletId,
         recipientAccountNumber,
@@ -112,7 +112,7 @@ const fetchValasAddWallet = async (
     console.log("CurrencyCode: " + currencyCode + typeof currencyCode);
     console.log("Amount to Buy: " + amountToBuy + typeof amountToBuy);
     console.log("Pin : " + pin + typeof pin);
-    const response = await axiosInstance.post("/private/wallet/add", {
+    const response = await axiosInstance.post("/v1/private/wallet/add", {
       userId,
       accountNumber,
       currencyCode,
@@ -138,7 +138,7 @@ const fetchRelatedBranch = async (
 ) => {
   console.log(latitude, longitude, amountToWithdraw, currencyCode);
   try {
-    const allBranches = await axiosInstance.post("/private/branch/get", {
+    const allBranches = await axiosInstance.post("/v1/private/branch/get", {
       latitude,
       longitude,
       amountToWithdraw,
@@ -152,7 +152,7 @@ const fetchRelatedBranch = async (
 const fetchMinimumBuy = async (currencyCode) => { 
   try {
     const dataMinimumBuy = await axiosInstance.post(
-      "/private/currency/minimum-buy/get",
+      "/v1/private/currency/minimum-buy/get",
       { currencyCode }
     );
     return dataMinimumBuy.data.minimum;
@@ -165,7 +165,7 @@ const fetchMinimumSell = async (currencyCode) => {
   // console.log(currencyCode);
   try {
     const dataMinimumSell = await axiosInstance.post(
-      "/private/currency/minimum-sell/get",
+      "/v1/private/currency/minimum-sell/get",
       { currencyCode }
     );
     return dataMinimumSell.data.minimum;
@@ -177,7 +177,7 @@ const fetchMinimumSell = async (currencyCode) => {
 const fetchMinimumTransfer = async (currencyCode) => {
   try {
     const dataMinimumTransfer = await axiosInstance.post(
-      "/private/currency/minimum-transfer/get",
+      "/v1/private/currency/minimum-transfer/get",
       { currencyCode }
     );
     return dataMinimumTransfer.data.minimum;
@@ -193,7 +193,7 @@ const findBankAccountInfo = async (
 ) => {
   try {
     const accountFind = await axiosInstance.post(
-      "/private/bank_account/get-with-wallet",
+      "/v1/private/bank_account/get-with-wallet",
       { senderAccountNumber, recipientAccountNumber, currencyCode }
     );
     return accountFind.data;
@@ -213,7 +213,7 @@ const fetchValasWithdraw = async (
   console.log(walletId, amountToWithdraw, reservationDate, branchCode, pin);
   try {
     const dataWithdraw = await axiosInstance.post(
-      "/private/withdraw-valas/withdraw",
+      "/v1/private/withdraw-valas/withdraw",
       { walletId, amountToWithdraw, reservationDate, branchCode, pin }
     );
     return dataWithdraw.data;
@@ -226,7 +226,7 @@ const fetchValasWithdraw = async (
 const fetchHistory = async (walletId) => {
   try {
     console.log("Wallet ID : " + walletId);
-    const response = await axiosInstance.post("/private/history/get-all", {
+    const response = await axiosInstance.post("/v1/private/history/get-all", {
      walletId
     });
     console.log("History Data:");
@@ -244,7 +244,7 @@ const fetchHistory = async (walletId) => {
 const fetchHistoryDetail = async (trxId) => {
   try {
     console.log("trx ID : " + trxId);
-    const response = await axiosInstance.post("/private/history/get-detail", {
+    const response = await axiosInstance.post("/v1/private/history/get-detail", {
       trxId
     });
     console.log("trx Data:");
