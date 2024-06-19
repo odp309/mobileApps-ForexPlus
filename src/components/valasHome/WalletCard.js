@@ -67,7 +67,7 @@ const WalletCard = ({ valasType, selectedWallet }) => {
       <View style={{ height: "100%", justifyContent: "flex-end" }}>
         <Image
           source={{ uri: selectedWallet.landmarkIcon }}
-          style={{ height: "70%", width: 80, borderColor: "red" }}
+          style={{ height: "100%", width: 80, borderColor: "red" }}
           resizeMode="cover"
         />
       </View>

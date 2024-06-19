@@ -25,7 +25,7 @@ const FirstTopUpScreen = () => {
   const [minPurchase, setMinPurchase] = useState("10");
   const [maxPurchase, setMaxPurchase] = useState("25000");
 
-  const transactionType = 'add wallet';
+  const transactionType = "add wallet";
   const [transactionData, setTransactionData] = useState({
     selectedWallet: "",
     selectedRekening: route.params?.selectedRekening,
@@ -49,7 +49,8 @@ const FirstTopUpScreen = () => {
   };
 
   const kursCalculation = (data) => {
-    const kursResult = parseInt(data) *parseInt(transactionData.selectedCurrency.buyRate);
+    const kursResult =
+      parseInt(data) * parseInt(transactionData.selectedCurrency.buyRate);
     setTransactionData((prevState) => ({
       ...prevState,
       convertedValue:
@@ -66,20 +67,25 @@ const FirstTopUpScreen = () => {
   const checkError = (data, kursResult) => {
     setTransactionData((prevState) => ({
       ...prevState,
-      inputValue: "",
+      inputValue: data,
     }));
     if (kursResult > parseInt(transactionData.selectedRekening.balance)) {
       setInputError("Jumlah melebihi Saldo Aktif Rupiah");
     } else if (parseInt(data) < parseInt(minPurchase)) {
-      setInputError(`Minimum setoran valas ${transactionData.selectedCurrency.currencyCode} ${minPurchase}`);
+      setInputError(
+        `Minimum setoran valas ${transactionData.selectedCurrency.currencyCode} ${minPurchase}`
+      );
     } else if (parseInt(data) > parseInt(maxPurchase)) {
-      setInputError(`Maksimum setoran valas ${transactionData.selectedCurrency.currencyCode} ${maxPurchase}`);
+      setInputError(
+        `Maksimum setoran valas ${transactionData.selectedCurrency.currencyCode} ${maxPurchase}`
+      );
     } else {
       setInputError("");
       setTransactionData((prevState) => ({
         ...prevState,
         inputValue: data,
-      }));    }
+      }));
+    }
   };
 
   const acceptInputCurrency = (data) => {
@@ -95,8 +101,8 @@ const FirstTopUpScreen = () => {
       <View style={styles.middleContainer}>
         <View style={styles.mainContent}>
           <BodySmallTextSemiBold style={{ textAlign: "center" }}>
-            Setor mulai dari {transactionData.selectedCurrency.currencyCode} 10 atau lebih agar Dompet Valas bisa
-            langsung digunakan untuk transaksi
+            Setor mulai dari {transactionData.selectedCurrency.currencyCode} 10
+            atau lebih agar Dompet Valas bisa langsung digunakan untuk transaksi
           </BodySmallTextSemiBold>
           <View style={{ marginTop: 20 }}>
             <ValasConversion
@@ -115,14 +121,13 @@ const FirstTopUpScreen = () => {
               Kurs Beli
             </BodyMediumText>
             <BodyLargeText style={styles.textStyle}>
-            {transactionData.selectedCurrency.currencyCode} 1.00 = Rp. {formatNumber(transactionData.selectedCurrency.buyRate)}
+              {transactionData.selectedCurrency.currencyCode} 1.00 = Rp.{" "}
+              {formatNumber(transactionData.selectedCurrency.buyRate)}
             </BodyLargeText>
           </View>
         </View>
         <View style={styles.sourceContainer}>
-          <WalletSource
-          selectedRekening={transactionData.selectedRekening}
-          />
+          <WalletSource selectedRekening={transactionData.selectedRekening} />
         </View>
         <ConfirmationModal
           title={"Konfirmasi Setoran Awal"}
@@ -133,7 +138,10 @@ const FirstTopUpScreen = () => {
         />
       </View>
       <View style={styles.bottomContainer}>
-        {transactionData.inputValue === "" ? (
+        {transactionData.inputValue === "" ||
+        parseInt(transactionData.inputValue) < minPurchase ||
+        parseInt(transactionData.convertedValue) >
+          transactionData.selectedRekening.balance ?  (
           <StyledButton
             mode="primary-disabled"
             title="Lanjut"

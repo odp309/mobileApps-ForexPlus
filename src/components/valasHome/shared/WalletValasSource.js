@@ -17,7 +17,7 @@ const WalletValasSource = ({ style,selectedWallet}) => {
               <BodyMediumText style={{ fontWeight: "bold" }}>
                 DOMPET VALAS
               </BodyMediumText>
-              <BodySmallText>{selectedWallet.currencyName}</BodySmallText>
+              <BodyMediumText style={{ fontSize :15 }}>{selectedWallet.currencyName}</BodyMediumText>
               <BodyMediumText style={{ fontWeight: "bold" }}>
                 {selectedWallet.currencyCode} {formatNumber(selectedWallet.balance)}
               </BodyMediumText>
@@ -26,7 +26,7 @@ const WalletValasSource = ({ style,selectedWallet}) => {
                 <Image
                   resizeMode="contain"
                   source={{uri: selectedWallet.landmarkIcon}}
-                  style={{ width: 85, height: "70%"}}
+                  style={{ width: 65, height: "90%",borderWidth:1}}
                 />
             </View>
           </View>
@@ -98,10 +98,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.color.white,
     borderTopLeftRadius: 20,
     borderBottomLeftRadius: 20,  
+    width:"70%"
     
   },
   landmarkContainer: {
     justifyContent: "flex-end",
     backgroundColor: colors.color.white, 
+    width:"30%"
   },
 });

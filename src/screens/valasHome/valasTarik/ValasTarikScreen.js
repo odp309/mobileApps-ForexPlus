@@ -82,13 +82,17 @@ const ValasTarikScreen = () => {
       ...prevData,
       inputValue: e,
     }));
+    if (parseInt(e) == 0) { 
+      return;
+    }
     if (e === "") {
       return;
     }
     if (parseInt(e) > selectedWallet.balance) {
-      setErrorText("Saldo Anda tidak mencukupi");
+      setErrorText("Saldo dompet valas Anda tidak mencukupi");
       return;
     }
+    
     if (parseInt(e) % 100 !== 0) {
       setErrorText("Nominal penarikan harus dalam kelipatan 100");
       return;
@@ -129,13 +133,11 @@ const ValasTarikScreen = () => {
             <InputCurrency
               selectedCurrency={transactionData.selectedCurrency}
               onChangeText={onChangeText}
+              value={transactionData.inputValue}
             />
             {errorText !== "" && (
-              <View style={styles.errorContainer}>
-                <View style={styles.errorIconContainer}>
-                  <Text style={styles.errorIcon}>!</Text>
-                </View>
-                <Text style={styles.errorText}>{errorText}</Text>
+              <View> 
+                <BodySmallText style={styles.errorText}>{errorText}</BodySmallText>
               </View>
             )}
           </View>
@@ -151,6 +153,7 @@ const ValasTarikScreen = () => {
         </View>
         <View style={styles.bottomContainer}>
           {transactionData.inputValue === "" ||
+          transactionData.inputValue <= 0 ||
           transactionData.inputValue % 100 != 0 ||
           transactionData.inputValue >
             transactionData.selectedWallet.balance ? (
@@ -209,8 +212,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   errorText: {
-    color: "#FF1200",
-    marginLeft: 10,
+    color: "#FF1200", 
+    fontSize:12
   },
   errorIconContainer: {
     width: 24,

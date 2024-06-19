@@ -9,19 +9,21 @@ const IncorrectPinMessage = () => {
       style={{
         width: "100%",
         borderRadius: 10,
-        backgroundColor: colors.color.errorTransparent,
-        flexDirection: "row",
-        padding: 10,
+        marginLeft:5,
+        marginTop:5
+        // backgroundColor: colors.color.errorTransparent,
+        // flexDirection: "row",
+        // padding: 10,
       }}
     >
-      <Ionicons
+      {/* <Ionicons
         name="alert-circle-outline"
         size={16}
         style={{ marginTop: 1, marginRight: 5 }}
         color={colors.color.error}
-      />
+      /> */}
       <BodySmallTextSemiBold style={{ color: colors.color.error }}>
-        Pin Anda Tidak Sesuai
+        PIN yang Anda masukkan salah. Coba lagi.
       </BodySmallTextSemiBold>
     </View>
   );

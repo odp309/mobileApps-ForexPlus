@@ -50,6 +50,7 @@ const fetchValasPurchase = async (walletId, amountToBuy, pin) => {
     }
   } catch (err) {
     console.log("gagal fetch Valas beli : " , err);
+    return false;
   }
 };
 

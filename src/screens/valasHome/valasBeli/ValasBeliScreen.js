@@ -94,10 +94,7 @@ export default function ValasBeliScreen() {
   };
 
   const checkError = (data, kursResult) => {
-    setTransactionData((prevState) => ({
-      ...prevState,
-      inputValue: "",
-    }));
+    
     if (kursResult > transactionData.selectedRekening.balance) {
       setInputError("Jumlah melebihi Saldo Aktif Rupiah");
     } else if (parseInt(data) < parseInt(minimumBuy)) {

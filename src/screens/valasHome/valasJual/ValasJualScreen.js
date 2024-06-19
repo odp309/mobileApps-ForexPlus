@@ -74,11 +74,11 @@ const ValasJualScreen = () => {
   const isButtonDisabled = () => {
     const inputValue = parseFloat(transactionData.inputValue);
     const convertedValue = parseFloat(transactionData.convertedValue);
-    const balance = parseFloat(transactionData.selectedRekening.balance);
-
+    const balance = parseFloat(transactionData.selectedWallet.balance);
     return (
       transactionData.inputValue === "" ||
-      inputValue < minimumSell
+      inputValue < minimumSell ||
+      inputValue > balance
     );
   };
 
@@ -100,14 +100,16 @@ const ValasJualScreen = () => {
               parseInt(transactionData.selectedCurrency.sellRate)
             ).toString(),
     }));
-    checkError(data);
+    checkError(data, kursResult);
   };
 
   const checkError = (data) => {
+    console.log("Kurs result : ", data);
     setTransactionData((prevState) => ({
       ...prevState,
-      inputValue: "",
-    })); if (parseInt(data) < parseInt(minimumSell)) {
+    }));
+
+    if (parseInt(data) < parseInt(minimumSell)) {
       setInputError(
         `Minimum penjualan valas ${transactionData.selectedCurrency.currencyCode} ${minimumSell}`
       );
@@ -117,6 +119,10 @@ const ValasJualScreen = () => {
           transactionData.selectedCurrency.currencyCode
         } ${minimumSell * 25000}`
       );
+    } else if (
+      parseInt(data) > parseInt(transactionData.selectedWallet.balance)
+    ) {
+      setInputError("Saldo dompet valas Anda tidak cukup");
     } else {
       setInputError("");
       setTransactionData((prevState) => ({
@@ -128,7 +134,6 @@ const ValasJualScreen = () => {
 
   const acceptInputCurrency = (data) => {
     console.log(data);
-
     setTransactionData((prevState) => ({
       ...prevState,
       inputValue: data,
@@ -147,7 +152,7 @@ const ValasJualScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
-        <ContentHeader title={"Penjualan Valas"} hasConfirmation={true} />
+        <ContentHeader title={"Jual Valas"} hasConfirmation={true} />
       </View>
 
       <View style={[styles.middleContainer]}>

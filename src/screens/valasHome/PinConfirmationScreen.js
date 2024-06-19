@@ -57,14 +57,15 @@ const PinConfirmationScreen = () => {
           transactionData,
           transactionType,
         });
-        setPinStatus(true);
+        setPinStatus(true); 
         console.log("Transaction successful:", beli);
       } else {
-        setPinStatus(false);
+        setPinStatus(false); 
+        setErrorVisible(!errorVisible);
       }
     } catch (error) {
       console.error("Transaction failed:", error);
-      setPinStatus(false);
+      setPinStatus(false); 
     }
   };
 
@@ -171,6 +172,7 @@ const PinConfirmationScreen = () => {
   };
 
   useEffect(() => {
+    console.log("transactiontype : ", transactionType);
     // console.log(transactionData.selectedWallet.walletId);
 
     // console.log(transactionData.inputValue);
@@ -198,9 +200,19 @@ const PinConfirmationScreen = () => {
         <ContentHeader title={"Verifikasi PIN"} />
       </View>
       <View style={styles.middleContainer}>
-        <View style={styles.contentContainer}>
+        <View
+          style={[
+            styles.contentContainer,
+            {
+              borderColor: pinStatus
+                ? colors.primary.primaryOne
+                : colors.color.error,
+              borderWidth: pinStatus ? 1 :2
+            }
+          ]}
+        >
           <BodyLargeTextSemiBold
-            style={{ color: colors.secondary.secondaryTwo }}
+            style={{ color: colors.secondary.secondaryTwo, fontSize: 16 }}
           >
             Masukkan PIN BNI Mobile Banking
           </BodyLargeTextSemiBold>
@@ -228,7 +240,7 @@ const PinConfirmationScreen = () => {
           </View>
         </View>
         {errorVisible && (
-          <View style={{ width: "100%", marginTop: 20 }}>
+          <View style={{ width: "100%" }}>
             <IncorrectPinMessage />
           </View>
         )}
@@ -262,8 +274,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: "100%",
     borderRadius: 20,
-    minHeight: 100,
     borderColor: colors.primary.primaryOne,
+    paddingVertical: 10,
   },
   pinContainer: {
     width: "75%",
@@ -271,11 +283,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     marginBottom: "7%",
     position: "relative",
-    marginTop: 5,
+    marginTop: 20,
+    marginBottom: 40,
   },
   pinImage: {
-    width: 25,
-    height: 25,
+    width: 24,
+    height: 24,
   },
   textInput: {
     position: "absolute",

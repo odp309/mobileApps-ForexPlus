@@ -238,8 +238,7 @@ const HistoryScreen = () => {
 export default HistoryScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    height: Dimensions.get("screen").height * 1.05,
+  container: { 
     justifyContent: "flex-start",
     backgroundColor: "white",
   },
