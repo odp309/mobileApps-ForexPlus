@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   topContainer: {
     width: "100%",
     flex: 0.1,
-    marginTop: "15%",
+    marginTop: "10%",
     paddingHorizontal: 20,
   },
   middleContainer: {

@@ -76,11 +76,9 @@ const EnterTransferScreen = () => {
   }, []);
 
   useEffect(() => {
-    if (transactionData.inputValue > transactionData.selectedWallet.balance) 
-    { 
+    if (transactionData.inputValue > transactionData.selectedWallet.balance) {
       setErrorMessage("Saldo Anda tidak mencukupi");
-    }
-    else{
+    } else {
       setErrorMessage("");
     }
   }, [transactionData.inputValue]);
@@ -101,7 +99,7 @@ const EnterTransferScreen = () => {
             style={{ width: 100, height: 100, borderRadius: 99 }}
           />
           <BodyLargeTextSemiBold style={{ marginTop: 10 }}>
-            Wallet AUD
+            Dompet Valas
           </BodyLargeTextSemiBold>
 
           <BodyXLTextSemiBold style={{}}>
@@ -116,17 +114,17 @@ const EnterTransferScreen = () => {
             value={transactionData.inputValue}
             onChangeText={acceptInputCurrency}
           />
-          <View style={{width:"100%"}}>
-            <BodySmallText style={{textAlign:"flex-start", color:"red"}}>{errorMessage}</BodySmallText>
+          <View style={{ width: "100%" }}>
+            <BodySmallText style={{ textAlign: "flex-start", color: "red" }}>
+              {errorMessage}
+            </BodySmallText>
           </View>
         </View>
         <View
           style={{ height: 4, backgroundColor: colors.primary.primaryThree }}
         />
         <View style={styles.walletContainer}>
-          <WalletValasSource
-            selectedWallet={currentWallet}
-          />
+          <WalletValasSource selectedWallet={currentWallet} />
         </View>
       </View>
       <View style={styles.bottomContainer}>
@@ -162,7 +160,7 @@ const styles = StyleSheet.create({
   topContainer: {
     width: "100%",
     flex: 0.1,
-    marginTop: "12%",
+    marginTop: "10%",
     paddingHorizontal: 20,
   },
   middleContainer: {
@@ -177,9 +175,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     alignItems: "center",
-    padding: 20,
+    paddingHorizontal: 20,
   },
-  walletContainer: {
-    marginTop: 20,
-  },
+  walletContainer: {},
 });

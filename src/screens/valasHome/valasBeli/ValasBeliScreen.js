@@ -66,6 +66,7 @@ export default function ValasBeliScreen() {
   };
 
   useEffect(() => {
+    console.log(transactionData.selectedCurrency)
     setTimeout(() => {
       setFetchMinimum();
     }, 500);
@@ -157,7 +158,7 @@ export default function ValasBeliScreen() {
         transactionData={transactionData}
       />
       <View style={styles.topContainer}>
-        <ContentHeader title={"Pembelian Valas"} hasConfirmation={true} />
+        <ContentHeader title={"Beli Valas"} hasConfirmation={true} />
       </View>
 
       <View style={styles.middleContainer}>
@@ -214,7 +215,7 @@ const styles = StyleSheet.create({
   topContainer: {
     width: "100%",
     flex: 0.1,
-    marginTop: "12%",
+    marginTop: "10%",
     paddingHorizontal: 20,
   },
   middleContainer: {

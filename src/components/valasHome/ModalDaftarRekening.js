@@ -1,12 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { Dimensions, Modal, ScrollView, StyleSheet, TouchableOpacity, View, Animated } from "react-native";
-import { BodyLargeTextSemiBold, BodyMediumText } from "../shared/StyledText";
+import {
+  Dimensions,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Animated,
+} from "react-native";
+import {
+  BodyLargeText,
+  BodyLargeTextSemiBold,
+  BodyMediumText,
+  BodySmallText,
+} from "../shared/StyledText";
 import colors from "../../theme/colors";
 import { Ionicons } from "@expo/vector-icons";
 
 const screenHeight = Dimensions.get("screen").height;
 
-const ModalDaftarRekening = ({ modalVisible, setModalVisible, listRekening, selectedRekening, setSelectedRekening }) => {
+const ModalDaftarRekening = ({
+  modalVisible,
+  setModalVisible,
+  listRekening,
+  selectedRekening,
+  setSelectedRekening,
+}) => {
   const slideAnim = useState(new Animated.Value(screenHeight))[0]; // Initial position is off-screen
 
   useEffect(() => {
@@ -25,9 +44,9 @@ const ModalDaftarRekening = ({ modalVisible, setModalVisible, listRekening, sele
     }
   }, [modalVisible, slideAnim]);
 
-  useEffect(()=>{
+  useEffect(() => {
     // console.log("Selected Rekening : " + selectedRekening);
-  },[selectedRekening]);
+  }, [selectedRekening]);
 
   return (
     <View>
@@ -39,35 +58,84 @@ const ModalDaftarRekening = ({ modalVisible, setModalVisible, listRekening, sele
         onRequestClose={() => setModalVisible(!modalVisible)}
       >
         <View style={styles.modalContainer}>
-          <TouchableOpacity style={styles.backgroundOverlay} onPress={() => setModalVisible(!modalVisible)} />
-          <Animated.View style={[styles.modalView, { transform: [{ translateY: slideAnim }] }]}>
-            <TouchableOpacity style={{ alignSelf: "flex-end" }} onPress={() => setModalVisible(!modalVisible)}>
+          <TouchableOpacity
+            style={styles.backgroundOverlay}
+            onPress={() => setModalVisible(!modalVisible)}
+          />
+          <Animated.View
+            style={[
+              styles.modalView,
+              { transform: [{ translateY: slideAnim }] },
+            ]}
+          >
+            {/* <TouchableOpacity
+              style={{ alignSelf: "flex-end", marginRight:10}}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
               <Ionicons name="close" size={28} color={"black"} />
-            </TouchableOpacity>
-            <BodyLargeTextSemiBold style={styles.modalTitle}>Rekening</BodyLargeTextSemiBold>
-            <ScrollView style={{ width: "100%" }}>
-              {listRekening.map((item) => (
-                <TouchableOpacity
-                  style={styles.rekeningItem}
-                  key={item.id}
-                  onPress={() => {
-                    setSelectedRekening(item); 
-                    setModalVisible(false);
-                  }}
-                >
-                  <BodyMediumText>{item.accountNumber}</BodyMediumText>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
+            </TouchableOpacity> */}
+            <View
+              style={{
+                width: "15%",
+                height: 5,
+                backgroundColor: colors.color.lightGrey,
+                marginBottom: 20,
+                borderRadius: 50,
+              }}
+            />
+            <BodyMediumText style={styles.modalTitle}>
+              Nomor Rekening
+            </BodyMediumText>
+            <View
+              style={{
+                width: "100%",
+                height: 4,
+                backgroundColor: colors.primary.primaryThree,
+                marginBottom: 20,
+              }}
+            />
+            {listRekening && (
+              <ScrollView style={{ width: "100%", paddingHorizontal: 20 }}>
+                {listRekening.map((item) => (
+                  <TouchableOpacity
+                    style={styles.rekeningItem}
+                    key={item.id}
+                    onPress={() => {
+                      setSelectedRekening(item);
+                      setModalVisible(false);
+                    }}
+                  >
+                    <View>
+                    <BodyMediumText style={{fontSize:18 ,lineHeight:24}}>{item.accountNumber}</BodyMediumText>
+                    <BodyMediumText style={{fontSize:14}}>{item.type}</BodyMediumText>
+                    </View>
+                    <Ionicons
+                      name={item===selectedRekening ? "radio-button-on" : "radio-button-off"}
+                      size={24}
+                      color={colors.primary.primaryOne}
+                      style={{ marginTop: 3 }}
+                    />
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            )}
           </Animated.View>
         </View>
       </Modal>
-      <TouchableOpacity style={styles.selectedRekening} onPress={() => setModalVisible(!modalVisible)}>
+      <TouchableOpacity
+        style={styles.selectedRekening}
+        onPress={() => setModalVisible(!modalVisible)}
+      >
         <View>
-          <BodyMediumText>{selectedRekening.accountNumber}</BodyMediumText>
-          <BodyMediumText>{selectedRekening.type}</BodyMediumText>
+          <BodyMediumText style={{fontSize:20, marginBottom:-6}}>{selectedRekening.accountNumber}</BodyMediumText>
+          <BodyMediumText style={{fontSize:14}}>{selectedRekening.type}</BodyMediumText>
         </View>
-        <Ionicons name="chevron-down" size={22} color={colors.primary.primaryOne} style={{ marginTop: 3 }} />
+        <Ionicons
+          name="chevron-down"
+          size={20}
+          color={colors.primary.primaryOne}
+          style={{ marginTop: 3 }}
+        />
       </TouchableOpacity>
     </View>
   );
@@ -89,7 +157,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     paddingTop: "3%",
     paddingBottom: 20,
-    paddingHorizontal: "5%",
     alignItems: "center",
     justifyContent: "center",
     shadowColor: "#000",
@@ -101,19 +168,16 @@ const styles = StyleSheet.create({
     maxHeight: screenHeight * 0.7,
   },
   modalTitle: {
-    color: colors.primary.primaryOne,
     alignSelf: "center",
-    fontSize: 20,
-    marginBottom: 30,
+    fontSize: 18,
+    marginBottom: 5,
   },
-  rekeningItem: {
-    borderWidth: 1,
+  rekeningItem: { 
     width: "100%",
-    padding: 10,
+    paddingHorizontal: 10,
+    paddingBottom : 10,
     flexDirection: "row",
-    justifyContent: "space-between",
-    borderRadius: 10,
-    marginVertical: 5,
+    justifyContent: "space-between", 
     borderColor: colors.primary.primaryOne,
     alignItems: "center",
   },
@@ -121,7 +185,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 20,
-    paddingBottom: 20,
+    paddingBottom: 10,
   },
 });
 

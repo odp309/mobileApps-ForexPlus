@@ -2,17 +2,18 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axiosInstance from "../connectivity/AxiosConfigManager.js";
 import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from "jwt-decode"; 
 
-let userData = null;
 
-const JwtDecoder = (accessToken) => {
+let userData =null;
+
+const JwtDecoder = async (accessToken) => {
   let decodedHeader;
   let decodedPayload;
-
+  
   try {
-    decodedHeader = jwtDecode(accessToken, { header: true });
-    decodedPayload = jwtDecode(accessToken);
+    decodedHeader = await jwtDecode(accessToken, { header: true });
+    decodedPayload = await jwtDecode(accessToken);
   } catch (e) {
     console.error("Invalid JWT", e);
   }
@@ -21,43 +22,23 @@ const JwtDecoder = (accessToken) => {
 
 const login = async (
   email,
-  password,
-  setModalVisible,
-  modalVisible,
-  navigation
+  password
 ) => {
   try {
-    const response = await axiosInstance.post("/public/user/login", {
+    email = email.toLowerCase();
+    const response = await axiosInstance.post("/v1/public/user/login", {
       email,
       password,
-    });
+    }); 
     const { accessToken } = response.data;
-    console.log(response.data);
-    const expiredTime = 60 * 15 * 1000;
     await AsyncStorage.setItem("accessToken", accessToken);
-
-    userData = JwtDecoder(accessToken);
-    console.log(userData);
-
-    if (userData) {
-      setModalVisible(!modalVisible);
-      navigation.navigate("HomePage");
-    } 
-
-    setTimeout(() => {
-      cleanupToken();
-      Alert.alert("Token expired", "Your session has expired.", [
-        { onPress: () => navigation.navigate("Login") },
-      ]);
-    }, expiredTime);
+    userData = await JwtDecoder(accessToken);
+    console.log("userdata : " ,userData);
+    return response; 
+    
   } catch (error) {
-    console.log(error.response.status);
-    if(error.response.status === 401){
-      Alert.alert("Login failed", "Username / Password salah, mohon periksa kembali");
-    }
-    else {
-      Alert.alert("Network Error", "Check your connection");
-    }
+    // console.log(error.response.status);
+    console.log("Error login : " ,error);
   }
 };
 const cleanupToken = async () => {
@@ -67,6 +48,7 @@ const cleanupToken = async () => {
       console.log("Token sebelum dihapus :", accessToken);
       await AsyncStorage.removeItem("accessToken");
       console.log("Token Removed:  " + accessToken);
+      userData = null;
     }
   } catch (error) {
     console.error("Error cleaning uptoken", error);
@@ -84,4 +66,4 @@ const handleLogout = (navigation) => {
   ]);
 };
 
-export { login, logout, cleanupToken, userData, handleLogout };
+export { login, logout, cleanupToken, handleLogout,JwtDecoder,userData };

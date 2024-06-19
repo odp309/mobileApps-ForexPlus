@@ -19,27 +19,19 @@ const PromoInformasi = ({ user }) => {
     },
   ];
   const ListPromoInformasi = ({ item }) => (
-    <View>
-      {user === null ? (
-        <Skeleton style={styles.cardContainer} />
-      ) : (
+    <View> 
         <ImageBackground
           resizeMode="stretch"
           source={{uri : item.imgResource}}
           style={styles.cardContainer}
-        />
-      )}
+        /> 
     </View>
   );
 
   return (
     <View style={styles.container}>
-      <View style={{ marginBottom: 10 }}>
-        {user === null ? (
-          <Skeleton width={150} height={20} />
-        ) : (
-          <BodySmallTextSemiBold> Promo & Informasi</BodySmallTextSemiBold>
-        )}
+      <View style={{ marginBottom: 10 }}> 
+          <BodySmallTextSemiBold> Promo & Informasi</BodySmallTextSemiBold> 
       </View>
       <FlatList
         data={dataPromo}
@@ -63,8 +55,9 @@ export default PromoInformasi;
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: "5%",
-    marginHorizontal: "5%",
+    marginTop: 20,
+    marginHorizontal: 20,
+    marginBottom:60
   },
   cardContainer: {
     height: 150,

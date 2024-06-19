@@ -98,20 +98,18 @@ const Feature = ({ user }) => {
         marginVertical: 5,
       }}
     >
-      {user === null ? (
-        <Skeleton style={{ width: 60, height: 60, marginBottom: 5 }} />
-      ) : (
-        <>
-          <TouchableOpacity onPress={() => navigation.navigate("ValasHome")}>
-            <Image
-              style={{ width: 60, height: 60, marginBottom: 5 }}
-              source={{ uri: item.icon }}
-            />
-          </TouchableOpacity>
+      <>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("ValasHome", { userData: user })}
+        >
+          <Image
+            style={{ width: 60, height: 60, marginBottom: 5 }}
+            source={{ uri: item.icon }}
+          />
+        </TouchableOpacity>
 
-          <BodySmallText style={{ fontSize: 13 }}>{item.title}</BodySmallText>
-        </>
-      )}
+        <BodySmallText style={{ fontSize: 13 }}>{item.title}</BodySmallText>
+      </>
     </View>
   );
 
@@ -136,34 +134,22 @@ const Feature = ({ user }) => {
           marginVertical: 10,
         }}
       >
-        {user === null ? (
-          <Skeleton width={80} height={30} />
-        ) : (
-          <View style={styles.borderedObject}>
-            <BodySmallText>
-              <BodySmallText style={styles.textOrange}>POIN</BodySmallText>
-              {"  "}500
-            </BodySmallText>
-          </View>
-        )}
+        <View style={styles.borderedObject}>
+          <BodySmallText>
+            <BodySmallText style={styles.textOrange}>POIN</BodySmallText>
+            {"  "}500
+          </BodySmallText>
+        </View>
 
-        {user === null ? (
-          <Skeleton width={100} height={30} />
-        ) : (
-          <View
-            style={[
-              styles.borderedObject,
-              { borderWidth: 2, paddingHorizontal: 10 },
-            ]}
-          >
-            <Ionicons
-              name="pencil"
-              size={16}
-              color={colors.primary.primaryOne}
-            />
-            <BodySmallText style={styles.textOrange}>Atur Menu</BodySmallText>
-          </View>
-        )}
+        <View
+          style={[
+            styles.borderedObject,
+            { borderWidth: 2, paddingHorizontal: 10 },
+          ]}
+        >
+          <Ionicons name="pencil" size={16} color={colors.primary.primaryOne} />
+          <BodySmallText style={styles.textOrange}>Atur Menu</BodySmallText>
+        </View>
       </View>
       <View style={{ width: "100%" }}>
         <FlatList
@@ -180,29 +166,23 @@ const Feature = ({ user }) => {
         />
         <View style={{ width: "100%", height: 1, backgroundColor: "orange" }} />
         <View>
-          {user === null ? (
-            <Skeleton style={{ alignSelf: "center" }} width={100} height={20} />
-          ) : (
-            <TouchableOpacity
-              onPress={handlePress}
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-                paddingVertical: 10,
-              }}
-            >
-              <BodyMediumText>
-                {showAll ? "Tampilkan Lebih Sedikit" : "Tampilkan Semua"}
-              </BodyMediumText>
-              <Ionicons
-                name={showAll ? "chevron-up-outline" : "chevron-down-outline"}
-                size={20}
-                color={"#000"}
-                style={{ marginLeft: 5, height: "100%" }}
-              />
-            </TouchableOpacity>
-          )}
+          <TouchableOpacity
+            onPress={handlePress}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              paddingVertical: 10,
+            }}
+          >
+            <BodyMediumText>{showAll ? "Tutup" : "Lainnya"}</BodyMediumText>
+            <Ionicons
+              name={showAll ? "chevron-up-outline" : "chevron-down-outline"}
+              size={20}
+              color={"#000"}
+              style={{ marginLeft: 5, height: "100%" }}
+            />
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -213,7 +193,7 @@ export default Feature;
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: "5%",
+    marginHorizontal: 20,
   },
   borderedObject: {
     flexDirection: "row",

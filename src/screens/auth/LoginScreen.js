@@ -17,16 +17,16 @@ import {
 import React, { useCallback, useEffect, useState } from "react";
 import StyledButton from "../../components/shared/StyledButton";
 import { useNavigation } from "@react-navigation/native";
-import {
-  BodyRegularText,
-  BodySmallText,
-  HeadingFiveText,
+import { Ionicons } from "@expo/vector-icons";
+import { 
+  BodySmallText, 
 } from "../../components/shared/StyledText";
 import Input from "../../components/shared/Input";
-import { cleanupToken, login } from "../../config/AuthConfig";
+import { JwtDecoder, cleanupToken, login, userData } from "../../config/AuthConfig";
 import colors from "../../theme/colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const screenHeight = Dimensions.get("window").height*1.05;
+const screenHeight = Dimensions.get("window").height * 1.05;
 const screenWidth = Dimensions.get("screen").width;
 
 const LoginScreen = () => {
@@ -35,11 +35,73 @@ const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const slideAnim = useState(new Animated.Value(screenHeight))[0]; // Animation value for modal content
+  const slideAnim = useState(new Animated.Value(screenHeight))[0];
+  const [isLoading, setIsLoading] = useState(false);
+  const [wrongValidation, setWrongValidation] = useState(false);
+  const expiredTime = 60 * 15 * 1000; // 15 minutes in milliseconds
+  const [remainingTime, setRemainingTime] = useState(expiredTime);
 
   useEffect(() => {
     cleanupToken();
   }, []);
+
+  useEffect(() => {
+    console.log("Expired Time:", expiredTime);
+  }, [expiredTime]);
+
+  const handleLogin = async () => {
+    setIsLoading(true);
+
+    try {
+      const fetchLogin = await login(email, password);
+      await handleSuccessfulLogin(fetchLogin);
+    } catch (error) {
+      handleLoginError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSuccessfulLogin = async (fetchLogin) => {  
+    if (userData) {
+      setModalVisible(!modalVisible);
+      navigation.navigate("HomePage");
+    }
+
+    setTimeout(() => {
+      cleanupToken();
+      Alert.alert("Token expired", "Your session has expired.", [
+        { onPress: () => navigation.navigate("Login") },
+      ]);
+    }, expiredTime);
+    // const intervalId = setInterval(() => {
+    //   setRemainingTime((prevRemainingTime) => {
+    //     if (prevRemainingTime <= 1000) {
+    //       clearInterval(intervalId);
+    //       cleanupToken();
+    //       Alert.alert("Token expired", "Your session has expired.", [
+    //         { onPress: () => navigation.navigate("Login") },
+    //       ]);
+    //       return 0;
+    //     } else {
+    //       console.log(`Remaining time: ${prevRemainingTime / 1000} seconds`);
+    //       return prevRemainingTime - 1000;
+    //     }
+    //   });
+    // }, 1000);
+  };
+
+  const handleLoginError = (error) => {
+    console.log(error);
+    if (error.response?.status === 401) {
+      setWrongValidation(true);
+      setTimeout(() => {
+        setWrongValidation(false);
+      }, 5000);
+    } else {
+      Alert.alert("Network Error", "Check your connection");
+    }
+  };
 
   useEffect(() => {
     if (modalVisible) {
@@ -61,22 +123,23 @@ const LoginScreen = () => {
     <SafeAreaView style={styles.container}>
       <ImageBackground
         style={{ flex: 1 }}
-        source={{uri : "https://i.imgur.com/qPgwgw6.png"}}
+        source={{ uri: "https://i.imgur.com/qPgwgw6.png" }}
       >
         <View style={styles.topContainer}>
           <Image
-            style={{ width: "40%", height:50, marginBottom: 20 }}
+            style={{ width: "40%", height: 50, marginBottom: 20 }}
             resizeMode="contain"
-            source={{uri : "https://i.imgur.com/rkL9Et5.png"}}
+            source={{ uri: "https://i.imgur.com/rkL9Et5.png" }}
           />
         </View>
         <View style={styles.bottomContainer}>
           <StyledButton
-            mode="primary"
+            mode="primary-gradient"
             title="Login"
             size={"lg"}
             onPress={() => setModalVisible(true)}
           />
+
           <ScrollView
             horizontal={true}
             scrollEnabled={false}
@@ -85,21 +148,21 @@ const LoginScreen = () => {
             <View style={styles.contentStyle}>
               <Image
                 style={styles.shortcutImage}
-                source={{uri : "https://i.imgur.com/4HEOj3a.png"}}
-              />
-              <BodySmallText style={{ marginTop: 5 }}>E-Wallet</BodySmallText>
-            </View>
-            <View style={styles.contentStyle}>
-              <Image
-                style={styles.shortcutImage}
-                source={{uri : "https://i.imgur.com/SjHm9Cw.png"}}
+                source={{ uri: "https://imgur.com/crW9dQK.png" }}
               />
               <BodySmallText style={{ marginTop: 5 }}>QRIS</BodySmallText>
             </View>
             <View style={styles.contentStyle}>
               <Image
                 style={styles.shortcutImage}
-                source={{uri : "https://i.imgur.com/ZMivkWV.png"}}
+                source={{ uri: "https://i.imgur.com/4HEOj3a.png" }}
+              />
+              <BodySmallText style={{ marginTop: 5 }}>E-Wallet</BodySmallText>
+            </View>
+            <View style={styles.contentStyle}>
+              <Image
+                style={styles.shortcutImage}
+                source={{ uri: "https://i.imgur.com/ZMivkWV.png" }}
               />
               <BodySmallText style={{ marginTop: 5 }}>Menu Lain</BodySmallText>
             </View>
@@ -120,6 +183,20 @@ const LoginScreen = () => {
           setModalVisible(!modalVisible);
         }}
       >
+        {wrongValidation && (
+          <View style={styles.accountCheckerContainer}>
+            <Ionicons
+              name="alert-circle-outline"
+              size={20}
+              style={{ marginTop: 1, marginRight: 4 }}
+              color={"white"}
+            ></Ionicons>
+            <BodySmallText style={{ color: "white" }}>
+              Username dan password yang Anda masukkan salah. Silakan coba
+              kembali.
+            </BodySmallText>
+          </View>
+        )}
         <KeyboardAvoidingView
           style={styles.modalContainer}
           behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -142,43 +219,54 @@ const LoginScreen = () => {
             />
             <Input
               mode={"active"}
-              iconColor={colors.primary.primaryOne}
+              iconColor={
+                email === ""
+                  ? colors.primary.primaryTwo
+                  : colors.primary.primaryOne
+              }
               value={email}
               hasLeftIcon={true}
-              leftIconName={"person"}
+              leftIconName={"person-outline"}
               placeholder={"Email"}
               onChangeText={setEmail}
               style={{ paddingLeft: 50 }}
             />
             <Input
               mode={"active"}
-              iconColor={colors.primary.primaryOne}
+              iconColor={
+                password === ""
+                  ? colors.primary.primaryTwo
+                  : colors.primary.primaryOne
+              }
               value={password}
               hasLeftIcon={true}
               hasRightIcon={true}
               secureTextEntry={!passwordVisible}
-              leftIconName={"lock"}
+              leftIconName={"lock-outline"}
               rightIconName={passwordVisible ? "eye" : "eye-off"}
               placeholder={"Password"}
               onChangeText={setPassword}
               onPress={() => setPasswordVisible(!passwordVisible)}
               style={{ paddingLeft: 50, paddingRight: 50 }}
+              rightIconStyle={{ position: "absolute", marginLeft: "87%" }}
             />
-            <StyledButton
-              mode={"primary"}
-              title={"Login"}
-              size={"lg"}
-              onPress={() =>
-                login(
-                  email,
-                  password,
-                  setModalVisible,
-                  modalVisible,
-                  navigation
-                )
-              }
-              style={{ marginVertical: "5%" }}
-            />
+
+            {isLoading ? (
+              <StyledButton
+                mode={"primary-disabled"}
+                title={"Loading"}
+                size={"lg"}
+                style={{ marginVertical: "5%" }}
+              />
+            ) : (
+              <StyledButton
+                mode={"primary-gradient"}
+                title={"Login"}
+                size={"lg"}
+                onPress={() => handleLogin()}
+                style={{ marginVertical: "5%" }}
+              />
+            )}
           </Animated.View>
         </KeyboardAvoidingView>
       </Modal>
@@ -194,14 +282,14 @@ const styles = StyleSheet.create({
     height: screenHeight,
   },
   topContainer: {
-    flex : 0.6,
+    flex: 0.6,
     paddingVertical: "10%",
     width: "100%",
     alignItems: "center",
     justifyContent: "flex-end",
   },
   bottomContainer: {
-    flex : 0.4,
+    flex: 0.4,
     justifyContent: "space-evenly",
     paddingHorizontal: "10%",
     width: "100%",
@@ -247,5 +335,18 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+  },
+  accountCheckerContainer: {
+    width: "90%",
+    borderRadius: 10,
+    minHeight: 50,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    marginTop: 50,
+    flexDirection: "row",
+    position: "absolute",
+    zIndex: 1,
+    backgroundColor: "red",
+    alignSelf: "center",
   },
 });

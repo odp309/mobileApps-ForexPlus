@@ -8,7 +8,7 @@ const DIMENSION_HEIGHT = Dimensions.get("window").height;
 const WalletSource = ({ style,selectedRekening}) => {
   return (
     <View style={[styles.container, style]}>
-      <BodyMediumText>Dompet Sumber</BodyMediumText>
+      <BodyMediumText>Rekening Sumber</BodyMediumText>
       <View style={styles.cardContainer}>
         <View style={styles.borderContainer}>
           <View style={styles.contentContainer}>
@@ -48,7 +48,7 @@ export default WalletSource;
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    paddingTop: 20,
+    paddingTop: 10,
     paddingBottom: 30,
     paddingHorizontal: 20,
   },

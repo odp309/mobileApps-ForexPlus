@@ -1,4 +1,6 @@
+import React, { useCallback, useEffect, useState, useContext } from "react";
 import {
+  ActivityIndicator,
   Alert,
   BackHandler,
   FlatList,
@@ -6,37 +8,50 @@ import {
   Text,
   View,
 } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
 import { BodyRegularText } from "../../components/shared/StyledText";
 import Header from "../../components/home/Header";
 import HeaderProfile from "../../components/home/HeaderProfile";
 import Pocket from "../../components/home/Pocket";
 import Feature from "../../components/home/Feature";
 import PromoInformasi from "../../components/home/PromoInformasi";
-import { handleLogout, userData } from "../../config/AuthConfig";
 import {
   useFocusEffect,
   useIsFocused,
   useNavigation,
+  useRoute,
 } from "@react-navigation/native";
 import { fetchBankAccount } from "../../config/ValasConfig";
+import { StatusBar } from "expo-status-bar";
+import LogoutConfirmationModal from "../../components/home/LogoutConfirmationModal";
+import { ModalContext } from "../../context/ModalContext";
+import colors from "../../theme/colors";
+import { userData } from "../../config/AuthConfig";
 
 const renderedView = ({ item }) => <View>{item.view()}</View>;
-const HomeScreen = () => {
+
+const HomeScreen = () => { 
   const navigation = useNavigation();
+  const { showModal, setShowModal } = useContext(ModalContext);
   const [user, setUser] = useState(null);
   const [fullName, setFullName] = useState("");
   const [accountNumbers, setAccountNumbers] = useState("");
   const isFocused = useIsFocused();
+  const [isLoading, setIsLoading] = useState(true);
 
   const backAction = () => {
-    handleLogout(navigation);
+    setShowModal(true);
     return true;
   };
 
   const getAllAccounts = async () => {
-    const allAccountNumbers = await fetchBankAccount(userData.id);
-    setAccountNumbers(allAccountNumbers);
+    try {
+      const allAccountNumbers = await fetchBankAccount(userData.id);
+      setAccountNumbers(allAccountNumbers);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useFocusEffect(
@@ -48,10 +63,11 @@ const HomeScreen = () => {
           getAllAccounts();
         }, 500);
       }
-    }, [])
+    }, [userData])
   );
 
   useEffect(() => {
+    console.log("userdata : ", userData);
     if (isFocused) {
       const backHandler = BackHandler.addEventListener(
         "hardwareBackPress",
@@ -81,9 +97,25 @@ const HomeScreen = () => {
       ),
     },
   ];
+  if (isLoading) {
+    return (
+      <View style={{ justifyContent: "center", flex: 1 }}>
+        <ActivityIndicator size="large" color={colors.primary.primaryOne} />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
+      <StatusBar
+        style="dark"
+        translucent={true}
+        backgroundColor="transparent"
+      />
+      <LogoutConfirmationModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+      />
       <FlatList
         data={data(user, fullName)}
         renderItem={renderedView}

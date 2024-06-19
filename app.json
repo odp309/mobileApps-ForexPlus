@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "FortuneForex",
+    "name": "BNI Valas Plus",
     "slug": "FortuneForex",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon-valas-plus.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/SplashScreen@3x.png",
@@ -16,12 +16,14 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon-valas-plus.png",
         "backgroundColor": "#ffffff"
       },
-      "splash": { 
-        "xxhdpi": "./assets/SplashScreen@3x.png"
-      }
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ],
+      "package": "com.arfiandiw16.FortuneForex"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -34,6 +36,12 @@
           "isAndroidBackgroundLocationEnabled": false
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "bc085aa0-ad6d-4fd9-810a-38dd406d9313"
+      }
+    },
+    "owner": "arfiandiw16"
   }
 }

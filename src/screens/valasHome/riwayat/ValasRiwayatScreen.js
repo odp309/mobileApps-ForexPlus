@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   topContainer: {
     width: "100%",
     flex: 0.1,
-    marginTop: "15%",
+    marginTop: "12%",
     paddingHorizontal: 20,
   },
   middleContainer: {

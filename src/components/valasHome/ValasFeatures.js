@@ -97,10 +97,6 @@ const ValasFeatures = ({
         }
       />
       <FeatureButton
-        namaFitur="Riwayat"
-        onPress={() => navigation.navigate("Riwayat", { selectedWallet })}
-      />
-      <FeatureButton
         namaFitur="Tarik"
         onPress={() =>
           navigation.navigate("TarikValas", {
@@ -110,6 +106,11 @@ const ValasFeatures = ({
           })
         }
       />
+      <FeatureButton
+        namaFitur="Riwayat"
+        onPress={() => navigation.navigate("Riwayat", { selectedWallet })}
+      />
+      
     </View>
   );
 };

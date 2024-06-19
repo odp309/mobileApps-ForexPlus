@@ -16,20 +16,19 @@ const ContentHeader = ({
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      {!ignoreBackButton && (
-        <BackButton
-          hasConfirmation={hasConfirmation}
-          style={{ width: 50 }}
-          onPress={() => navigation.goBack()}
-          color={colors.color.black}
-        />
-      )}
       <View style={styles.titleContainer}>
-        {hasRigtIcon && (
-          <View style={{ flex: 1 }} />
+        {!ignoreBackButton && (
+          <View style={{ flex: 0.2  }}>
+            <BackButton
+              hasConfirmation={hasConfirmation}
+              style={{ width: 50 }}
+              onPress={() => navigation.goBack()}
+              color={colors.color.black}
+            />
+          </View>
         )}
         <BodyXLTextSemiBold style={styles.title}>{title}</BodyXLTextSemiBold>
-
+        {!hasRigtIcon && <View style={{ flex: 0.2 }} />}
         {hasRigtIcon && (
           <View style={styles.iconContainer}>
             <Ionicons
@@ -64,12 +63,13 @@ const styles = StyleSheet.create({
   },
   title: {
     flex: 1,
-    textAlign: "center",
+    textAlign: "center",  
+    lineHeight:34
   },
   iconContainer: {
     flexDirection: "row",
     justifyContent: "flex-end",
-    flex: 1,
+    flex: 1, 
   },
   icon: {
     marginHorizontal: 10, // Adds some space between the icons

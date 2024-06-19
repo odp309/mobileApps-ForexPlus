@@ -9,10 +9,13 @@ import {
   View,
   Animated,
   Text,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import {
   BodyLargeTextSemiBold,
   BodyMediumText,
+  BodyMediumTextSemiBold,
   BodyXLTextBold,
 } from "../shared/StyledText";
 import colors from "../../theme/colors";
@@ -66,7 +69,11 @@ const ModalDaftarWallet = ({
         statusBarTranslucent={true}
         onRequestClose={() => setModalVisible(!modalVisible)}
       >
-        <View style={styles.modalContainer}>
+        <KeyboardAvoidingView
+          style={styles.modalContainer}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+        >
           <TouchableOpacity
             style={styles.backgroundOverlay}
             onPress={() => setModalVisible(!modalVisible)}
@@ -77,68 +84,95 @@ const ModalDaftarWallet = ({
               { transform: [{ translateY: slideAnim }] },
             ]}
           >
-            <TouchableOpacity
-              style={{ alignSelf: "flex-end" }}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Ionicons name="close" size={28} color={"black"} />
-            </TouchableOpacity>
-            <BodyLargeTextSemiBold style={styles.modalTitle}>
-              List Mata Uang
-            </BodyLargeTextSemiBold>
-            <View style={{ width: "100%", position: "relative" }}>
+            <View
+              style={{
+                width: "15%",
+                height: 5,
+                backgroundColor: colors.color.lightGrey,
+                marginBottom: 20,
+                borderRadius: 50,
+              }}
+            />
+            <BodyMediumText style={{ fontSize: 18, marginBottom: 5 }}>
+              Dompet Valas
+            </BodyMediumText>
+            <View
+              style={{
+                width: "100%",
+                height: 4,
+                backgroundColor: colors.primary.primaryThree,
+                marginBottom: 10,
+              }}
+            />
+            <View style={{ width: "100%", paddingHorizontal: "5%" }}>
               <Input
                 mode={"active"}
                 hasLeftIcon={true}
                 leftIconName={"search"}
                 iconColor={colors.primary.primaryOne}
-                style={{ paddingLeft: 50 }}
-                placeholder="Search"
+                style={{
+                  paddingLeft: 50,
+                  paddingVertical: 5,
+                  backgroundColor: "rgba(253,231,223, 0.5)",
+                }}
+                placeholder=""
                 value={searchQuery}
                 onChangeText={(text) => setSearchQuery(text)}
               />
             </View>
-            <ScrollView style={{ width: "100%" }}>
-              {filteredWallet.map((item) => (
-                <TouchableOpacity
-                  style={styles.walletItem}
-                  key={item.id}
-                  onPress={() => {
-                    setSelectedWallet(item);
-                    setModalVisible(false);
-                  }}
-                >
-                  <Image
-                    resizeMode="stretch"
-                    style={{ width: 30, height: 30, marginRight: 15 }}
-                    source={{uri: item.flagIcon}}
-                  />
-                  <BodyMediumText>
-                    {item.currencyName} ({item.currencyCode})
-                  </BodyMediumText>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
+            {filteredWallet && (
+              <ScrollView style={{ width: "100%", paddingHorizontal: "5%" }}>
+                {filteredWallet.map((item) => (
+                  <TouchableOpacity
+                    style={styles.walletItem}
+                    key={item.id}
+                    onPress={() => {
+                      setSelectedWallet(item);
+                      setModalVisible(false);
+                    }}
+                  >
+                    <Image
+                      resizeMode="stretch"
+                      style={{ width: 25, height: 25, marginRight: 15 }}
+                      source={{ uri: item.flagIcon }}
+                    />
+                    <BodyMediumTextSemiBold
+                      style={{ color: colors.primary.primaryOne }}
+                    >
+                      {item.currencyName} ({item.currencyCode})
+                    </BodyMediumTextSemiBold>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            )}
           </Animated.View>
-        </View>
+        </KeyboardAvoidingView>
       </Modal>
       <TouchableOpacity
         style={styles.selectedWallet}
         onPress={() => setModalVisible(!modalVisible)}
       >
-        <View style={{ flexDirection: "row" }}>
+        <View
+          style={{ flexDirection: "row", alignItems: "center", marginTop: -6 }}
+        >
           <Image
             resizeMode="stretch"
-            style={{ width: 30, height: 30, marginRight: 15 }}
-            source={{uri : selectedWallet.flagIcon}}
+            style={{ width: 24, height: 24, marginRight: 10 }}
+            source={{ uri: selectedWallet.flagIcon }}
           />
-          <BodyXLTextBold style={{ color: colors.primary.primaryOne }}>
+          <BodyXLTextBold
+            style={{
+              color: colors.primary.primaryOne,
+              fontSize: 23,
+              marginTop: 5,
+            }}
+          >
             {selectedWallet.currencyCode}
           </BodyXLTextBold>
         </View>
         <Ionicons
           name="chevron-down"
-          size={22}
+          size={20}
           color={colors.primary.primaryOne}
           style={{ marginTop: 3 }}
         />
@@ -163,16 +197,13 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     paddingTop: "3%",
     paddingBottom: 20,
-    paddingHorizontal: "5%",
     alignItems: "center",
     justifyContent: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5,
-    maxHeight: screenHeight * 0.7,
-    minHeight: screenHeight * 0.6,
+    elevation: 5, 
   },
   modalTitle: {
     color: colors.primary.primaryOne,

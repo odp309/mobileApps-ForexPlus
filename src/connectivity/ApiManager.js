@@ -1,3 +1,3 @@
-let url = "https://valasplus.cloud/api/v1"; 
+let url = "https://valasplus.cloud/api"; 
 
 export {url};
