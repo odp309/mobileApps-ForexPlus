@@ -21,6 +21,8 @@ import { TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native";
 import HistoryHeader from "../../../components/valasHome/valasHistory/HistoryHeader";
 import { fetchHistory, formatNumber } from "../../../config/ValasConfig";
+import EmptyTransaction from "../../../components/valasHome/riwayat/EmptyTransaction";
+import FilterModal from "../../../components/valasHome/riwayat/FilterModal";
 
 const DIMENSION_HEIGHT = Dimensions.get("screen").height;
 
@@ -44,6 +46,7 @@ const HistoryScreen = () => {
   const navigation = useNavigation();
   const [transactionPerMonth, setTransactionPerMonth] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isModalShown, setIsModalShown] = useState(false);
   const selectedWallet = route.params?.selectedWallet;
 
   const convertDate = (date) => {
@@ -219,17 +222,25 @@ const HistoryScreen = () => {
     );
   }
 
+  // ----------------------- Main Screen -----------------------
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
         <HistoryHeader title={"Riwayat"} hasrightIcon={true} />
       </View>
       <View style={styles.middleContainer}>
-        <FlatList
-          data={transactionPerMonth}
-          renderItem={renderMonth}
-          keyExtractor={(item) => item.id}
-        />
+        {
+          transactionPerMonth.length > 0 ?
+
+          <FlatList
+            data={transactionPerMonth}
+            renderItem={renderMonth}
+            keyExtractor={(item) => item.id}
+          />
+          :
+          <EmptyTransaction />
+        }
+        <FilterModal isModalShown={isModalShown} />
       </View>
     </View>
   );
