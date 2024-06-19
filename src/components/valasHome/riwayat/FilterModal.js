@@ -1,17 +1,27 @@
 import { StyleSheet, Text, View } from "react-native";
 import { BottomSheet } from "@rneui/themed";
 
-import React from "react";
-import { BodyLargeText } from "../../shared/StyledText";
+import React, { useState } from "react";
+import { BodyLargeText, BodyLargeTextSemiBold } from "../../shared/StyledText";
 import StyledButton from "../../shared/StyledButton";
 import colors from "../../../theme/colors";
 
-const FilterModal = ({isModalShown}) => {
+const TRANSACTION_TYPE = ["Transfer", "Beli", "Jual",]
+
+const FilterModal = ({ isModalShown, toggleBottomSheet }) => {
+    const [chosenFilter, setChosenFilter] = useState("Transfer");
+
+
+
+  const handleApplyButton = () => {
+    toggleBottomSheet();
+  };
+
   return (
     <BottomSheet isVisible={isModalShown}>
       <View style={styles.container}>
         <View style={styles.topContainer}>
-          <BodyLargeText>Kategori</BodyLargeText>
+          <BodyLargeTextSemiBold>Kategori</BodyLargeTextSemiBold>
         </View>
 
         <View style={styles.middleContainer}>
@@ -22,9 +32,9 @@ const FilterModal = ({isModalShown}) => {
           {/* JUAL BUTTON */}
           <StyledButton
             mode={"primary"}
-            title={"Terapkan" }
+            title={"Terapkan"}
             size={"lg"}
-            // onPress={toPinVerification}
+            onPress={handleApplyButton}
             style={{ marginVertical: "5%" }}
           />
         </View>
@@ -39,17 +49,15 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     backgroundColor: "white",
-    paddingVertical: 20,
+    padding: 20,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
   },
   topContainer: {
     width: "100%",
-    alignItems: "center",
   },
   middleContainer: { width: "100%" },
   bottomContainer: {
     width: "100%",
-    paddingHorizontal: 20,
   },
 });

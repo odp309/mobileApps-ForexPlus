@@ -222,25 +222,34 @@ const HistoryScreen = () => {
     );
   }
 
+  const toggleBottomSheet = () => {
+    setIsModalShown(!isModalShown);
+  };
+
   // ----------------------- Main Screen -----------------------
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
-        <HistoryHeader title={"Riwayat"} hasrightIcon={true} />
+        <HistoryHeader
+          title={"Riwayat"}
+          hasrightIcon={true}
+          toggleBottomSheet={toggleBottomSheet}
+        />
       </View>
       <View style={styles.middleContainer}>
-        {
-          transactionPerMonth.length > 0 ?
-
+        {transactionPerMonth.length > 0 ? (
           <FlatList
             data={transactionPerMonth}
             renderItem={renderMonth}
             keyExtractor={(item) => item.id}
           />
-          :
+        ) : (
           <EmptyTransaction />
-        }
-        <FilterModal isModalShown={isModalShown} />
+        )}
+        <FilterModal
+          isModalShown={isModalShown}
+          toggleBottomSheet={toggleBottomSheet}
+        />
       </View>
     </View>
   );

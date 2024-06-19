@@ -7,20 +7,21 @@ import { useNavigation } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
-const HistoryHeader = ({ title, ignoreBackButton, hasConfirmation }) => {
+const HistoryHeader = ({
+  title,
+  ignoreBackButton,
+  hasConfirmation,
+  toggleBottomSheet,
+}) => {
   const navigation = useNavigation();
 
   const handleOptionsPress = () => {
-    
-    console.log('Options icon pressed');
-   
-    navigation.navigate('SettingsScreen');
+    console.log("Options icon pressed");
+    toggleBottomSheet();
   };
 
   const handleDownloadPress = () => {
-    
-    console.log('Download icon pressed');
-    
+    console.log("Download icon pressed");
   };
   return (
     <View style={styles.container}>
@@ -37,20 +38,20 @@ const HistoryHeader = ({ title, ignoreBackButton, hasConfirmation }) => {
         </View>
         <BodyXLTextSemiBold style={styles.title}>{title}</BodyXLTextSemiBold>
         <View style={styles.iconContainer}>
-        <TouchableOpacity onPress={handleOptionsPress}>
-          <Ionicons
-            name="options"
-            size={28}
-            style={styles.icon}
-            color={colors.primary.primaryOne} 
-          />
+          <TouchableOpacity onPress={handleOptionsPress}>
+            <Ionicons
+              name="options"
+              size={28}
+              style={styles.icon}
+              color={colors.primary.primaryOne}
+            />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleDownloadPress}>
-          <MaterialIcons
-            name="download"
-            size={28}
-            color={colors.primary.primaryOne}
-          />
+            <MaterialIcons
+              name="download"
+              size={28}
+              color={colors.primary.primaryOne}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
   },
   title: {
     flex: 1,
-    textAlign: "center",  
+    textAlign: "center",
   },
   iconContainer: {
     flexDirection: "row",
