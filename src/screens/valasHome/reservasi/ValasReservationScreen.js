@@ -2,7 +2,8 @@ import { Dimensions, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
 import colors from "../../../theme/colors";
-import { BodySmallText } from "../../../components/shared/StyledText";
+import { BodyRegularText, BodySmallText } from "../../../components/shared/StyledText";
+import { useRoute } from "@react-navigation/core";
 
 const dummyData = [
   {
@@ -29,48 +30,20 @@ const dummyData = [
 ];
 
 const ValasReservationScreen = () => {
+  const route = useRoute();
+  const reservation = route.params?.reservation;
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
-        <ContentHeader title="Daftar Reservasi" />
+        <ContentHeader  />
       </View>
-      <View style={{ paddingLeft: 23, paddingRight: 22 }}>
-        {dummyData.map((item) => (
-          <View style={styles.bottonContainer} key={item.id}>
-            <View style={styles.containerCabang}>
-              <BodySmallText style={{ color: colors.secondary.secondaryOne }}>
-                {item.cabang}
-              </BodySmallText>
-            </View>
-            <View style={{ flexDirection: "row" }}>
-              <View style={[styles.containerTglJam, styles.addRightBorder]}>
-                <BodySmallText style={{ color: colors.color.grey }}>
-                  Tanggal
-                </BodySmallText>
-                <BodySmallText style={{ color: colors.secondary.secondaryOne }}>
-                  {item.tanggal}
-                </BodySmallText>
-              </View>
-              <View style={styles.containerTglJam}>
-                <BodySmallText style={{ color: colors.color.grey }}>
-                  Status Reservasi
-                </BodySmallText>
-                <BodySmallText style={{ color: colors.secondary.secondaryOne }}>
-                  {item.status}
-                </BodySmallText>
-              </View>
-            </View>
-            <View style={styles.containerStatus}>
-              <BodySmallText style={{ color: colors.color.grey }}>
-                Kode Reservasi
-              </BodySmallText>
-              <BodySmallText style={{ color: colors.secondary.secondaryOne }}>
-                {item.kode}
-              </BodySmallText>
-            </View>
-          </View>
-        ))}
-      </View>
+       <View style={{alignItems:"center"}}>
+        <BodyRegularText>{reservation.reservationNumber}</BodyRegularText>
+        <BodyRegularText>{reservation.amount}</BodyRegularText>
+        <BodyRegularText>{reservation.reservationDate}</BodyRegularText>
+        <BodyRegularText>KCP {reservation.branchName}</BodyRegularText>
+        <BodyRegularText>{reservation.branchAddress}</BodyRegularText>
+       </View>
     </View>
   );
 };

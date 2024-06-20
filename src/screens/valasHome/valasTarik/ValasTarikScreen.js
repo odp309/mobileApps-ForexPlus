@@ -15,7 +15,7 @@ import {
 } from "../../../components/shared/StyledText";
 import colors from "../../../theme/colors";
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
 import InputCurrency from "../../../components/valasHome/shared/InputCurrency";
 import WalletValasSource from "../../../components/valasHome/shared/WalletValasSource";
 import StyledButton from "../../../components/shared/StyledButton";
@@ -28,6 +28,7 @@ const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 const ValasTarikScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
+  const isFocused = useIsFocused();
   const { selectedRekening, selectedWallet, selectedCurrency } = route.params;
 
   const [transactionData, setTransactionData] = useState({
@@ -45,12 +46,16 @@ const ValasTarikScreen = () => {
     setModalVisible(!modalVisible);
     return true;
   };
+
   useEffect(() => {
-    const backHandler = BackHandler.addEventListener("hardwareBackPress", () =>
-      handleModal()
-    );
-    return () => backHandler.remove();
-  }, []);
+    if (isFocused) {
+      const backHandler = BackHandler.addEventListener(
+        "hardwareBackPress",
+        () => handleModal()
+      );
+      return () => backHandler.remove();
+    }
+  }, [isFocused]);
 
   const getLocation = async () => {
     try {

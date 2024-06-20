@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
     position: "absolute",
     width:"100%", 
+    borderBottomRightRadius:20,
   },
   topHeader: {
     flexDirection: "row",

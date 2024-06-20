@@ -24,7 +24,11 @@ import {
   formatNumber,
 } from "../../../config/ValasConfig";
 import WalletSource from "../../../components/valasHome/shared/WalletSource";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import WalletValasSource from "../../../components/valasHome/shared/WalletValasSource";
 import CloseValasModal from "../../../components/valasHome/shared/CloseValasModal";
 
@@ -32,6 +36,7 @@ const DIMENSION_HEIGHT = Dimensions.get("window").height;
 
 const ValasJualScreen = () => {
   const route = useRoute();
+  const isFocused = useIsFocused();
   const navigation = useNavigation();
   const [minimumSell, setMinimumSell] = useState(null);
 
@@ -53,11 +58,14 @@ const ValasJualScreen = () => {
     return true;
   };
   useEffect(() => {
-    const backHandler = BackHandler.addEventListener("hardwareBackPress", () =>
-      handleModal()
-    );
-    return () => backHandler.remove();
-  }, []);
+    if (isFocused) {
+      const backHandler = BackHandler.addEventListener(
+        "hardwareBackPress",
+        () => handleModal()
+      );
+      return () => backHandler.remove();
+    }
+  }, [isFocused]);
 
   const setFetchMinimum = async () => {
     try {

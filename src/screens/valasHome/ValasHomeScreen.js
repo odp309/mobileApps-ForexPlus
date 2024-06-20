@@ -19,7 +19,11 @@ import ValasReservation from "../../components/valasHome/ValasReservation";
 import WalletCard from "../../components/valasHome/WalletCard";
 import NavigasiRekeningWallet from "../../components/valasHome/NavigasiRekeningWallet";
 import CurrencyInformation from "../../components/valasHome/CurrencyInformation";
-import { fetchBankAccount, fetchNomorRekening } from "../../config/ValasConfig";
+import {
+  fetchBankAccount,
+  fetchNomorRekening,
+  fetchReservationList,
+} from "../../config/ValasConfig";
 import ValasCreateContent from "../../components/valasHome/ValasCreateContent";
 import AddWalletButton from "../../components/valasHome/AddWalletButton";
 import {
@@ -75,9 +79,20 @@ const ValasHomeScreen = () => {
     }
   };
 
+  const getReservation = async () => {
+    try {
+      const response = await fetchReservationList();
+      setReservation(response);
+      console.log("Hasil response : ", reservation);
+    } catch (error) {
+      console.log("data null");
+    }
+  };
+
   useFocusEffect(
     useCallback(() => {
       getData();
+      getReservation();
     }, [])
   );
 
@@ -154,33 +169,28 @@ const ValasHomeScreen = () => {
     {
       id: "4",
       view: () =>
-        reservation != null && (
-          <View
-            style={{
-              width: "100%",
-              paddingHorizontal: 20,
-              paddingTop: 10,
-              marginTop: 10,
-              borderTopWidth: 4,
-              borderTopColor: colors.primary.primaryThree,
-            }}
+        reservation && (
+          <TouchableOpacity
+            onPress={() => navigation.navigate("ValasReservation",{reservation:reservation[0]})}
           >
-            <BodyMediumTextSemiBold
-              style={{ color: colors.color.grey, marginBottom: 10 }}
+            <View
+              style={{
+                width: "100%",
+                paddingHorizontal: 20,
+                paddingTop: 20,
+                marginTop: 10,
+                borderTopWidth: 4,
+                borderTopColor: colors.primary.primaryThree,
+              }}
             >
-              Daftar Reservasi Tarik
-            </BodyMediumTextSemiBold>
-            <ValasReservation />
-            <TouchableOpacity
-              onPress={() => navigation.navigate("ValasReservation")}
-            >
-              <BodySmallTextSemiBold
-                style={{ textAlign: "center", color: colors.color.grey }}
+              <BodyMediumTextSemiBold
+                style={{ color: colors.color.grey, marginBottom: 10 }}
               >
-                Lihat selengkapnya
-              </BodySmallTextSemiBold>
-            </TouchableOpacity>
-          </View>
+                Reservasi Anda
+              </BodyMediumTextSemiBold>
+              <ValasReservation reservation={reservation[0]} />
+            </View>
+          </TouchableOpacity>
         ),
     },
     {
@@ -190,7 +200,7 @@ const ValasHomeScreen = () => {
           style={{
             width: "100%",
             paddingHorizontal: 20,
-            paddingTop: 10,
+            paddingTop: 20,
             marginTop: 10,
             borderTopWidth: 4,
             borderTopColor: colors.primary.primaryThree,
@@ -229,7 +239,9 @@ const ValasHomeScreen = () => {
       <CloseLimitModal
         modalVisible={modalVisibleBeli}
         setModalVisible={setModalVisibleBeli}
-      /> 
+        limit={50000}
+        currencyCode={selectedWallet.currencyCode}
+      />
 
       <ValasHeader />
       <View style={styles.content}>

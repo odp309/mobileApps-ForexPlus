@@ -3,6 +3,7 @@ import { BodySmallText } from "../shared/StyledText";
 import colors from "../../theme/colors";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
 
 const FeatureButton = ({ namaFitur, onPress }) => {
   return (
@@ -67,23 +68,32 @@ const ValasFeatures = ({
   modalVisibleBeli,
   setModalVisibleBeli,
 }) => {
+  const [hasReservasi, setReservasi] = useState(null);
+  
+  const getFetchTransaction = async () =>{
+
+
+  }
+  useState(()=>{
+      
+  },[])
   const navigation = useNavigation();
 
   const handleNavigateTarik = () => {
-    //setModalVisibleTarik(!modalVisibleTarik);
-    navigation.navigate("TarikValas", {
-      selectedRekening,
-      selectedWallet,
-      selectedCurrency,
-    })
+    setModalVisibleTarik(!modalVisibleTarik);
+    // navigation.navigate("TarikValas", {
+    //   selectedRekening,
+    //   selectedWallet,
+    //   selectedCurrency,
+    // })
   };
   const handleNavigateBeli = () => {
-    //setModalVisibleBeli(!modalVisibleBeli);
-    navigation.navigate("ValasBeli", {
-      selectedRekening,
-      selectedWallet,
-      selectedCurrency,
-    })
+    setModalVisibleBeli(!modalVisibleBeli);
+    // navigation.navigate("ValasBeli", {
+    //   selectedRekening,
+    //   selectedWallet,
+    //   selectedCurrency,
+    // })
   };
   return (
     <View style={styles.container}>

@@ -33,6 +33,8 @@ const CloseValasModal = ({isModalVisible, setModalVisible}) => {
               <StyledButton
                 mode="primary-outlined"
                 title="Tidak"
+                size={"lg"}
+                titleStyle={{fontSize:18,fontFamily:"poppins-medium"}}
                 onPress={() => setModalVisible(false)}
               />
             </View>
@@ -40,6 +42,8 @@ const CloseValasModal = ({isModalVisible, setModalVisible}) => {
               <StyledButton
                 mode="primary"
                 title="Ya"
+                size={"lg"}
+                titleStyle={{fontSize:18,fontFamily:"poppins-medium"}}
                 onPress={() => {setModalVisible(false); navigation.goBack()}}
               />
             </View>
@@ -76,11 +80,11 @@ const styles = StyleSheet.create({
   icon: {
     marginTop: -70,
   },
-  messageText: {
-    width: "77%",
+  messageText: { 
     textAlign: "center",
     color: colors.primary.primaryOne,
     marginTop: 10,
+    fontSize:18
   },
   viewButton: {
     flexDirection: "row",
@@ -88,11 +92,11 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   buttonYes: {
-    width: "35%",
+    width: "45%",
     marginHorizontal: 10,
   },
   buttonNo: {
-    width: "35%",
+    width: "45%",
     marginHorizontal: 10,
   },
 });

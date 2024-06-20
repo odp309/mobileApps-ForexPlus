@@ -91,7 +91,7 @@ const ListPocket = ({ item, index, user, cardWidth, wrapperWidth }) => {
 };
 
 const Pocket = ({ user, accountNumbers }) => {
-  const isSingleItem = accountNumbers.length === 1;
+  const isSingleItem = accountNumbers?.length === 1;
   const cardWidth = isSingleItem ? width * 0.9 : width * 0.85;
   const wrapperWidth = isSingleItem ? width : width * 0.9;
   return (
