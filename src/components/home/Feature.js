@@ -78,7 +78,7 @@ const Feature = ({ user }) => {
 
   const formatData = (dataFitur, numColumns) => {
     const numberOfFullRows = Math.floor(dataFitur.length / numColumns);
-    let numberOfElementsLastRow =
+    let numberOfElementsLastRow = 
       dataFitur.length - numberOfFullRows * numColumns;
     while (
       numberOfElementsLastRow !== numColumns &&

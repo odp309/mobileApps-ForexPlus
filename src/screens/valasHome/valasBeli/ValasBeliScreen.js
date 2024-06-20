@@ -25,6 +25,7 @@ import {
   fetchMinimumBuy,
   formatNumber,
 } from "../../../config/ValasConfig";
+import CloseValasModal from "../../../components/valasHome/shared/CloseValasModal";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
@@ -45,9 +46,15 @@ export default function ValasBeliScreen() {
   const [isVisible, setIsVisible] = useState(false);
   const [inputError, setInputError] = useState("");
 
-  useEffect(() => { 
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleModal = () => {
+    setModalVisible(!modalVisible);
+    return true;
+  };
+  useEffect(() => {
     const backHandler = BackHandler.addEventListener("hardwareBackPress", () =>
-      alertConfirmation(navigation)
+      handleModal()
     );
     return () => backHandler.remove();
   }, []);
@@ -66,7 +73,7 @@ export default function ValasBeliScreen() {
   };
 
   useEffect(() => {
-    console.log(transactionData.selectedCurrency)
+    console.log(transactionData.selectedCurrency);
     setTimeout(() => {
       setFetchMinimum();
     }, 500);
@@ -94,7 +101,6 @@ export default function ValasBeliScreen() {
   };
 
   const checkError = (data, kursResult) => {
-    
     if (kursResult > transactionData.selectedRekening.balance) {
       setInputError("Jumlah melebihi Saldo Aktif Rupiah");
     } else if (parseInt(data) < parseInt(minimumBuy)) {
@@ -147,6 +153,10 @@ export default function ValasBeliScreen() {
 
   return (
     <View style={styles.container}>
+      <CloseValasModal
+        isModalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
       <ConfirmationModal
         title={"Konfirmasi Pembelian Valas"}
         transactionType={"beli"}
@@ -184,9 +194,7 @@ export default function ValasBeliScreen() {
           style={{ backgroundColor: colors.primary.primaryThree, height: 4 }}
         />
         <View style={styles.boxRekeningSumber}>
-          <WalletSource
-          selectedRekening={transactionData.selectedRekening}
-          />
+          <WalletSource selectedRekening={transactionData.selectedRekening} />
         </View>
       </View>
       <View style={styles.bottomContainer}>

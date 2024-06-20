@@ -19,24 +19,32 @@ import ValasReservation from "../../components/valasHome/ValasReservation";
 import WalletCard from "../../components/valasHome/WalletCard";
 import NavigasiRekeningWallet from "../../components/valasHome/NavigasiRekeningWallet";
 import CurrencyInformation from "../../components/valasHome/CurrencyInformation";
-import { fetchBankAccount, fetchNomorRekening } from "../../config/ValasConfig"; 
+import { fetchBankAccount, fetchNomorRekening } from "../../config/ValasConfig";
 import ValasCreateContent from "../../components/valasHome/ValasCreateContent";
 import AddWalletButton from "../../components/valasHome/AddWalletButton";
-import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { userData } from "../../config/AuthConfig";
+import CloseCoolDownModal from "../../components/valasHome/shared/CloseCoolDownModal";
+import CloseLimitModal from "../../components/valasHome/shared/CloseLimitModal";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
 const ValasHomeScreen = () => {
   const navigation = useNavigation();
+  const [modalVisibleTarik, setModalVisibleTarik] = useState(false);
+  const [modalVisibleBeli, setModalVisibleBeli] = useState(false);
   const [selectedRekening, setSelectedRekening] = useState(null);
   const [selectedWallet, setSelectedWallet] = useState(null);
   const [selectedCurrency, setSelectedCurrency] = useState(null);
   const [reservation, setReservation] = useState(null);
   const [listRekening, setListRekening] = useState(null);
   const [dataCurrency, setDataCurrency] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); 
+  const [isLoading, setIsLoading] = useState(true);
 
   const getData = async () => {
     try {
@@ -44,15 +52,14 @@ const ValasHomeScreen = () => {
       setListRekening(data);
       let currentSelectedRekening = null;
 
-      if(selectedRekening === null){
+      if (selectedRekening === null) {
         // console.log("Selected Rekening null")
-         currentSelectedRekening= data[data.length-1];
-      }
-      else{
+        currentSelectedRekening = data[data.length - 1];
+      } else {
         // console.log("Selected Rekening ada" + selectedRekening.id-1)
         currentSelectedRekening = data[selectedRekening.id];
       }
-      
+
       setSelectedRekening(currentSelectedRekening);
 
       if (
@@ -85,7 +92,6 @@ const ValasHomeScreen = () => {
     console.log("wallet: " + selectedWallet);
   }, [selectedWallet]);
 
- 
   if (isLoading) {
     return (
       <View style={{ justifyContent: "center", flex: 1 }}>
@@ -138,6 +144,10 @@ const ValasHomeScreen = () => {
             selectedRekening={selectedRekening}
             selectedWallet={selectedWallet}
             selectedCurrency={selectedCurrency}
+            modalVisibleTarik={modalVisibleTarik}
+            setModalVisibleTarik={setModalVisibleTarik}
+            modalVisibleBeli={modalVisibleBeli}
+            setModalVisibleBeli={setModalVisibleBeli}
           />
         ),
     },
@@ -161,8 +171,14 @@ const ValasHomeScreen = () => {
               Daftar Reservasi Tarik
             </BodyMediumTextSemiBold>
             <ValasReservation />
-            <TouchableOpacity onPress={()=> navigation.navigate("ValasReservation")}>
-              <BodySmallTextSemiBold style={{textAlign:'center',color:colors.color.grey}}>Lihat selengkapnya</BodySmallTextSemiBold>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("ValasReservation")}
+            >
+              <BodySmallTextSemiBold
+                style={{ textAlign: "center", color: colors.color.grey }}
+              >
+                Lihat selengkapnya
+              </BodySmallTextSemiBold>
             </TouchableOpacity>
           </View>
         ),
@@ -201,17 +217,30 @@ const ValasHomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar style="light" translucent={true} backgroundColor="transparent" />
-      <ValasHeader /> 
-        <View style={styles.content}>
-          <FlatList
-            data={data}
-            renderItem={renderedView}
-            keyExtractor={(item) => item.id}
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-          />
-        </View> 
+      <StatusBar
+        style="light"
+        translucent={true}
+        backgroundColor="transparent"
+      />
+      <CloseCoolDownModal
+        modalVisible={modalVisibleTarik}
+        setModalVisible={setModalVisibleTarik}
+      />
+      <CloseLimitModal
+        modalVisible={modalVisibleBeli}
+        setModalVisible={setModalVisibleBeli}
+      /> 
+
+      <ValasHeader />
+      <View style={styles.content}>
+        <FlatList
+          data={data}
+          renderItem={renderedView}
+          keyExtractor={(item) => item.id}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
       {selectedWallet && (
         <View style={styles.addWallet}>
           <AddWalletButton selectedRekening={selectedRekening} />
@@ -233,10 +262,10 @@ const styles = StyleSheet.create({
     top: 0.22 * WINDOW_HEIGHT,
     flex: 0.78,
   },
-  addWallet:{
-    zIndex:10,
-    position:'absolute',
-    bottom:50,
-    right:26
-  }
+  addWallet: {
+    zIndex: 10,
+    position: "absolute",
+    bottom: 50,
+    right: 26,
+  },
 });

@@ -32,6 +32,7 @@ import {
   alertConfirmation,
   findBankAccountInfo,
 } from "../../../config/ValasConfig";
+import CloseValasModal from "../../../components/valasHome/shared/CloseValasModal";
 
 const dataRekening = [
   { id: "1", noRek: "123456789", nama: "Arfiandi Wijatmiko" },
@@ -59,6 +60,18 @@ const CheckTargetAccountScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const translateYAnim = useRef(new Animated.Value(50)).current;
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleModal = () => {
+    setModalVisible(!modalVisible);
+    return true;
+  };
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener("hardwareBackPress", () =>
+      handleModal()
+    );
+    return () => backHandler.remove();
+  }, []);
 
   const findNoRek = async (currentRek, noRek, currencyCode) => {
     const hasil = await findBankAccountInfo(currentRek, noRek, currencyCode);
@@ -133,13 +146,7 @@ const CheckTargetAccountScreen = () => {
       return () => clearTimeout(timer);
     }
   }, [accountFind, navigation]);
-
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener("hardwareBackPress", () =>
-      alertConfirmation(navigation)
-    );
-    return () => backHandler.remove();
-  }, []);
+ 
 
   useEffect(() => {
     setIsLoading(true);
@@ -166,6 +173,10 @@ const CheckTargetAccountScreen = () => {
   }
   return (
     <SafeAreaView style={styles.container}>
+      <CloseValasModal
+        isModalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
       <View style={styles.topContainer}>
         <ContentHeader title={"Transfer Valas"} hasConfirmation={true} />
       </View>

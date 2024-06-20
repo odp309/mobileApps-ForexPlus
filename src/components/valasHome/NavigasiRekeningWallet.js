@@ -32,7 +32,7 @@ const NavigasiRekeningWallet = ({
 
       {selectedWallet && <View style={styles.divider} />}
 
-      {selectedWallet && (
+      {(selectedWallet && selectedRekening) && ( 
         <View style={styles.section}>
           <BodySmallText style={styles.text}>Dompet Valas</BodySmallText>
           <ModalDaftarWallet

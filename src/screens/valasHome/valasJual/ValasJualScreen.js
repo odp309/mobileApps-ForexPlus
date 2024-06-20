@@ -26,6 +26,7 @@ import {
 import WalletSource from "../../../components/valasHome/shared/WalletSource";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import WalletValasSource from "../../../components/valasHome/shared/WalletValasSource";
+import CloseValasModal from "../../../components/valasHome/shared/CloseValasModal";
 
 const DIMENSION_HEIGHT = Dimensions.get("window").height;
 
@@ -45,10 +46,15 @@ const ValasJualScreen = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [inputError, setInputError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
 
+  const handleModal = () => {
+    setModalVisible(!modalVisible);
+    return true;
+  };
   useEffect(() => {
     const backHandler = BackHandler.addEventListener("hardwareBackPress", () =>
-      alertConfirmation(navigation)
+      handleModal()
     );
     return () => backHandler.remove();
   }, []);
@@ -151,6 +157,10 @@ const ValasJualScreen = () => {
 
   return (
     <View style={styles.container}>
+      <CloseValasModal
+        isModalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
       <View style={styles.topContainer}>
         <ContentHeader title={"Jual Valas"} hasConfirmation={true} />
       </View>

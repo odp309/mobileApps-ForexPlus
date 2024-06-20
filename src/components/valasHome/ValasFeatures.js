@@ -62,20 +62,32 @@ const ValasFeatures = ({
   selectedRekening,
   selectedWallet,
   selectedCurrency,
+  modalVisibleTarik,
+  setModalVisibleTarik,
+  modalVisibleBeli,
+  setModalVisibleBeli,
 }) => {
   const navigation = useNavigation();
+
+  const handleNavigateTarik = () => {
+    //setModalVisibleTarik(!modalVisibleTarik);
+    navigation.navigate("TarikValas", {
+      selectedRekening,
+      selectedWallet,
+      selectedCurrency,
+    })
+  };
+  const handleNavigateBeli = () => {
+    //setModalVisibleBeli(!modalVisibleBeli);
+    navigation.navigate("ValasBeli", {
+      selectedRekening,
+      selectedWallet,
+      selectedCurrency,
+    })
+  };
   return (
     <View style={styles.container}>
-      <FeatureButton
-        namaFitur="Beli"
-        onPress={() =>
-          navigation.navigate("ValasBeli", {
-            selectedRekening,
-            selectedWallet,
-            selectedCurrency,
-          })
-        }
-      />
+      <FeatureButton namaFitur="Beli" onPress={() => handleNavigateBeli()} />
       <FeatureButton
         namaFitur="Jual"
         onPress={() =>
@@ -96,21 +108,11 @@ const ValasFeatures = ({
           })
         }
       />
-      <FeatureButton
-        namaFitur="Tarik"
-        onPress={() =>
-          navigation.navigate("TarikValas", {
-            selectedRekening,
-            selectedWallet,
-            selectedCurrency,
-          })
-        }
-      />
+      <FeatureButton namaFitur="Tarik" onPress={() => handleNavigateTarik()} />
       <FeatureButton
         namaFitur="Riwayat"
         onPress={() => navigation.navigate("Riwayat", { selectedWallet })}
       />
-      
     </View>
   );
 };

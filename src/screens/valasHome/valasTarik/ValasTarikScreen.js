@@ -1,4 +1,10 @@
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  BackHandler,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { Dimensions } from "react-native";
 import {
@@ -15,6 +21,7 @@ import WalletValasSource from "../../../components/valasHome/shared/WalletValasS
 import StyledButton from "../../../components/shared/StyledButton";
 import * as Location from "expo-location";
 import { fetchRelatedBranch } from "../../../config/ValasConfig";
+import CloseValasModal from "../../../components/valasHome/shared/CloseValasModal";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
@@ -32,6 +39,18 @@ const ValasTarikScreen = () => {
 
   const [loading, setLoading] = useState(true);
   const [location, setLocation] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleModal = () => {
+    setModalVisible(!modalVisible);
+    return true;
+  };
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener("hardwareBackPress", () =>
+      handleModal()
+    );
+    return () => backHandler.remove();
+  }, []);
 
   const getLocation = async () => {
     try {
@@ -82,7 +101,7 @@ const ValasTarikScreen = () => {
       ...prevData,
       inputValue: e,
     }));
-    if (parseInt(e) == 0) { 
+    if (parseInt(e) == 0) {
       return;
     }
     if (e === "") {
@@ -92,7 +111,7 @@ const ValasTarikScreen = () => {
       setErrorText("Saldo dompet valas Anda tidak mencukupi");
       return;
     }
-    
+
     if (parseInt(e) % 100 !== 0) {
       setErrorText("Nominal penarikan harus dalam kelipatan 100");
       return;
@@ -109,6 +128,10 @@ const ValasTarikScreen = () => {
   return (
     location && (
       <View style={styles.container}>
+        <CloseValasModal
+          isModalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+        />
         <View style={styles.topContainer}>
           <ContentHeader title={"Tarik Valas"} hasConfirmation={true} />
         </View>
@@ -136,8 +159,10 @@ const ValasTarikScreen = () => {
               value={transactionData.inputValue}
             />
             {errorText !== "" && (
-              <View> 
-                <BodySmallText style={styles.errorText}>{errorText}</BodySmallText>
+              <View>
+                <BodySmallText style={styles.errorText}>
+                  {errorText}
+                </BodySmallText>
               </View>
             )}
           </View>
@@ -212,8 +237,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   errorText: {
-    color: "#FF1200", 
-    fontSize:12
+    color: "#FF1200",
+    fontSize: 12,
   },
   errorIconContainer: {
     width: 24,
