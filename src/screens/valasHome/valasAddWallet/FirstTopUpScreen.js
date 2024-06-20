@@ -112,6 +112,18 @@ const FirstTopUpScreen = () => {
     kursCalculation(data);
   };
 
+  const isButtonDisabled = () => {
+    const inputValue = parseFloat(transactionData.inputValue);
+    const convertedValue = parseFloat(transactionData.convertedValue);
+    const balance = parseFloat(transactionData.selectedRekening.balance);
+
+    return (
+      transactionData.inputValue === "" ||
+      inputValue < transactionData.selectedCurrency.minimumBuy ||
+      balance < convertedValue
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
@@ -158,7 +170,7 @@ const FirstTopUpScreen = () => {
         />
       </View>
       <View style={styles.bottomContainer}>
-        {transactionData.inputValue === "" ||
+        {/* {transactionData.inputValue === "" ||
         parseInt(transactionData.inputValue) < minDeposit ||
         parseInt(transactionData.convertedValue) >
           transactionData.selectedRekening.balance ? (
@@ -176,7 +188,15 @@ const FirstTopUpScreen = () => {
             onPress={toggleBottomSheet}
             style={{ marginBottom: 20 }}
           />
-        )}
+        )} */}
+         <StyledButton
+          mode={isButtonDisabled() ? "primary-disabled" : "primary"}
+          title="Lanjut"
+          size={"lg"}
+          onPress={toggleBottomSheet}
+          style={{ marginBottom: 20 }}
+          disabled={isButtonDisabled()}
+        />
       </View>
     </View>
   );
