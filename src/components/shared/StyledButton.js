@@ -105,6 +105,6 @@ const styles = StyleSheet.create({
   },
 
   titleStyle: {
-    fontFamily: "poppins-semibold",
+    // fontFamily: "poppins-semibold",
   },
 });

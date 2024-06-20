@@ -17,12 +17,16 @@ import TransactionResultScreen from "../screens/valasHome/TransactionResultScree
 import ChooseBranchScreen from "../screens/valasHome/valasTarik/ChooseBranchScreen";
 import ValasRiwayatScreen from "../screens/valasHome/riwayat/ValasRiwayatScreen";
 import ChooseDateScreen from "../screens/valasHome/valasTarik/ChooseDateScreen";
+import CloseValasScreen from "../screens/home/CloseValasScreen.js";
+import CloseBNIScreen from "../screens/home/CloseBNIScreen.js";
+import CloseLimitScreen from "../screens/home/CloseLimitScreen.js";
+import CloseCoolDownScreen from "../screens/home/CloseCoolDownScreen.js";
 
 const Stack = createNativeStackNavigator();
 
 const ScreenNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="Login">
+    <Stack.Navigator initialRouteName="CloseCoolDown">
       <Stack.Screen
         name="Login"
         options={{ headerShown: false, headerStyle: {} }}
@@ -94,6 +98,26 @@ const ScreenNavigator = () => {
         name="ChooseDate"
         component={ChooseDateScreen}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="CloseBNI"
+        component={CloseBNIScreen}
+        options={{ headerShown: false}}
+      />
+      <Stack.Screen
+        name="CloseValas"
+        component={CloseValasScreen}
+        options={{ headerShown: false}}
+      />
+      <Stack.Screen
+        name="CloseLimitValas"
+        component={CloseLimitScreen}
+        options={{ headerShown: false}}
+      />
+      <Stack.Screen
+        name="CloseCoolDown"
+        component={CloseCoolDownScreen}
+        options={{ headerShown: false}}
       />
     </Stack.Navigator>
   );
