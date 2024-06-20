@@ -138,6 +138,7 @@ const PinConfirmationScreen = () => {
         setPinStatus(true);
         console.log("Transaction successful:", tarik);
       } else {
+        setErrorVisible(!errorVisible);
         setPinStatus(false);
       }
     } catch (error) {
@@ -163,6 +164,7 @@ const PinConfirmationScreen = () => {
           transactionType,
         });
       } else {
+        setErrorVisible(!errorVisible);
         setPinStatus(false);
       }
     } catch (error) {

@@ -45,7 +45,7 @@ export default function ValasBeliScreen() {
   const [isVisible, setIsVisible] = useState(false);
   const [inputError, setInputError] = useState("");
 
-  useEffect(() => {
+  useEffect(() => { 
     const backHandler = BackHandler.addEventListener("hardwareBackPress", () =>
       alertConfirmation(navigation)
     );

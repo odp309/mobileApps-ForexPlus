@@ -91,13 +91,14 @@ const TransactionResultScreen = () => {
             />
           ) : transactionType === "tarik" ? (
             <ResultTitleAndDate
-              title="Permintaan Tarik Berhasil Terkirim"
+              title="Reservasi Tarik Valas"
+              subTitle={"Wajib datang sesuai tanggal reservasi.\nLalu, tunjukkan kode reservasi di kantor cabang."}
               date={transactionData.selectedCurrency.createdAt}
             />
           ) : transactionType === "add wallet" ? (
             <ResultTitleAndDate
               title="Setoran Awal Berhasil"
-              subTitle={"Dompet Valas " + transactionData.selectedWallet.currencyName + " telah ditambahkan" }
+              subTitle={"Dompet Valas " + transactionData.selectedCurrency.currencyName + " telah ditambahkan" }
               date={transactionData.selectedCurrency.createdAt}
             />
           ) : null}

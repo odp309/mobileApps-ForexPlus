@@ -39,6 +39,7 @@ const login = async (
   } catch (error) {
     // console.log(error.response.status);
     console.log("Error login : " ,error);
+    throw error;
   }
 };
 const cleanupToken = async () => {

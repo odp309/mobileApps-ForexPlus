@@ -8,7 +8,11 @@ import {
   BodySmallTextSemiBold,
 } from "../../../components/shared/StyledText";
 import ValasConversion from "../../../components/valasHome/shared/ValasConversion";
-import { alertConfirmation, formatNumber } from "../../../config/ValasConfig";
+import {
+  alertConfirmation,
+  fetchMinimumDeposit,
+  formatNumber,
+} from "../../../config/ValasConfig";
 import StyledButton from "../../../components/shared/StyledButton";
 import WalletSource from "../../../components/valasHome/shared/WalletSource";
 import WalletValasSource from "../../../components/valasHome/shared/WalletValasSource";
@@ -22,7 +26,7 @@ const FirstTopUpScreen = () => {
   const [inputError, setInputError] = useState("");
   const [isVisible, setIsVisible] = useState(false);
 
-  const [minPurchase, setMinPurchase] = useState("10");
+  const [minDeposit, setMinDeposit] = useState(null);
   const [maxPurchase, setMaxPurchase] = useState("25000");
 
   const transactionType = "add wallet";
@@ -34,9 +38,24 @@ const FirstTopUpScreen = () => {
     convertedValue: "",
   });
 
+  const getMinimumDeposit = async () => {
+    try {
+      const minimumDeposit = await fetchMinimumDeposit(
+        transactionData.selectedCurrency.currencyCode
+      );
+      if (minimumDeposit) {
+        setMinDeposit(minimumDeposit);
+      }
+    } catch (error) {
+      console.log("Error di FirstTopUp : ", error);
+    }
+  };
+
   useEffect(() => {
-    console.log("First Top Up");
-    console.log(transactionData);
+    getMinimumDeposit();
+  }, []);
+
+  useEffect(() => {
     const backHandler = BackHandler.addEventListener("hardwareBackPress", () =>
       alertConfirmation(navigation)
     );
@@ -71,9 +90,9 @@ const FirstTopUpScreen = () => {
     }));
     if (kursResult > parseInt(transactionData.selectedRekening.balance)) {
       setInputError("Jumlah melebihi Saldo Aktif Rupiah");
-    } else if (parseInt(data) < parseInt(minPurchase)) {
+    } else if (parseInt(data) < parseInt(minDeposit)) {
       setInputError(
-        `Minimum setoran valas ${transactionData.selectedCurrency.currencyCode} ${minPurchase}`
+        `Minimum setoran valas ${transactionData.selectedCurrency.currencyCode} ${minDeposit}`
       );
     } else if (parseInt(data) > parseInt(maxPurchase)) {
       setInputError(
@@ -101,8 +120,9 @@ const FirstTopUpScreen = () => {
       <View style={styles.middleContainer}>
         <View style={styles.mainContent}>
           <BodySmallTextSemiBold style={{ textAlign: "center" }}>
-            Setor mulai dari {transactionData.selectedCurrency.currencyCode} 10
-            atau lebih agar Dompet Valas bisa langsung digunakan untuk transaksi
+            Setor mulai dari {transactionData.selectedCurrency.currencyCode}{" "}
+            {minDeposit} atau lebih agar Dompet Valas bisa langsung digunakan
+            untuk transaksi
           </BodySmallTextSemiBold>
           <View style={{ marginTop: 20 }}>
             <ValasConversion
@@ -139,9 +159,9 @@ const FirstTopUpScreen = () => {
       </View>
       <View style={styles.bottomContainer}>
         {transactionData.inputValue === "" ||
-        parseInt(transactionData.inputValue) < minPurchase ||
+        parseInt(transactionData.inputValue) < minDeposit ||
         parseInt(transactionData.convertedValue) >
-          transactionData.selectedRekening.balance ?  (
+          transactionData.selectedRekening.balance ? (
           <StyledButton
             mode="primary-disabled"
             title="Lanjut"

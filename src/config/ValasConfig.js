@@ -150,6 +150,20 @@ const fetchRelatedBranch = async (
     console.log("gagal fetch related branch : " , error);
   }
 };
+
+const fetchMinimumDeposit = async (currencyCode) => { 
+  console.log(currencyCode)
+  try {
+    const dataMinimumDeposit = await axiosInstance.post(
+      "/v1/private/currency/minimum-deposit/get",
+      { currencyCode }
+    );
+    return dataMinimumDeposit.data.minimum;
+  } catch (error) {
+    console.log("gagal fetch minim beli : " ,error);
+  }
+};
+
 const fetchMinimumBuy = async (currencyCode) => { 
   try {
     const dataMinimumBuy = await axiosInstance.post(
@@ -304,4 +318,5 @@ export {
   fetchValasAddWallet,
   fetchHistory,
   fetchHistoryDetail,
+  fetchMinimumDeposit
 };

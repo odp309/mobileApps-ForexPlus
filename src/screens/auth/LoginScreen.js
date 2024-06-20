@@ -22,7 +22,7 @@ import {
   BodySmallText, 
 } from "../../components/shared/StyledText";
 import Input from "../../components/shared/Input";
-import { JwtDecoder, cleanupToken, login, userData } from "../../config/AuthConfig";
+import { JwtDecoder, cleanupToken, login, logout, userData } from "../../config/AuthConfig";
 import colors from "../../theme/colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -38,7 +38,7 @@ const LoginScreen = () => {
   const slideAnim = useState(new Animated.Value(screenHeight))[0];
   const [isLoading, setIsLoading] = useState(false);
   const [wrongValidation, setWrongValidation] = useState(false);
-  const expiredTime = 60 * 15 * 1000; // 15 minutes in milliseconds
+  const expiredTime = 60 * 10 * 1000; // 10 minutes in milliseconds
   const [remainingTime, setRemainingTime] = useState(expiredTime);
 
   useEffect(() => {
@@ -50,8 +50,7 @@ const LoginScreen = () => {
   }, [expiredTime]);
 
   const handleLogin = async () => {
-    setIsLoading(true);
-
+    setIsLoading(true); 
     try {
       const fetchLogin = await login(email, password);
       await handleSuccessfulLogin(fetchLogin);
@@ -63,15 +62,15 @@ const LoginScreen = () => {
   };
 
   const handleSuccessfulLogin = async (fetchLogin) => {  
+    console.log(fetchLogin.data)
     if (userData) {
       setModalVisible(!modalVisible);
       navigation.navigate("HomePage");
     }
 
-    setTimeout(() => {
-      cleanupToken();
+    setTimeout(() => { 
       Alert.alert("Token expired", "Your session has expired.", [
-        { onPress: () => navigation.navigate("Login") },
+        { onPress: () => logout(navigation) },
       ]);
     }, expiredTime);
     // const intervalId = setInterval(() => {
