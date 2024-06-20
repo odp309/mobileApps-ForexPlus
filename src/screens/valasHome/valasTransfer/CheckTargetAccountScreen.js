@@ -183,7 +183,7 @@ const CheckTargetAccountScreen = () => {
 
       <View style={styles.middleContainer}>
         <View style={{ marginLeft: "2%", marginVertical: "2%" }}>
-          <BodyXLTextBold style={{ color: colors.primary.primaryOne }}>
+          <BodyXLTextBold style={{ color: colors.primary.primaryOne, fontSize:20 }}>
             Cek Rekening Tujuan
           </BodyXLTextBold>
           <BodySmallText style={{ fontSize: 16, marginTop: 5 }}>

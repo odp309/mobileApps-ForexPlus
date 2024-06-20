@@ -21,6 +21,8 @@ import { TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native";
 import HistoryHeader from "../../../components/valasHome/valasHistory/HistoryHeader";
 import { fetchHistory, formatNumber } from "../../../config/ValasConfig";
+import EmptyTransaction from "../../../components/valasHome/riwayat/EmptyTransaction";
+import FilterModal from "../../../components/valasHome/riwayat/FilterModal";
 
 const DIMENSION_HEIGHT = Dimensions.get("screen").height;
 
@@ -43,7 +45,13 @@ const HistoryScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
   const [transactionPerMonth, setTransactionPerMonth] = useState([]);
+  const [allTransaction, setAllTransaction] = useState(null);
+  const [tempTransaction, setTempTransaction] = useState([]);
+  const [emptyTransaction, setEmptyTransaction] = useState(null);
+  // const [filter, setFilter] = useState(null);
+  // const [listKey, setListKey] = useState("initialKey"); // Unique key for FlatList
   const [isLoading, setIsLoading] = useState(true);
+  const [isModalShown, setIsModalShown] = useState(false);
   const selectedWallet = route.params?.selectedWallet;
 
   const convertDate = (date) => {
@@ -94,8 +102,8 @@ const HistoryScreen = () => {
       </View>
       <View style={styles.textContainer}>
         <BodyMediumTextSemiBold style={styles.itemType}>
-          {item.trxType}{" "}
-          {item.status === "Sukses" ? (
+          {item.trxType}
+          {/* {item.status === "Sukses" ? (
             <BodySmallText style={{ color: colors.color.success }}>
               {"("}
               {item.status}
@@ -117,7 +125,7 @@ const HistoryScreen = () => {
             <BodySmallText style={{ color: colors.color.error }}>
               {item.status}
             </BodySmallText>
-          )}
+          )} */}
         </BodyMediumTextSemiBold>
         <BodySmallText style={styles.itemDate}>
           {convertDate(item.createdDate)}
@@ -126,7 +134,8 @@ const HistoryScreen = () => {
       <View style={styles.amountContainer}>
         {item.trxType === "Beli" ||
         item.status === "Kadaluwarsa" ||
-        item.trxType === "Pengembalian Dana" ? (
+        item.trxType === "Pengembalian Dana" ||
+        (item.operationType === "K" && item.trxType !="Jual") ? (
           <BodyMediumTextSemiBold
             style={{
               textAlign: "right",
@@ -168,6 +177,24 @@ const HistoryScreen = () => {
     );
   };
 
+  const acceptFilter = (data) => {
+    // console.log("accept filter data:");
+    // console.log(data);
+
+    const ed = new Date().getTime();
+    const sd = new Date(data.range).getTime();
+    const result = allTransaction.filter((d) => {
+      let time = new Date(d.createdDate).getTime();
+      return sd < time && time < ed && d.trxType === data.type;
+    });
+    console.log("Result: ", result);
+    if (result.length > 0) {
+      getListYearMonth(result);
+    } else {
+      setTempTransaction([]);
+    }
+  };
+
   const getListYearMonth = (history) => {
     const listYearMonth = [];
     history.forEach((transaction) => {
@@ -176,28 +203,34 @@ const HistoryScreen = () => {
         listYearMonth.push(date);
       }
     });
-
+    console.log("transactionPermonth: ", transactionPerMonth.length);
     for (let i = 0; i < listYearMonth.length; i++) {
       const thisMonthTransaction = history.filter((item) =>
         item.createdDate.includes(listYearMonth[i])
       );
-      console.log("thisMonthTransaction:");
+      console.log("thisMonthTransaction ascending:");
       console.log(thisMonthTransaction);
+      const reverseList = thisMonthTransaction.reverse();
+      console.log("thisMonthTransaction descending:");
+      console.log(reverseList);
       setTransactionPerMonth([
         ...transactionPerMonth,
         {
           id: i.toString(),
           month: listYearMonth[i],
-          data: thisMonthTransaction,
+          data: reverseList,
         },
       ]);
+      console.log("Transaction per month : ", transactionPerMonth);
     }
   };
 
   const setFetchHistory = async () => {
     try {
       const history = await fetchHistory(selectedWallet.walletId);
+      const descendList = history.reverse();
       getListYearMonth(history);
+      setAllTransaction(descendList);
     } catch (error) {
       console.error("Fetch History failed:", error);
     } finally {
@@ -219,16 +252,48 @@ const HistoryScreen = () => {
     );
   }
 
+  const toggleBottomSheet = () => {
+    setIsModalShown(!isModalShown);
+    setTempTransaction(transactionPerMonth);
+    setTransactionPerMonth([]);
+  };
+
+  const closeModal = () => {
+    setIsModalShown(!isModalShown);
+  };
+
+  // ----------------------- Main Screen -----------------------
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
-        <HistoryHeader title={"Riwayat"} hasrightIcon={true} />
+        <HistoryHeader
+          title={"Riwayat"}
+          hasrightIcon={true}
+          toggleBottomSheet={toggleBottomSheet}
+        />
       </View>
       <View style={styles.middleContainer}>
-        <FlatList
-          data={transactionPerMonth}
-          renderItem={renderMonth}
-          keyExtractor={(item) => item.id}
+        {transactionPerMonth.length > 0 ? (
+          <FlatList
+            data={transactionPerMonth}
+            renderItem={renderMonth}
+            keyExtractor={(item) => item.id}
+          />
+        ) : tempTransaction.length > 0 ? (
+          <FlatList
+            data={tempTransaction}
+            renderItem={renderMonth}
+            keyExtractor={(item) => item.id}
+          />
+        ) : transactionPerMonth.length === 0 ? (
+          <EmptyTransaction />
+        ) : (
+          <EmptyTransaction />
+        )}
+        <FilterModal
+          isModalShown={isModalShown}
+          toggleBottomSheet={closeModal}
+          handleFilter={acceptFilter}
         />
       </View>
     </View>

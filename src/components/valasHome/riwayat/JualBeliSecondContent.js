@@ -34,6 +34,11 @@ const JualBeliSecondContent = ({
     return dateFormat;
   };
 
+  const splitTransactionID = (id) => {
+    const idArray = id.split('-');
+    return idArray[idArray.length-1];
+  }
+
   return (
     <View>
       <View style={styles.contentContainer}>
@@ -86,7 +91,7 @@ const JualBeliSecondContent = ({
             <BodyMediumText style={{ color: colors.color.grey }}>
               ID Transaksi
             </BodyMediumText>
-            {/* <BodyMediumText>{trxId}</BodyMediumText> */}
+            <BodyMediumText>{splitTransactionID(trxId)}</BodyMediumText>
           </View>
       </View>
     </View>

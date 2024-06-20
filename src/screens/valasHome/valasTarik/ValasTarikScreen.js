@@ -138,7 +138,7 @@ const ValasTarikScreen = () => {
 
         <View style={styles.middleContainer}>
           <BodyXLTextBold
-            style={{ color: colors.primary.primaryOne, marginHorizontal: "5%" }}
+            style={{ color: colors.primary.primaryOne, marginHorizontal: "5%", fontSize:20 }}
           >
             Masukkan Jumlah Penarikan
           </BodyXLTextBold>
