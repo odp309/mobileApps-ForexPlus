@@ -36,6 +36,8 @@ const DetailHistoryScreen = () => {
   };
 
   useEffect(() => {
+    console.log("transactionDetails.operationType ");
+    console.log(transactionDetails.operationType);
     setTimeout(() => {
       setFetchHistoryDetail();
     }, 500);
@@ -81,6 +83,13 @@ const DetailHistoryScreen = () => {
           )}
           <BodyLargeText style={{ marginLeft: 20 }}>
             {transactionDetails.trxType}
+            {transactionDetails.trxType === "Tarik" ? (
+              <BodyLargeText>
+                {"("}
+                {transactionDetails.status}
+                {")"}
+              </BodyLargeText>
+            ) : null}
           </BodyLargeText>
           {/* {
             transactionDetails.status != null ?
@@ -110,6 +119,7 @@ const DetailHistoryScreen = () => {
                 Nominal Transfer
               </BodyMediumText>
             ) : (
+              //Tarik
               <BodyMediumText style={{ color: colors.color.grey }}>
                 Nominal Penarikan
               </BodyMediumText>
@@ -118,7 +128,9 @@ const DetailHistoryScreen = () => {
             <BodyMediumText style={styles.textCurrency}>
               {transactionDetails.trxType === "Beli" ||
               transactionDetails.status === "Kadaluwarsa" ||
-              transactionDetails.trxType === "Pengembalian Dana" ? (
+              transactionDetails.trxType === "Pengembalian Dana" ||
+              (transactionDetails.operationType === "K" &&
+                transactionDetails.trxType != "Jual") ? (
                 <BodyMediumTextSemiBold style={styles.txtAmountPlus}>
                   + {transactionDetails.currencyCode}{" "}
                   {transactionDetails.amount}
@@ -151,6 +163,7 @@ const DetailHistoryScreen = () => {
             reservationCode={transactionDetails.reservationCode}
             detail={transactionDetails.detail}
             tarikStatus={transactionDetails.status}
+            reservationDate={transactionDetails.reservationDate}
           />
         )}
       </View>

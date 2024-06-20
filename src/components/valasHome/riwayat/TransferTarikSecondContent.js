@@ -24,6 +24,7 @@ const TransferTarikSecondContent = ({
   reservationCode,
   detail,
   tarikStatus,
+  reservationDate
 }) => {
   const convertDate = (date) => {
     const newDate = new Date(date);
@@ -31,6 +32,11 @@ const TransferTarikSecondContent = ({
       MONTHS_NAME[newDate.getMonth()]
     } ${newDate.getFullYear()}`;
     return dateFormat;
+  };
+
+  const splitTransactionID = (id) => {
+    const idArray = id.split("-");
+    return idArray[idArray.length - 1];
   };
 
   const getLocation = (detail) => {
@@ -73,7 +79,7 @@ const TransferTarikSecondContent = ({
             <BodyMediumText style={{ color: colors.color.grey }}>
               ID Transaksi
             </BodyMediumText>
-            {/* <BodyMediumText>{trxId}</BodyMediumText> */}
+            <BodyMediumText>{splitTransactionID(trxId)}</BodyMediumText>
           </View>
         </View>
       ) : trxType === "Pengembalian Dana" ? (
@@ -99,7 +105,7 @@ const TransferTarikSecondContent = ({
             <BodyMediumText style={{ color: colors.color.grey }}>
               ID Transaksi
             </BodyMediumText>
-            {/* <BodyMediumText>{trxId}</BodyMediumText> */}
+            <BodyMediumText>{splitTransactionID(trxId)}</BodyMediumText>
           </View>
         </View>
       ) : (
@@ -126,7 +132,7 @@ const TransferTarikSecondContent = ({
               <BodyMediumText style={{ color: colors.color.grey }}>
                 Tanggal Reservasi
               </BodyMediumText>
-              <BodyMediumText>{convertDate(createdDate)}</BodyMediumText>
+              <BodyMediumText>{convertDate(reservationDate)}</BodyMediumText>
             </View>
           </View>
 

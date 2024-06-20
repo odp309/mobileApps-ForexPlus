@@ -8,15 +8,19 @@ import {
   TouchableOpacity,
 } from "react-native";
 import colors from "../../theme/colors";
+import { BodyRegularText } from "./StyledText";
 
 function RadioButton({ options }) {
   const [selectedOption, setSelectedOption] = useState(null);
 
   const renderItem = ({ item }) => (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => setSelectedOption(item.id)}
-      >
+      <View>
+        <BodyRegularText style={styles.radioButtonText}>
+          {item.title}
+        </BodyRegularText>
+      </View>
+      <TouchableOpacity onPress={() => setSelectedOption(item.id)}>
         {selectedOption === item.id ? (
           <MaterialIcons
             name="radio-button-on"
@@ -31,17 +35,15 @@ function RadioButton({ options }) {
           />
         )}
       </TouchableOpacity>
-      <View style={styles.optionTextContainer}>
-        <Text style={styles.radioButtonText}>{item.option}</Text>
-      </View>
     </View>
   );
   return (
-      <FlatList
-        data={options}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-      />
+    <FlatList
+      data={options}
+      renderItem={renderItem}
+      keyExtractor={(item) => item.id.toString()}
+    />
+    // <View></View>
   );
 }
 
@@ -49,16 +51,14 @@ export default RadioButton;
 
 const styles = StyleSheet.create({
   container: {
+    width: "100%",
     alignItems: "center",
+    justifyContent: "space-between",
     flexDirection: "row",
     marginVertical: 10,
-
   },
   radioButtonText: {
     marginLeft: 10,
     fontSize: 16,
-  },
-  optionTextContainer: {
-    width: 100,
   },
 });
