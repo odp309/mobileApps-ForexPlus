@@ -24,6 +24,7 @@ import DetailHistoryScreen from "../screens/valasHome/riwayatTransaksi/DetailHis
 import CurrencyInformationScreen from "../screens/valasHome/currencyInformation/CurrencyInformationScreen.js";   
 import CloseLimitModal from "../components/valasHome/shared/CloseLimitModal.js";
 import CloseValasModal from "../components/valasHome/shared/CloseValasModal.js";
+import SplashScreen from "../screens/home/SplashScreen.js";
 
 const Stack = createNativeStackNavigator();
 
@@ -130,6 +131,11 @@ const ScreenNavigator = () => {
       <Stack.Screen
         name="CloseCoolDown"
         component={CloseValasModal}
+        options={{ headerShown: false }}
+      /> 
+      <Stack.Screen
+        name="Splash"
+        component={SplashScreen}
         options={{ headerShown: false }}
       /> 
     </Stack.Navigator>

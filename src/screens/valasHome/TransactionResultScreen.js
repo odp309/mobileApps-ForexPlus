@@ -82,7 +82,7 @@ const TransactionResultScreen = () => {
           ) : transactionType === "jual" ? (
             <ResultTitleAndDate
               title="Permintaan Penjualan Berhasil Terkirim"
-              date={transactionData.selectedCurrency.createdAt}
+              date={transactionData.selectedCurrency.createdAt} //Fix Bagian ini harusnya make date baru bukan createdAt si currency nya.
             />
           ) : transactionType === "transfer" ? (
             <ResultTitleAndDate
