@@ -136,14 +136,14 @@ const TransferTarikSecondContent = ({
             </View>
           </View>
 
-          {tarikStatus === "Sukses" ? (
+          {trxType === "Tarik" ? (
             <View style={styles.contentContainer}>
               {/* Tanggal Reservasi */}
               <View style={styles.textContainer}>
                 <BodyMediumText style={{ color: colors.color.grey }}>
-                  Teller
+                  Status
                 </BodyMediumText>
-                <BodyMediumText>{detail}</BodyMediumText>
+                <BodyMediumText>{tarikStatus}</BodyMediumText>
               </View>
             </View>
           ) : null}

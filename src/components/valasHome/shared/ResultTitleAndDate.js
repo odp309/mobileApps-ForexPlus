@@ -22,7 +22,8 @@ const ResultTitleAndDate = ({ title, subTitle, date }) => {
       )}
 
       <BodySmallText style={{ color: colors.color.lightGrey }}>
-        {date.slice(0,date.length-7)}
+        {/* {date.slice(0,date.length-7)} */}
+        {date}
       </BodySmallText>
     </View>
   );

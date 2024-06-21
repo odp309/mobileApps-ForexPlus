@@ -7,7 +7,7 @@ import CalendarComponent from "../../../components/valasHome/valasTarik/Calendar
 import TitleAndChooseButton from "../../../components/valasHome/valasTarik/TitleAndChooseButton";
 import { useRoute } from "@react-navigation/native";
 
-const RESERVATION_LENGTH = 6;
+let RESERVATION_LENGTH = 5;
 
 const ChooseDateScreen = () => {
   const route = useRoute();
@@ -38,6 +38,7 @@ const ChooseDateScreen = () => {
 
     
     if (hour >= 15) {
+      RESERVATION_LENGTH = 6;
       minDate = new Date(
         todayForMinDate.setDate(todayForMinDate.getDate() + 1)
       );

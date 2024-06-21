@@ -304,6 +304,7 @@ export default HistoryScreen;
 
 const styles = StyleSheet.create({
   container: { 
+    height: Dimensions.get("window").height * 1.05,
     justifyContent: "flex-start",
     backgroundColor: "white",
   },
@@ -315,6 +316,7 @@ const styles = StyleSheet.create({
   },
   middleContainer: {
     width: "100%",
+    flex:1,
     paddingHorizontal: 17,
     marginBottom: "10%",
   },
