@@ -9,9 +9,9 @@ import React from "react";
 import { ImageBackground } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { BodyMediumText, BodyRegularText } from "../shared/StyledText";
-import { Skeleton } from "@rneui/themed";
-import { formatNumber } from "../../config/ValasConfig";
+import { Skeleton } from "@rneui/themed"; 
 import colors from "../../theme/colors";
+import { formatNumber } from "../../config/SharedConfig";
 
 const { width } = Dimensions.get("window");
 

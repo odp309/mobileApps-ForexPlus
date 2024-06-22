@@ -20,12 +20,11 @@ import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
 import WalletSource from "../../../components/valasHome/shared/WalletSource";
 import ValasConversion from "../../../components/valasHome/shared/ValasConversion";
 import ConfirmationModal from "../../../components/valasHome/shared/ConfirmationModal";
-import {
-  alertConfirmation,
-  fetchMinimumBuy,
-  formatNumber,
+import { 
+  fetchMinimumBuy, 
 } from "../../../config/ValasConfig";
 import CloseValasModal from "../../../components/valasHome/shared/CloseValasModal";
+import { formatNumber } from "../../../config/SharedConfig";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 

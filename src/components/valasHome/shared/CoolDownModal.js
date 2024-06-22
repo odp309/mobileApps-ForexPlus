@@ -1,12 +1,13 @@
-import { StyleSheet, Text, View, Image, Modal, StatusBar } from "react-native";
+import { StyleSheet, Text, View, Image, Modal } from "react-native";
 import React, { useState } from "react";
 import StyledButton from "../../shared/StyledButton";
-import { BodyLargeTextSemiBold, BodyRegularText } from "../../shared/StyledText";
+import { BodyRegularText } from "../../shared/StyledText";
 import colors from "../../../theme/colors";
+import { StatusBar } from "expo-status-bar";
 
-const CloseLimitModal = ({ modalVisible, setModalVisible,currencyCode,limit }) => {
+const PurchaseLimitModal = ({ modalVisible, setModalVisible }) => {
   const B = (props) => (
-    <BodyLargeTextSemiBold style={{ fontWeight: "bold", fontSize: 17 }}>{props.children}</BodyLargeTextSemiBold>
+    <Text style={{ fontWeight: "bold", fontSize: 16 }}>{props.children}</Text>
   );
 
   return (
@@ -18,23 +19,25 @@ const CloseLimitModal = ({ modalVisible, setModalVisible,currencyCode,limit }) =
     >
       <StatusBar
         backgroundColor="rgba(0, 0, 0, 0.5)"
-        barStyle="light-content"
+        style="dark"
         translucent={true}
       />
       <View style={styles.modalBackground}>
         <View style={styles.modalContainer}>
           <Image
-            source={require("../../../../assets/limit.png")}
+            source={require("../../../../assets/cool-down.png")}
             style={styles.icon}
           />
           <BodyRegularText style={styles.messageText}>
-            Limit <B>{currencyCode} {limit}</B> pembelian valas bulanan Anda sudah habis.
+            Fitur ini masih terkunci <B>selama 3 hari</B> karena ketidakhadiran
+            Anda pada reservasi sebelumnya.
           </BodyRegularText>
           <View style={styles.viewButton}>
             <StyledButton
               mode="primary"
               title="Kembali"
               size={"lg"}
+              titleStyle={{fontSize:18,fontFamily:"poppins-medium"}}
               onPress={() => setModalVisible(false)}
             />
           </View>
@@ -44,7 +47,7 @@ const CloseLimitModal = ({ modalVisible, setModalVisible,currencyCode,limit }) =
   );
 };
 
-export default CloseLimitModal;
+export default PurchaseLimitModal;
 
 const styles = StyleSheet.create({
   container: {
@@ -62,7 +65,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContainer: {
-    width: "88%",
+    width: "90%",
     backgroundColor: "#FFFFFF",
     borderRadius: 20,
     padding: 20,
@@ -72,14 +75,14 @@ const styles = StyleSheet.create({
     marginTop: -70,
   },
   messageText: {
-    width: "88%",
+    width: "90%",
     textAlign: "center",
     color: colors.primary.primaryOne,
     marginTop: 10,
-    lineHeight: 20,
+    lineHeight: 18,
   },
   viewButton: {
-    width: "48%",
+    width: "60%",
     justifyContent: "center",
     marginTop: 20,
   },

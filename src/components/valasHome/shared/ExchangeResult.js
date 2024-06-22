@@ -1,8 +1,8 @@
 import { StyleSheet, View,Image } from "react-native";
 import React from "react";
 import { BodyRegularText,BodyMediumText } from "../../shared/StyledText";
-import colors from "../../../theme/colors";
-import { formatNumber } from "../../../config/ValasConfig";
+import colors from "../../../theme/colors"; 
+import { formatNumber } from "../../../config/SharedConfig";
 
 const ExchangeResult = ({value}) => {
   return (

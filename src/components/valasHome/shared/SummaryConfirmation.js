@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { BodyRegularText } from "../../shared/StyledText";
-import { formatNumber } from "../../../config/ValasConfig";
+import { BodyRegularText } from "../../shared/StyledText"; 
+import { formatNumber } from "../../../config/SharedConfig";
 
 const SummaryConfirmation = ({ transactionData, transactionType }) => {
   return (

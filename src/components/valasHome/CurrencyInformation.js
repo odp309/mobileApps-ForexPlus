@@ -6,12 +6,18 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { BodyMediumText, BodyMediumTextSemiBold, BodySmallText, BodySmallTextSemiBold } from "../shared/StyledText";
+import {
+  BodyMediumText,
+  BodyMediumTextSemiBold,
+  BodySmallText,
+  BodySmallTextSemiBold,
+} from "../shared/StyledText";
 import colors from "../../theme/colors";
 import { useEffect, useMemo, useState } from "react";
-import { fetchKurs, formatNumber } from "../../config/ValasConfig";
+import { fetchKurs } from "../../config/ValasConfig";
 import { Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { formatCurrencyNumber } from "../../config/SharedConfig";
 
 const CurrencyInformation = ({
   dataCurrency,
@@ -19,7 +25,7 @@ const CurrencyInformation = ({
   selectedWallet,
   setSelectedCurrency,
 }) => {
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
   const filteredKurs = useMemo(() => {
     if (dataCurrency && selectedWallet) {
       return dataCurrency.find((item) =>
@@ -84,7 +90,7 @@ const CurrencyInformation = ({
           </View>
         </View>
 
-        {dataCurrency.slice(0,4).map((currency, index) => (
+        {dataCurrency.slice(0, 4).map((currency, index) => (
           <View key={index} style={{ flexDirection: "row" }}>
             <View style={styles.row}>
               <View
@@ -105,24 +111,28 @@ const CurrencyInformation = ({
             </View>
             <View style={styles.row}>
               <BodyMediumText style={{ color: colors.color.grey }}>
-                {formatNumber(currency.buyRate)}
+                {formatCurrencyNumber(currency.buyRate)}
               </BodyMediumText>
             </View>
             <View style={styles.row}>
               <BodyMediumText style={{ color: colors.color.grey }}>
-                {formatNumber(currency.sellRate)}
+                {formatCurrencyNumber(currency.sellRate)}
               </BodyMediumText>
             </View>
           </View>
         ))}
       </View>
 
-      <TouchableOpacity onPress={()=> navigation.navigate("CurrencyInformation",{dataCurrency})}>
-        <BodySmallText
-          style={{ color: colors.primary.primaryOne, textAlign: "center" }}
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("CurrencyInformation", { dataCurrency })
+        }
+      >
+        <BodyMediumText
+          style={{ color: colors.primary.primaryOne, textAlign: "center",fontSize:14   }}
         >
           Lihat Selengkapnya
-        </BodySmallText>
+        </BodyMediumText>
       </TouchableOpacity>
     </View>
   );

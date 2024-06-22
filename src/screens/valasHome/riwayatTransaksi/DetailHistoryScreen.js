@@ -11,7 +11,7 @@ import {
 } from "../../../components/shared/StyledText";
 import colors from "../../../theme/colors";
 import DetailHistoryHeader from "../../../components/valasHome/valasHistory/DetailHistoryHeader";
-import { fetchHistoryDetail, formatNumber } from "../../../config/ValasConfig";
+import { fetchHistoryDetail } from "../../../config/ValasConfig";
 import JualBeliSecondContent from "../../../components/valasHome/riwayat/JualBeliSecondContent";
 import TransferTarikSecondContent from "../../../components/valasHome/riwayat/TransferTarikSecondContent";
 

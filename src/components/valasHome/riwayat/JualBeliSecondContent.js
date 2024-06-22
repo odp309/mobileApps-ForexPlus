@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
-import { BodyMediumText } from "../../shared/StyledText";
-import { formatNumber } from "../../../config/ValasConfig";
+import { BodyMediumText } from "../../shared/StyledText"; 
 import colors from "../../../theme/colors";
+import { formatNumber } from "../../../config/SharedConfig";
 
 const MONTHS_NAME = [
   "Januari",

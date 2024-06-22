@@ -20,9 +20,10 @@ import { Icon } from "react-native-paper";
 import { TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native";
 import HistoryHeader from "../../../components/valasHome/valasHistory/HistoryHeader";
-import { fetchHistory, formatNumber } from "../../../config/ValasConfig";
+import { fetchHistory } from "../../../config/ValasConfig";
 import EmptyTransaction from "../../../components/valasHome/riwayat/EmptyTransaction";
 import FilterModal from "../../../components/valasHome/riwayat/FilterModal";
+import { formatNumber } from "../../../config/SharedConfig";
 
 const DIMENSION_HEIGHT = Dimensions.get("screen").height;
 

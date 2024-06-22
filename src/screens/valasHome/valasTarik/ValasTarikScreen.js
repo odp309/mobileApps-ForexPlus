@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  Alert,
   BackHandler,
   StyleSheet,
   Text,
@@ -61,8 +62,8 @@ const ValasTarikScreen = () => {
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        Alert.alert("Permission to access location was denied");
-        return;
+        Alert.alert("Akses lokasi telah ditolak","Silahkan buka peraturan untuk mengaktifkan");
+        return navigation.goBack();
       }
       const location = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.High,

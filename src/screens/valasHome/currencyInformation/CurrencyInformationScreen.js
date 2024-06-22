@@ -7,8 +7,7 @@ import {
   Text,
   View,
 } from "react-native";
-import React, { useEffect } from "react";
-import { alertConfirmation, formatNumber } from "../../../config/ValasConfig";
+import React, { useEffect } from "react"; 
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
 import {
   BodyMediumTextSemiBold,
@@ -17,6 +16,8 @@ import {
 } from "../../../components/shared/StyledText";
 import colors from "../../../theme/colors";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import moment from 'moment-timezone';
+import {formatCurrencyNumber, formattedDateCurrency } from "../../../config/SharedConfig";
 
 WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
@@ -24,6 +25,7 @@ const CurrencyInformationScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const dataCurrency = route.params?.dataCurrency; 
+ 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.topContainer}>
@@ -74,25 +76,26 @@ const CurrencyInformationScreen = () => {
             </View>
             <View style={styles.row}>
               <BodyMediumText style={{ color: colors.color.grey }}>
-                {formatNumber(currency.buyRate)}
+                {formatCurrencyNumber(currency.buyRate)}
               </BodyMediumText>
             </View>
             <View style={styles.row}>
               <BodyMediumText style={{ color: colors.color.grey }}>
-                {formatNumber(currency.sellRate)}
+                {formatCurrencyNumber(currency.sellRate)}
               </BodyMediumText>
             </View>
           </View>
         ))}
-        <BodySmallText
+        <BodyMediumText
           style={{
             textAlign: "center",
             marginVertical: 10,
             color: colors.primary.primaryOne,
+            fontSize:14
           }}
         >
-          Pembaharuan terakhir {dataCurrency[dataCurrency.length-1].createdAt}
-        </BodySmallText>
+          Pembaharuan terakhir {formattedDateCurrency(dataCurrency[dataCurrency.length-1].createdAt)}
+        </BodyMediumText>
       </View>
     </ScrollView>
   );

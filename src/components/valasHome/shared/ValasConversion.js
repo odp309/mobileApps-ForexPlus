@@ -35,7 +35,7 @@ const ValasConversion = ({
       </View>
 
       {/* DownArrowButton */}
-      <View style={{ alignItems: "center"}}>
+      <View style={{ alignItems: "center" }}>
         <FontAwesome
           name="long-arrow-down"
           size={20}

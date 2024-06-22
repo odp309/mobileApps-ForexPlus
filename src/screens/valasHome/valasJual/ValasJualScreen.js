@@ -18,10 +18,8 @@ import ValasConversion from "../../../components/valasHome/shared/ValasConversio
 
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
 import ConfirmationModal from "../../../components/valasHome/shared/ConfirmationModal";
-import {
-  alertConfirmation,
-  fetchMinimumSell,
-  formatNumber,
+import { 
+  fetchMinimumSell, 
 } from "../../../config/ValasConfig";
 import WalletSource from "../../../components/valasHome/shared/WalletSource";
 import {
@@ -31,6 +29,7 @@ import {
 } from "@react-navigation/native";
 import WalletValasSource from "../../../components/valasHome/shared/WalletValasSource";
 import CloseValasModal from "../../../components/valasHome/shared/CloseValasModal";
+import { formatNumber } from "../../../config/SharedConfig";
 
 const DIMENSION_HEIGHT = Dimensions.get("window").height;
 

@@ -8,17 +8,15 @@ import {
   BodySmallTextSemiBold,
 } from "../../../components/shared/StyledText";
 import ValasConversion from "../../../components/valasHome/shared/ValasConversion";
-import {
-  alertConfirmation,
-  fetchMinimumDeposit,
-  formatNumber,
+import { 
+  fetchMinimumDeposit, 
 } from "../../../config/ValasConfig";
 import StyledButton from "../../../components/shared/StyledButton";
-import WalletSource from "../../../components/valasHome/shared/WalletSource";
-import WalletValasSource from "../../../components/valasHome/shared/WalletValasSource";
+import WalletSource from "../../../components/valasHome/shared/WalletSource"; 
 
 import colors from "../../../theme/colors";
 import ConfirmationModal from "../../../components/valasHome/shared/ConfirmationModal";
+import { alertConfirmation, formatNumber } from "../../../config/SharedConfig";
 
 const FirstTopUpScreen = () => {
   const route = useRoute();

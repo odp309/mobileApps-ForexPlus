@@ -1,8 +1,8 @@
 import { Dimensions, Image, StyleSheet, View } from "react-native";
 import colors from "../../../theme/colors";
 import { BodyMediumText, BodySmallText } from "../../shared/StyledText";
-import { useEffect } from "react";
-import { formatNumber } from "../../../config/ValasConfig";
+import { useEffect } from "react"; 
+import { formatNumber } from "../../../config/SharedConfig";
 
 const DIMENSION_HEIGHT = Dimensions.get("window").height;
 
@@ -14,11 +14,11 @@ const WalletValasSource = ({ style,selectedWallet}) => {
         <View style={styles.borderContainer}>
           <View style={styles.contentContainer}>
             <View style={styles.textContainer}>
-              <BodyMediumText style={{ fontWeight: "bold" }}>
+              <BodyMediumText style={{ fontWeight: "bold",fontSize:15 }}>
                 DOMPET VALAS
               </BodyMediumText>
-              <BodyMediumText style={{ fontSize :15 }}>{selectedWallet.currencyName}</BodyMediumText>
-              <BodyMediumText style={{ fontWeight: "bold" }}>
+              <BodyMediumText style={{ fontSize :14 }}>{selectedWallet.currencyName}</BodyMediumText>
+              <BodyMediumText style={{ fontWeight: "bold", fontSize:15}}>
                 {selectedWallet.currencyCode} {formatNumber(selectedWallet.balance)}
               </BodyMediumText>
             </View>

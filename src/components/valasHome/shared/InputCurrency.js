@@ -28,6 +28,7 @@ const InputCurrency = ({  style,selectedCurrency, onChangeText,value}) => {
         <BodyMediumTextSemiBold style={styles.placeholderText}>Masukkan Nominal</BodyMediumTextSemiBold>
       )}
       <TextInput 
+        
         value={value}
         style={[styles.inputStyle, style]}
         keyboardType="numeric" 

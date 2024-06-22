@@ -10,10 +10,11 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
-import { alertConfirmation, fetchKurs } from "../../../config/ValasConfig";
+import { fetchKurs } from "../../../config/ValasConfig";
 import { BodyLargeTextSemiBold } from "../../../components/shared/StyledText";
 import colors from "../../../theme/colors";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { alertConfirmation } from "../../../config/SharedConfig";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 

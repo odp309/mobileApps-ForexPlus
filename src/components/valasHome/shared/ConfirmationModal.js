@@ -11,13 +11,13 @@ import {
 import WalletSource from "./WalletSource";
 import colors from "../../../theme/colors";
 import StyledButton from "../../shared/StyledButton";
-import { useNavigation } from "@react-navigation/native";
-import { formatNumber } from "../../../config/ValasConfig";
+import { useNavigation } from "@react-navigation/native"; 
 import WalletValasSource from "./WalletValasSource";
 import { useEffect } from "react";
 import { userData } from "../../../config/AuthConfig";
 import SummaryConfirmation from "./SummaryConfirmation";
 import { StatusBar } from "expo-status-bar";
+import { formatNumber } from "../../../config/SharedConfig";
 
 const ConfirmationModal = ({
   isVisible,

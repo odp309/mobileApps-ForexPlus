@@ -1,54 +1,64 @@
-import { StyleSheet, Text, View } from "react-native";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { BodyMediumText, BodySmallText } from "../shared/StyledText";
 import colors from "../../theme/colors";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
-
-const dummyData = {
-  cabang: "BNI Cabang 1 (Jakarta Barat)",
-  tanggal: "28 Juni 2024",
-  jam: "08.10 - 08.30",
-  status: "Terjadwal",
-};
-
+import { useNavigation } from "@react-navigation/native";
+ 
 const ValasReservation = ({ reservation }) => {
+  const navigation = useNavigation();
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return format(date, "dd MMMM yyyy", { locale: id });
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.containerCabang}>
-        <BodyMediumText style={{ color: colors.color.black }}>
-          BNI Cabang {reservation.branchName}
-        </BodyMediumText>
-      </View>
-      <View style={{ flexDirection: "row" }}>
-        <View style={[styles.containerTglJam, styles.addRightBorder]}>
-          <BodyMediumText style={{ color: colors.color.grey, fontSize :15}}>
-            Tanggal
-          </BodyMediumText>
-          <BodyMediumText style={{ color: colors.color.black ,fontSize :15}}>
-            {formatDate(reservation.reservationDate)}
+    <Pressable
+      activeOpacity={true}
+      onPress={() =>
+        navigation.navigate("ValasReservation", { reservation: reservation })
+      }
+    >
+      <View style={styles.container}>
+        <View style={styles.containerCabang}>
+          <BodyMediumText style={{ color: colors.color.black }}>
+            BNI Cabang {reservation.branchName}
           </BodyMediumText>
         </View>
-        <View style={styles.containerTglJam}>
-          <BodyMediumText style={{ color: colors.color.grey,fontSize :15 }}>
-            Status Reservasi
+        <View style={{ flexDirection: "row" }}>
+          <View style={[styles.containerTglJam, styles.addRightBorder]}>
+            <BodyMediumText style={{ color: colors.color.grey, fontSize: 15 }}>
+              Tanggal
+            </BodyMediumText>
+            <BodyMediumText style={{ color: colors.color.black, fontSize: 15 }}>
+              {formatDate(reservation.reservationDate)}
+            </BodyMediumText>
+          </View>
+          <View style={styles.containerTglJam}>
+            <BodyMediumText style={{ color: colors.color.grey, fontSize: 15 }}>
+              Status Reservasi
+            </BodyMediumText>
+            <BodyMediumText style={{ color: colors.color.black, fontSize: 15 }}>
+              {reservation.status}
+            </BodyMediumText>
+          </View>
+        </View>
+        <View style={styles.containerStatus}>
+          <BodyMediumText style={{ color: colors.color.grey, fontSize: 15 }}>
+            Kode Reservasi
           </BodyMediumText>
-          <BodyMediumText style={{ color: colors.color.black,fontSize :15 }}>
-            {reservation.status}
+          <BodyMediumText style={{ color: colors.color.black, fontSize: 15 }}>
+            {reservation.reservationNumber}
           </BodyMediumText>
         </View>
       </View>
-      <View style={styles.containerStatus}>
-        <BodyMediumText style={{ color: colors.color.grey,fontSize :15 }}>Kode Reservasi</BodyMediumText>
-        <BodyMediumText style={{ color: colors.color.black,fontSize :15 }}>
-          {reservation.reservationNumber}
-        </BodyMediumText>
-      </View>
-    </View>
+    </Pressable>
   );
 };
 

@@ -1,7 +1,7 @@
 import { Dimensions, Image, StyleSheet, View } from "react-native";
 import colors from "../../../theme/colors";
-import { BodyMediumText, BodySmallText } from "../../shared/StyledText";
-import { formatNumber } from "../../../config/ValasConfig";
+import { BodyMediumText, BodySmallText } from "../../shared/StyledText"; 
+import { formatNumber } from "../../../config/SharedConfig";
 
 const DIMENSION_HEIGHT = Dimensions.get("window").height;
 

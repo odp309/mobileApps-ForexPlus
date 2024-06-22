@@ -21,8 +21,7 @@ import ChooseWalletScreen from "../screens/valasHome/valasAddWallet/ChooseWallet
 import FirstTopUpScreen from "../screens/valasHome/valasAddWallet/FirstTopUpScreen.js";
 import ValasReservationScreen from "../screens/valasHome/reservasi/ValasReservationScreen.js";
 import DetailHistoryScreen from "../screens/valasHome/riwayatTransaksi/DetailHistoryScreen.js";
-import CurrencyInformationScreen from "../screens/valasHome/currencyInformation/CurrencyInformationScreen.js";   
-import CloseLimitModal from "../components/valasHome/shared/CloseLimitModal.js";
+import CurrencyInformationScreen from "../screens/valasHome/currencyInformation/CurrencyInformationScreen.js";    
 import CloseValasModal from "../components/valasHome/shared/CloseValasModal.js";
 import SplashScreen from "../screens/home/SplashScreen.js";
 

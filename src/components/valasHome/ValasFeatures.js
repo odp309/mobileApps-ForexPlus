@@ -67,33 +67,38 @@ const ValasFeatures = ({
   setModalVisibleTarik,
   modalVisibleBeli,
   setModalVisibleBeli,
+  modalVisibleReservation,
+  setModalVisibleReservation,
+  currentBuy, 
+  reservation
 }) => {
-  const [hasReservasi, setReservasi] = useState(null);
-  
-  const getFetchTransaction = async () =>{
-
-
-  }
-  useState(()=>{
-      
-  },[])
+  useState(() => {}, []);
   const navigation = useNavigation();
 
   const handleNavigateTarik = () => {
-    setModalVisibleTarik(!modalVisibleTarik);
-    // navigation.navigate("TarikValas", {
-    //   selectedRekening,
-    //   selectedWallet,
-    //   selectedCurrency,
-    // })
+    //setModalVisibleTarik(!modalVisibleTarik);
+    if(reservation){
+      setModalVisibleReservation(true);
+    }
+    else{
+      navigation.navigate("TarikValas", {
+        selectedRekening,
+        selectedWallet,
+        selectedCurrency,
+      });
+    }
+    
   };
   const handleNavigateBeli = () => {
-    setModalVisibleBeli(!modalVisibleBeli);
-    // navigation.navigate("ValasBeli", {
-    //   selectedRekening,
-    //   selectedWallet,
-    //   selectedCurrency,
-    // })
+    if (currentBuy > 0) {
+      navigation.navigate("ValasBeli", {
+        selectedRekening,
+        selectedWallet,
+        selectedCurrency,
+      });
+    } else {
+      setModalVisibleBeli(!modalVisibleBeli);
+    }
   };
   return (
     <View style={styles.container}>

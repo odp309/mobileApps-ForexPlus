@@ -2,6 +2,7 @@ import axios from "axios";
 import axiosInstance from "../connectivity/AxiosConfigManager";
 import { url } from "../connectivity/ApiManager";
 import { Alert } from "react-native";
+import moment from "moment-timezone";
 
 const fetchNomorRekening = async (accountNumber) => {
   try {
@@ -10,7 +11,7 @@ const fetchNomorRekening = async (accountNumber) => {
     });
     console.log(response.data);
   } catch (err) {
-    console.log("gagal fetch noRek : " , err);
+    console.log("gagal fetch noRek : ", err);
   } finally {
     console.log("berhasil");
   }
@@ -18,21 +19,26 @@ const fetchNomorRekening = async (accountNumber) => {
 
 const fetchKurs = async () => {
   try {
-    const dataKurs = await axiosInstance.get("/v1/public/exchange_rate/get-all");
+    const dataKurs = await axiosInstance.get(
+      "/v1/public/exchange_rate/get-all"
+    );
     return dataKurs.data;
   } catch (error) {
-    console.log("gagal fetch kurs : " ,error);
+    console.log("gagal fetch kurs : ", error);
   }
 };
 
 const fetchBankAccount = async (userId) => {
   try {
-    const dataBank = await axiosInstance.post("/v2/private/bank_account/get-all", {
-      userId,
-    });
+    const dataBank = await axiosInstance.post(
+      "/v2/private/bank_account/get-all",
+      {
+        userId,
+      }
+    );
     return dataBank.data;
   } catch (error) {
-    console.log("gagal fetch Bank Account : " ,error);
+    console.log("gagal fetch Bank Account : ", error);
   }
 };
 const fetchValasPurchase = async (walletId, amountToBuy, pin) => {
@@ -49,7 +55,7 @@ const fetchValasPurchase = async (walletId, amountToBuy, pin) => {
       return false;
     }
   } catch (err) {
-    console.log("gagal fetch Valas beli : " , err);
+    console.log("gagal fetch Valas beli : ", err);
     return false;
   }
 };
@@ -68,7 +74,7 @@ const fetchValasSell = async (walletId, amountToSell, pin) => {
       return false;
     }
   } catch (err) {
-    console.log("gagal fetch valas jual : " , err);
+    console.log("gagal fetch valas jual : ", err);
   }
 };
 
@@ -96,7 +102,7 @@ const fetchValasTransfer = async (
       return false;
     }
   } catch (err) {
-    console.log("gagal fetch valas transfer : " , err);
+    console.log("gagal fetch valas transfer : ", err);
   }
 };
 
@@ -127,7 +133,7 @@ const fetchValasAddWallet = async (
       return false;
     }
   } catch (err) {
-    console.log("gagal fetch add wallet : " ,err);
+    console.log("gagal fetch add wallet : ", err);
   }
 };
 
@@ -139,7 +145,7 @@ const fetchRelatedBranch = async (
 ) => {
   console.log(latitude, longitude, amountToWithdraw, currencyCode);
   try {
-    const allBranches = await axiosInstance.post("/v2/private/branch/get", {
+    const allBranches = await axiosInstance.post("/v1/private/branch/get", {
       latitude,
       longitude,
       amountToWithdraw,
@@ -147,24 +153,24 @@ const fetchRelatedBranch = async (
     });
     return allBranches.data;
   } catch (error) {
-    console.log("gagal fetch related branch : " , error);
+    console.log("gagal fetch related branch : ", error);
   }
 };
 
-const fetchMinimumDeposit = async (currencyCode) => { 
-  console.log(currencyCode)
+const fetchMinimumDeposit = async (currencyCode) => {
+  console.log(currencyCode);
   try {
     const dataMinimumDeposit = await axiosInstance.post(
-      "/v2/private/currency/minimum-deposit/get",
+      "/v1/private/currency/minimum-deposit/get",
       { currencyCode }
     );
     return dataMinimumDeposit.data.minimum;
   } catch (error) {
-    console.log("gagal fetch minim beli : " ,error);
+    console.log("gagal fetch minim deposit : ", error);
   }
 };
 
-const fetchMinimumBuy = async (currencyCode) => { 
+const fetchMinimumBuy = async (currencyCode) => {
   try {
     const dataMinimumBuy = await axiosInstance.post(
       "/v2/private/currency/minimum-buy/get",
@@ -172,7 +178,7 @@ const fetchMinimumBuy = async (currencyCode) => {
     );
     return dataMinimumBuy.data.minimum;
   } catch (error) {
-    console.log("gagal fetch minim beli : " ,error);
+    console.log("gagal fetch minim beli : ", error);
   }
 };
 
@@ -185,7 +191,7 @@ const fetchMinimumSell = async (currencyCode) => {
     );
     return dataMinimumSell.data.minimum;
   } catch (error) {
-    console.log("gagal fetch minim jual : " ,error);
+    console.log("gagal fetch minim jual : ", error);
   }
 };
 
@@ -197,7 +203,7 @@ const fetchMinimumTransfer = async (currencyCode) => {
     );
     return dataMinimumTransfer.data.minimum;
   } catch (error) {
-    console.log("gagal fetch minim transfer : " ,error);
+    console.log("gagal fetch minim transfer : ", error);
   }
 };
 
@@ -242,7 +248,7 @@ const fetchHistory = async (walletId) => {
   try {
     console.log("Wallet ID : " + walletId);
     const response = await axiosInstance.post("/v2/private/history/get-all", {
-     walletId
+      walletId,
     });
     console.log("History Data:");
     console.log(response.data);
@@ -259,9 +265,12 @@ const fetchHistory = async (walletId) => {
 const fetchHistoryDetail = async (trxId) => {
   try {
     console.log("trx ID : " + trxId);
-    const response = await axiosInstance.post("/v2/private/history/get-detail", {
-      trxId
-    });
+    const response = await axiosInstance.post(
+      "/v2/private/history/get-detail",
+      {
+        trxId,
+      }
+    );
     console.log("trx Data:");
     console.log(response.data);
     if (response) {
@@ -275,53 +284,41 @@ const fetchHistoryDetail = async (trxId) => {
 };
 
 const fetchReservationList = async () => {
-  try{
-    const response = await axiosInstance.get("/v2/private/reservation-list/user-get");
-    if(response){
-      console.log(response.data)
+  try {
+    const response = await axiosInstance.get(
+      "/v2/private/reservation-list/user-get"
+    );
+    if (response) {
+      console.log(response.data);
       return response.data;
-    } 
-    else {
+    } else {
       return null;
     }
-  }
-  catch(error) {
+  } catch (error) {
     throw error;
   }
-}
-
-const alertConfirmation = (navigation) => {
-  Alert.alert(
-    "Anda Ingin Membatalkan Transaksi?",
-    "",
-    [
-      {
-        text: "Tidak",
-        style: "cancel",
-      },
-      {
-        text: "Ya",
-        onPress: () => navigation.goBack(),
-      },
-    ],
-    { cancelable: false }
-  );
-  return true;
 };
 
-const formatNumber = (number) => {
-  return new Intl.NumberFormat("de-DE", {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 3,
-  }).format(Math.floor(number));
+const fetchCurrentBuyLimit = async (id) => {
+  try {
+    const response = await axiosInstance.post(
+      "/v2/private/buy-valas/limit-check",{id}
+    );
+    if (response) {
+      console.log("Limit buy : ",response.data);
+      return response.data;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    throw error;
+  }
 };
 
 export {
   fetchNomorRekening,
   fetchKurs,
   fetchBankAccount,
-  alertConfirmation,
-  formatNumber,
   fetchValasPurchase,
   fetchValasSell,
   fetchValasTransfer,
@@ -335,5 +332,6 @@ export {
   fetchHistory,
   fetchHistoryDetail,
   fetchMinimumDeposit,
-  fetchReservationList
+  fetchReservationList,
+  fetchCurrentBuyLimit
 };
