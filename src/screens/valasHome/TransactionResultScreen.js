@@ -30,6 +30,23 @@ import { country } from "../../config/CountryDataConfig";
 //   namaPenerima: 'Adelia Kinanti',
 // };
 
+const MONTHS_NAME = [
+  "Januari",
+  "Februari",
+  "Maret",
+  "April",
+  "Mei",
+  "Juni",
+  "Juli",
+  "Agustus",
+  "September",
+  "Oktober",
+  "November",
+  "Desember",
+];
+
+
+
 const TransactionResultScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -41,9 +58,24 @@ const TransactionResultScreen = () => {
     navigation.navigate("ValasHome");
   };
 
+  // const getDate = () => {
+    const FINISH_TRANSACTION_TIME = new Date();
+    const month = FINISH_TRANSACTION_TIME.getMonth();
+    const monthName = MONTHS_NAME[month];
+    const day = FINISH_TRANSACTION_TIME.getDate();
+    const year = FINISH_TRANSACTION_TIME.getFullYear();
+    const hour = FINISH_TRANSACTION_TIME.getHours();
+    const minute = FINISH_TRANSACTION_TIME.getMinutes();
+  
+    const transactionDate = `${day} ${monthName} ${year} - ${hour}:${minute}`;
+    // console.log("message:");
+    // console.log(message);
+    
+    // return message;
+  // };
+
   // Animation Function
   useEffect(() => {
-    console.log("KOKO");
     console.log(transactionData);
     console.log(transactionType);
     if (animationRef.current) {
@@ -77,29 +109,35 @@ const TransactionResultScreen = () => {
           {transactionType === "beli" ? (
             <ResultTitleAndDate
               title="Permintaan Pembelian Berhasil Terkirim"
-              date={transactionData.selectedCurrency.createdAt}
+              date={transactionDate}
             />
           ) : transactionType === "jual" ? (
             <ResultTitleAndDate
               title="Permintaan Penjualan Berhasil Terkirim"
-              date={transactionData.selectedCurrency.createdAt} //Fix Bagian ini harusnya make date baru bukan createdAt si currency nya.
+              date={transactionDate} //Fix Bagian ini harusnya make date baru bukan createdAt si currency nya.
             />
           ) : transactionType === "transfer" ? (
             <ResultTitleAndDate
               title="Permintaan Transfer Berhasil Terkirim"
-              date={transactionData.selectedCurrency.createdAt}
+              date={transactionDate}
             />
           ) : transactionType === "tarik" ? (
             <ResultTitleAndDate
               title="Reservasi Tarik Valas"
-              subTitle={"Wajib datang sesuai tanggal reservasi.\nLalu, tunjukkan kode reservasi di kantor cabang."}
-              date={transactionData.selectedCurrency.createdAt}
+              subTitle={
+                "Wajib datang sesuai tanggal reservasi.\nLalu, tunjukkan kode reservasi di kantor cabang."
+              }
+              date={transactionDate}
             />
           ) : transactionType === "add wallet" ? (
             <ResultTitleAndDate
               title="Setoran Awal Berhasil"
-              subTitle={"Dompet Valas " + transactionData.selectedCurrency.currencyName + " telah ditambahkan" }
-              date={transactionData.selectedCurrency.createdAt}
+              subTitle={
+                "Dompet Valas " +
+                transactionData.selectedCurrency.currencyName +
+                " telah ditambahkan"
+              }
+              date={transactionDate}
             />
           ) : null}
         </View>
@@ -108,10 +146,10 @@ const TransactionResultScreen = () => {
           <View
             style={{ width: "100%", alignItems: "center", marginTop: "15%" }}
           >
-              <ResultCard
-                transactionType={transactionType}
-                transactionData={transactionData}
-              />
+            <ResultCard
+              transactionType={transactionType}
+              transactionData={transactionData}
+            />
           </View>
         </View>
       </View>

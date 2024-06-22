@@ -57,15 +57,15 @@ const PinConfirmationScreen = () => {
           transactionData,
           transactionType,
         });
-        setPinStatus(true); 
+        setPinStatus(true);
         console.log("Transaction successful:", beli);
       } else {
-        setPinStatus(false); 
+        setPinStatus(false);
         setErrorVisible(!errorVisible);
       }
     } catch (error) {
       console.error("Transaction failed:", error);
-      setPinStatus(false); 
+      setPinStatus(false);
     }
   };
 
@@ -131,12 +131,11 @@ const PinConfirmationScreen = () => {
         pin
       );
       if (tarik) {
-        navigation.navigate("TransactionResult", {
-          transactionData,
-          transactionType,
-        });
         setPinStatus(true);
         console.log("Transaction successful:", tarik);
+        navigation.navigate("WithdrawTransactionResult", {
+          tarik,
+        });
       } else {
         setErrorVisible(!errorVisible);
         setPinStatus(false);
@@ -209,8 +208,8 @@ const PinConfirmationScreen = () => {
               borderColor: pinStatus
                 ? colors.primary.primaryOne
                 : colors.color.error,
-              borderWidth: pinStatus ? 1 :2
-            }
+              borderWidth: pinStatus ? 1 : 2,
+            },
           ]}
         >
           <BodyLargeTextSemiBold

@@ -24,6 +24,7 @@ import DetailHistoryScreen from "../screens/valasHome/riwayatTransaksi/DetailHis
 import CurrencyInformationScreen from "../screens/valasHome/currencyInformation/CurrencyInformationScreen.js";    
 import CloseValasModal from "../components/valasHome/shared/CloseValasModal.js";
 import SplashScreen from "../screens/home/SplashScreen.js";
+import WithdrawTransactionResultScreen from "../screens/valasHome/valasTarik/WithdrawTransactionResultScreen.js";
 
 const Stack = createNativeStackNavigator();
 
@@ -135,6 +136,11 @@ const ScreenNavigator = () => {
       <Stack.Screen
         name="Splash"
         component={SplashScreen}
+        options={{ headerShown: false }}
+      /> 
+      <Stack.Screen
+        name="WithdrawTransactionResult"
+        component={WithdrawTransactionResultScreen}
         options={{ headerShown: false }}
       /> 
     </Stack.Navigator>

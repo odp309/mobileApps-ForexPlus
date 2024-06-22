@@ -83,13 +83,13 @@ const DetailHistoryScreen = () => {
           )}
           <BodyLargeText style={{ marginLeft: 20 }}>
             {transactionDetails.trxType}
-            {transactionDetails.trxType === "Tarik" ? (
+            {/* {transactionDetails.trxType === "Tarik" ? (
               <BodyLargeText>
                 {"("}
                 {transactionDetails.status}
                 {")"}
               </BodyLargeText>
-            ) : null}
+            ) : null} */}
           </BodyLargeText>
           {/* {
             transactionDetails.status != null ?
