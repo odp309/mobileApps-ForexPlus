@@ -10,10 +10,11 @@ const IncorrectPinMessage = () => {
         width: "100%",
         borderRadius: 10,
         marginLeft:5,
-        marginTop:5
+        marginTop:5,
         // backgroundColor: colors.color.errorTransparent,
         // flexDirection: "row",
         // padding: 10,
+        alignItems:"center"
       }}
     >
       {/* <Ionicons

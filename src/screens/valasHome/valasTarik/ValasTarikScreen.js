@@ -44,7 +44,7 @@ const ValasTarikScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleModal = () => {
-    setModalVisible(!modalVisible);
+    setModalVisible(true);
     return true;
   };
 
@@ -139,7 +139,7 @@ const ValasTarikScreen = () => {
           setModalVisible={setModalVisible}
         />
         <View style={styles.topContainer}>
-          <ContentHeader title={"Tarik Valas"} hasConfirmation={true} />
+          <ContentHeader title={"Tarik Valas"} hasConfirmation={true} setModalVisible={()=> setModalVisible(!modalVisible)} />
         </View>
 
         <View style={styles.middleContainer}>

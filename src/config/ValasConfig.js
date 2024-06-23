@@ -1,8 +1,6 @@
 import axios from "axios";
 import axiosInstance from "../connectivity/AxiosConfigManager";
-import { url } from "../connectivity/ApiManager";
-import { Alert } from "react-native";
-import moment from "moment-timezone";
+import { url } from "../connectivity/ApiManager"; 
 
 const fetchNomorRekening = async (accountNumber) => {
   try {
@@ -173,7 +171,7 @@ const fetchMinimumDeposit = async (currencyCode) => {
 const fetchMinimumBuy = async (currencyCode) => {
   try {
     const dataMinimumBuy = await axiosInstance.post(
-      "/v2/private/currency/minimum-buy/get",
+      "/v1/private/currency/minimum-buy/get",
       { currencyCode }
     );
     return dataMinimumBuy.data.minimum;
@@ -186,7 +184,7 @@ const fetchMinimumSell = async (currencyCode) => {
   // console.log(currencyCode);
   try {
     const dataMinimumSell = await axiosInstance.post(
-      "/v2/private/currency/minimum-sell/get",
+      "/v1/private/currency/minimum-sell/get",
       { currencyCode }
     );
     return dataMinimumSell.data.minimum;
@@ -198,7 +196,7 @@ const fetchMinimumSell = async (currencyCode) => {
 const fetchMinimumTransfer = async (currencyCode) => {
   try {
     const dataMinimumTransfer = await axiosInstance.post(
-      "/v2/private/currency/minimum-transfer/get",
+      "/v1/private/currency/minimum-transfer/get",
       { currencyCode }
     );
     return dataMinimumTransfer.data.minimum;
@@ -214,7 +212,7 @@ const findBankAccountInfo = async (
 ) => {
   try {
     const accountFind = await axiosInstance.post(
-      "/v2/private/bank_account/get-with-wallet",
+      "/v1/private/bank_account/get-with-wallet",
       { senderAccountNumber, recipientAccountNumber, currencyCode }
     );
     return accountFind.data;
@@ -234,7 +232,7 @@ const fetchValasWithdraw = async (
   console.log(walletId, amountToWithdraw, reservationDate, branchCode, pin);
   try {
     const dataWithdraw = await axiosInstance.post(
-      "/v2/private/withdraw-valas/withdraw",
+      "/v1/private/withdraw-valas/withdraw",
       { walletId, amountToWithdraw, reservationDate, branchCode, pin }
     );
     return dataWithdraw.data;
@@ -289,7 +287,7 @@ const fetchReservationList = async () => {
       "/v2/private/reservation-list/user-get"
     );
     if (response) {
-      console.log(response.data);
+      console.log("Reservation : ",response.data);
       return response.data;
     } else {
       return null;

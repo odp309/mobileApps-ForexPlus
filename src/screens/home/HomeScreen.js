@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Text,
   View,
+  RefreshControl,
 } from "react-native";
 import { BodyRegularText } from "../../components/shared/StyledText";
 import Header from "../../components/home/Header";
@@ -29,7 +30,7 @@ import { userData } from "../../config/AuthConfig";
 
 const renderedView = ({ item }) => <View>{item.view()}</View>;
 
-const HomeScreen = () => { 
+const HomeScreen = () => {
   const navigation = useNavigation();
   const { showModal, setShowModal } = useContext(ModalContext);
   const [user, setUser] = useState(null);
@@ -37,6 +38,7 @@ const HomeScreen = () => {
   const [accountNumbers, setAccountNumbers] = useState("");
   const isFocused = useIsFocused();
   const [isLoading, setIsLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   const backAction = () => {
     setShowModal(true);
@@ -66,6 +68,16 @@ const HomeScreen = () => {
     }, [userData])
   );
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await getAllAccounts(); // Fetch the latest account data
+    } catch (error) {
+      console.error("Error refreshing data: ", error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
   useEffect(() => {
     console.log("userdata : ", userData);
     if (isFocused) {
@@ -122,6 +134,13 @@ const HomeScreen = () => {
         keyExtractor={(item) => item.id}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={[colors.primary.primaryOne]} // Customize the color of the refresh spinner if needed
+          />
+        }
       />
     </View>
   );

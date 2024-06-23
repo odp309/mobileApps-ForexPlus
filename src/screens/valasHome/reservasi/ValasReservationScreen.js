@@ -1,95 +1,158 @@
-import { Dimensions, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { BackHandler, Dimensions, Image, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useRef } from "react";
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
 import colors from "../../../theme/colors";
-import { BodyRegularText, BodySmallText } from "../../../components/shared/StyledText";
-import { useRoute } from "@react-navigation/core";
-
-const dummyData = [
-  {
-    id : "1",
-    cabang: "BNI Cabang 1 (Surabaya)",
-    tanggal: "7 September 2024",
-    status: "Terjadwal",
-    kode: "RES140524003",
-  },
-  {
-    id : "2",
-    cabang: "BNI Cabang 1 (Depok)",
-    tanggal: "13 Agustus 2024",
-    status: "Terjadwal",
-    kode: "RES140524002",
-  },
-  {
-    id : "3",
-    cabang: "BNI Cabang 1 (Jakarta Barat)",
-    tanggal: "28 Juni 2024",
-    status: "Terjadwal",
-    kode: "RES140524001",
-  },
-];
+import { FontAwesome } from "@expo/vector-icons";
+import {
+  BodyLargeTextSemiBold,
+  BodyMediumTextSemiBold,
+  BodyRegularText,
+  BodySmallText,
+  BodySmallTextSemiBold,
+} from "../../../components/shared/StyledText";
+import StyledButton from "../../../components/shared/StyledButton";
+import { useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
+import LottieView from "lottie-react-native";
 
 const ValasReservationScreen = () => {
   const route = useRoute();
+  const isFocused = useIsFocused();
   const reservation = route.params?.reservation;
+  const animationRef = useRef(null); //Animation Variable
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    console.log("Reser : ", reservation);
+  });
+  const toHomeScreen = () => {
+    navigation.navigate("ValasHome");
+  };
+  
+  useEffect(()=>{
+    if(isFocused){
+      const backHandler = BackHandler.addEventListener("hardwareBackPress", () => true);
+      return () =>  backHandler.remove();
+    }
+  },[])
   return (
     <View style={styles.container}>
-      <View style={styles.topContainer}>
-        <ContentHeader  />
+      <View style={styles.topContainer}></View>
+      <View style={styles.middleContainer}>
+        <View
+          style={{ width: "100%", alignItems: "center", marginTop: 20 }}
+        ></View>
+        <BodyLargeTextSemiBold style={{ textAlign: "center", fontSize: 24 }}>
+          Reservasi Tarik Valas
+        </BodyLargeTextSemiBold>
+        <BodySmallTextSemiBold style={{ textAlign: "center", marginTop: 10 }}>
+          Wajib datang sesuai tanggal reservasi. {"\n"} Lalu, tunjukkan kode
+          reservasi di kantor cabang.
+        </BodySmallTextSemiBold>
+        <View style={styles.imageContainer}>
+          <Image
+            source={{ uri: "https://imgur.com/zKigxFJ.png" }}
+            style={{ width: 200, height: 200, marginBottom: 20 }}
+          />
+        </View>
+
+        <BodySmallText style={{ textAlign: "center" }}>
+          Kode Reservasi
+        </BodySmallText>
+        <BodyMediumTextSemiBold style={{ textAlign: "center" }}>
+          {reservation.reservationNumber}
+        </BodyMediumTextSemiBold>
+
+        <BodySmallText style={{ textAlign: "center", marginTop: 10 }}>
+          Nominal Tarik Valas
+        </BodySmallText>
+        <BodyMediumTextSemiBold style={{ textAlign: "center" }}>
+          {reservation.currencyCode} {reservation.amount}
+        </BodyMediumTextSemiBold>
+
+        <View style={styles.locationCard}>
+          <View style={styles.cardIconTitle}>
+            <View style={styles.iconContainer}>
+              <FontAwesome name="bank" size={30} color={colors.color.white} />
+            </View>
+            <View style={styles.locationTitleContainer}>
+              <BodyMediumTextSemiBold style={{ fontSize: 15 }}>
+                {reservation.branchType} {reservation.branchName}
+              </BodyMediumTextSemiBold>
+              <BodyMediumTextSemiBold>
+                {reservation.reservationDate}
+              </BodyMediumTextSemiBold>
+            </View>
+          </View>
+          <View style={styles.addressDetailContainer}>
+            <BodySmallText style={{ fontSize: 12, lineHeight: 18 }}>
+              {reservation.branchAddress}, {reservation.branchProvince}
+            </BodySmallText>
+          </View>
+        </View>
       </View>
-       <View style={{alignItems:"center"}}>
-        <BodyRegularText>{reservation.reservationNumber}</BodyRegularText>
-        <BodyRegularText>{reservation.amount}</BodyRegularText>
-        <BodyRegularText>{reservation.reservationDate}</BodyRegularText>
-        <BodyRegularText>KCP {reservation.branchName}</BodyRegularText>
-        <BodyRegularText>{reservation.branchAddress}</BodyRegularText>
-       </View>
+      <View style={styles.bottomContainer}>
+        <StyledButton
+          mode="primary"
+          title="Ke Halaman Utama"
+          onPress={toHomeScreen}
+          size={"lg"}
+        />
+      </View>
     </View>
   );
 };
-
 export default ValasReservationScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    height: Dimensions.get("window").height * 1.05,
+    justifyContent: "flex-start",
     backgroundColor: "white",
-    color: colors.color.black,
   },
   topContainer: {
-    width: "100%",
-    marginTop: "12%",
-    paddingHorizontal: 20,
-    paddingBottom: 20,
+    width: "100%", 
+    flex:0.1
   },
-  bottonContainer: {
+  middleContainer: {
     width: "100%",
+    flex: 0.75,
+    paddingHorizontal: 20,
+  },
+  bottomContainer: {
+    width: "100%",
+    justifyContent: "center",
+    flex: 0.15,
+    paddingHorizontal: 20,
+  },
+  imageContainer: {
+    width: "100%",
+    alignItems: "center",
+  },
+  locationCard: {
+    justifyContent: "center",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    marginTop: 10,
+    borderRadius: 15,
     backgroundColor: colors.primary.primaryThree,
-    borderRadius: 20,
-    marginBottom: 20,
-    elevation: 5,
   },
-  containerTglJam: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    width: "50%",
-    backgroundColor: colors.color.white,
+  cardIconTitle: {
+    flexDirection: "row",
   },
-  addRightBorder: {
-    borderRightWidth: 1,
-    borderColor: colors.primary.primaryThree,
+  iconContainer: {
+    width: 54,
+    height: 54,
+    marginRight: 10,
+    paddingLeft: 3,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#10B1A8",
+    borderRadius: 100,
+    flex: 1,
   },
-  containerCabang: {
-    paddingVertical: 16,
-    paddingHorizontal: 20,
+  locationTitleContainer: {
+    paddingHorizontal: 10,
+    flex: 4,
   },
-  containerStatus: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: colors.color.white,
-    borderBottomRightRadius: 20,
-    borderBottomLeftRadius: 20,
-    borderTopWidth: 1,
-    borderColor: colors.primary.primaryThree,
-  },
+  addressDetailContainer: { marginTop: 10 },
 });

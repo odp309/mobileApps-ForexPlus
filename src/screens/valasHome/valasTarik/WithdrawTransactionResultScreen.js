@@ -39,7 +39,7 @@ const WithdrawTransactionResultScreen = () => {
           Permintaan Reservasi Berhasil Terkirim
         </BodyLargeTextSemiBold>
         <BodySmallTextSemiBold style={{ textAlign: "center", marginTop:10 }}>
-          Wajib datang sesuai tanggal reservasi. Lalu, tunjukkan kode reservasi
+          Wajib datang sesuai tanggal reservasi.{"\n"}Lalu, tunjukkan kode reservasi
           di kantor cabang.
         </BodySmallTextSemiBold>
         <View style={styles.imageContainer}>
@@ -100,17 +100,18 @@ export default WithdrawTransactionResultScreen;
 
 const styles = StyleSheet.create({
   container: {
-    height: Dimensions.get("screen").height * 1.05,
+    height: Dimensions.get("window").height * 1.05,
     justifyContent: "flex-start",
     backgroundColor: "white",
   },
   topContainer: {
     width: "100%",
     marginTop: "10%",
+    flex:0.1
   },
   middleContainer: {
     width: "100%",
-    flex: 0.8,
+    flex: 0.75,
     paddingHorizontal: 20,
   },
   bottomContainer: {

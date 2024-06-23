@@ -7,12 +7,19 @@ import {
   Dimensions,
   Image,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { BodySmallText } from "../../components/shared/StyledText";
+import { useNavigation } from "@react-navigation/native";
 
 const screenHeight = Dimensions.get("window").height * 1.05;
 
 const SplashScreen = () => {
+  const navigation = useNavigation();
+  useEffect(()=>{
+    setTimeout(()=>{
+      navigation.navigate("Login");
+    },3000)
+  })
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
@@ -25,7 +32,7 @@ const SplashScreen = () => {
             resizeMode="contain"
             source={{ uri: "https://i.imgur.com/rkL9Et5.png" }}
           />
-          <BodySmallText>Melayani Negeri Kebanggaan Indonesia</BodySmallText>
+          <BodySmallText style={{marginBottom:"5%"}}>Melayani Negeri Kebanggaan Indonesia</BodySmallText>
         </View>
 
         <View style={styles.bottomContainer}>
@@ -56,22 +63,21 @@ const styles = StyleSheet.create({
     height: screenHeight,
   },
   topContainer: {
-    flex: 0.37,
-    paddingVertical: "10%",
+    flex: 0.4, 
     width: "100%",
     alignItems: "center",
-    justifyContent: "flex-end",
+    justifyContent: "flex-end", 
   },
-  bottomContainer: {
-    flex: 0.53,
-    alignItems: "center",
-    justifyContent: "flex-end",
-    // paddingBottom: "20%",
+  bottomContainer: { 
+    flex: 0.6,
+    alignItems: "center", 
+    justifyContent: "flex-end", 
     paddingHorizontal: "10%",
-    width: "100%",
+    width: "100%", 
   },
   copyright: {
     fontSize: 9,
     textAlign: "center",
+    marginBottom:"25%"
   },
 });

@@ -30,7 +30,12 @@ const Stack = createNativeStackNavigator();
 
 const ScreenNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="Login">
+    <Stack.Navigator initialRouteName="Splash">
+      <Stack.Screen
+        name="Splash"
+        options={{ headerShown: false, headerStyle: {} }}
+        component={SplashScreen}
+      />
       <Stack.Screen
         name="Login"
         options={{ headerShown: false, headerStyle: {} }}
@@ -132,12 +137,7 @@ const ScreenNavigator = () => {
         name="CloseCoolDown"
         component={CloseValasModal}
         options={{ headerShown: false }}
-      /> 
-      <Stack.Screen
-        name="Splash"
-        component={SplashScreen}
-        options={{ headerShown: false }}
-      /> 
+      />  
       <Stack.Screen
         name="WithdrawTransactionResult"
         component={WithdrawTransactionResultScreen}

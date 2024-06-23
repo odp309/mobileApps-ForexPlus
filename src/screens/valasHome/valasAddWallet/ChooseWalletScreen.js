@@ -13,8 +13,7 @@ import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
 import { fetchKurs } from "../../../config/ValasConfig";
 import { BodyLargeTextSemiBold } from "../../../components/shared/StyledText";
 import colors from "../../../theme/colors";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { alertConfirmation } from "../../../config/SharedConfig";
+import { useNavigation, useRoute } from "@react-navigation/native"; 
 
 const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
@@ -47,10 +46,7 @@ const ChooseWalletScreen = () => {
 
   useEffect(() => {
     console.log("CHOOSEWALLET");
-    console.log(selectedRekening);
-    const backHandler = BackHandler.addEventListener("hardwareBackPress", () =>
-      alertConfirmation(navigation)
-    );
+    console.log(selectedRekening); 
     getData();
   }, []);
 

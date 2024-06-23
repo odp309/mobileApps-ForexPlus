@@ -53,7 +53,7 @@ const ValasJualScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleModal = () => {
-    setModalVisible(!modalVisible);
+    setModalVisible(true);
     return true;
   };
   useEffect(() => {
@@ -126,12 +126,6 @@ const ValasJualScreen = () => {
       setInputError(
         `Minimum penjualan valas ${transactionData.selectedCurrency.currencyCode} ${minimumSell}`
       );
-    } else if (parseInt(data) > parseInt(minimumSell * 25000)) {
-      setInputError(
-        `Maksimum penjualan valas ${
-          transactionData.selectedCurrency.currencyCode
-        } ${minimumSell * 25000}`
-      );
     } else if (
       parseInt(data) > parseInt(transactionData.selectedWallet.balance)
     ) {
@@ -169,7 +163,7 @@ const ValasJualScreen = () => {
         setModalVisible={setModalVisible}
       />
       <View style={styles.topContainer}>
-        <ContentHeader title={"Jual Valas"} hasConfirmation={true} />
+        <ContentHeader title={"Jual Valas"} hasConfirmation={true} setModalVisible={()=> setModalVisible(!modalVisible)} />
       </View>
 
       <View style={[styles.middleContainer]}>

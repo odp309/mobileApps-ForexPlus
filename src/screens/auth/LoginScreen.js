@@ -25,6 +25,7 @@ import Input from "../../components/shared/Input";
 import { JwtDecoder, cleanupToken, login, logout, userData } from "../../config/AuthConfig";
 import colors from "../../theme/colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { StatusBar } from "expo-status-bar";
 
 const screenHeight = Dimensions.get("window").height * 1.05;
 const screenWidth = Dimensions.get("screen").width;
@@ -120,6 +121,11 @@ const LoginScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar
+        style="dark"
+        translucent={true}
+        backgroundColor="transparent"
+      />
       <ImageBackground
         style={{ flex: 1 }}
         source={{ uri: "https://i.imgur.com/qPgwgw6.png" }}

@@ -16,7 +16,6 @@ const CloseValasModal = ({isModalVisible, setModalVisible}) => {
     >
       <StatusBar
         backgroundColor="rgba(0, 0, 0, 0.5)"
-        barStyle="light-content"
         translucent={true}
       />
       <View style={styles.modalBackground}>

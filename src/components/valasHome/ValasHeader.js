@@ -33,10 +33,11 @@ function ValasHeader() {
         style={{
           flexDirection: "row",
           alignItems: "center",
-          marginVertical: 20,
+          marginVertical: 30, 
+
         }}
       >
-        <Image style={{width:40,height:40}} source={{uri:"https://i.imgur.com/PwD5C5f.png"}} />
+        <Image style={{width:40,height:40}} source={{uri:"https://imgur.com/RWN31Y7.png"}} resizeMode="center"/>
         <View style={{ flexDirection: "row", alignItems: "flex-start" }}> 
           <HeadingFiveText
             style={{ color: colors.color.white, fontWeight: "bold" }}
@@ -57,8 +58,7 @@ function ValasHeader() {
 export default ValasHeader;
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
+  container: { 
     alignItems: "center",  
     height:WINDOW_HEIGHT * 0.22,
     zIndex: 1,
@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "space-between",
     paddingHorizontal: 20,
+    marginTop:"10%"
   },
   riwayatBtn: {
     flexDirection: "row",

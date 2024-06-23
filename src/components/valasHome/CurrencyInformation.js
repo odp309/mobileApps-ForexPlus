@@ -46,21 +46,8 @@ const CurrencyInformation = ({
     }
   }, [filteredKurs, selectedWallet]);
 
-  const getData = async () => {
-    try {
-      const data = await fetchKurs();
-      setDataCurrency(data);
-      // setSelectedCurrency(filteredKurs);
-      //console.log(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
-
+  
+   
   if (!dataCurrency) {
     return (
       <View style={{ justifyContent: "center", flex: 1 }}>

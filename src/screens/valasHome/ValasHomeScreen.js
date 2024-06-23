@@ -5,6 +5,7 @@ import {
   Dimensions,
   Text,
   ActivityIndicator,
+  RefreshControl,
 } from "react-native";
 import React, { useState, useEffect, useCallback, useId } from "react";
 import colors from "../../theme/colors";
@@ -18,6 +19,7 @@ import CurrencyInformation from "../../components/valasHome/CurrencyInformation"
 import {
   fetchBankAccount,
   fetchCurrentBuyLimit,
+  fetchKurs,
   fetchLimitBuy,
   fetchReservationList,
 } from "../../config/ValasConfig";
@@ -30,6 +32,7 @@ import CoolDownModal from "../../components/valasHome/shared/CoolDownModal";
 import PurchaseLimitModal from "../../components/valasHome/shared/PurchaseLimitModal";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ReservationDetectedModal from "../../components/valasHome/shared/ReservationDetectedModal";
+import { currentBuyValasIDR } from "../../config/SharedConfig";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
@@ -45,7 +48,8 @@ const ValasHomeScreen = () => {
   const [dataCurrency, setDataCurrency] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [currentBuy, setCurrentBuy] = useState(0);
-
+  const [convertedCurrentBuy, setConvertedCurrentBuy] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
   const userId = userData.id;
 
   const getData = async () => {
@@ -102,9 +106,25 @@ const ValasHomeScreen = () => {
     try {
       const response = await fetchReservationList();
       setReservation(response);
+
       console.log("Hasil response : ", reservation);
     } catch (error) {
       console.log("data null");
+    }
+  };
+  const getDataKurs = async () => {
+    try {
+      const data = await fetchKurs();
+      setDataCurrency(data); 
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getConvertedLimit = () => {
+    if (currentBuy && dataCurrency) {
+      const convertedBuy = currentBuyValasIDR(currentBuy, dataCurrency);
+      setConvertedCurrentBuy(convertedBuy);
     }
   };
 
@@ -143,11 +163,27 @@ const ValasHomeScreen = () => {
     useCallback(() => {
       setIsLoading(true);
       getData();
+      getDataKurs();
       getReservation();
-      getCurrentBuyLimit();
+      getCurrentBuyLimit(); 
       console.log("Reservation : ", reservation);
     }, [])
   );
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    try {
+      // Call the functions to fetch new data
+      await getData();
+      await getDataKurs();
+      await getReservation();
+      await getCurrentBuyLimit();
+    } catch (error) {
+      console.error('Error refreshing data: ', error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   useEffect(() => {
     if (selectedRekening != null) {
@@ -162,6 +198,11 @@ const ValasHomeScreen = () => {
     }
   }, [selectedWallet]);
 
+  useEffect(() => {
+    if (currentBuy !== 0 && dataCurrency !== null) {
+      getConvertedLimit();
+    }
+  }, [currentBuy, dataCurrency]);
   if (isLoading) {
     return (
       <View style={{ justifyContent: "center", flex: 1 }}>
@@ -220,6 +261,7 @@ const ValasHomeScreen = () => {
       view: () =>
         selectedWallet && (
           <ValasFeatures
+            dataCurrency={dataCurrency}
             selectedRekening={selectedRekening}
             selectedWallet={selectedWallet}
             selectedCurrency={selectedCurrency}
@@ -229,7 +271,7 @@ const ValasHomeScreen = () => {
             modalVisibleReservation={modalVisibleReservation}
             modalVisibleBeli={modalVisibleBeli}
             setModalVisibleBeli={setModalVisibleBeli}
-            currentBuy={currentBuy}
+            convertedCurrentBuy={convertedCurrentBuy}
             reservation={reservation}
           />
         ),
@@ -311,7 +353,7 @@ const ValasHomeScreen = () => {
         />
       )}
 
-      {reservation && (
+      {reservation.length > 0 && (
         <ReservationDetectedModal
           modalVisible={modalVisibleReservation}
           setModalVisible={setModalVisibleReservation}
@@ -326,6 +368,13 @@ const ValasHomeScreen = () => {
           keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              colors={[colors.primary.primaryOne]}
+            />
+          }
         />
       </View>
       {selectedWallet && (

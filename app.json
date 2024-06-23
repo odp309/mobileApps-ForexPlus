@@ -6,11 +6,6 @@
     "orientation": "portrait",
     "icon": "./assets/icon-valas-plus.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/SplashScreen@3x.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
-    },
     "ios": {
       "supportsTablet": true
     },

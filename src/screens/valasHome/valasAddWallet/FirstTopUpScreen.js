@@ -1,6 +1,10 @@
 import { BackHandler, Dimensions, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
 import {
   BodyLargeText,
@@ -8,19 +12,19 @@ import {
   BodySmallTextSemiBold,
 } from "../../../components/shared/StyledText";
 import ValasConversion from "../../../components/valasHome/shared/ValasConversion";
-import { 
-  fetchMinimumDeposit, 
-} from "../../../config/ValasConfig";
+import { fetchMinimumDeposit } from "../../../config/ValasConfig";
 import StyledButton from "../../../components/shared/StyledButton";
-import WalletSource from "../../../components/valasHome/shared/WalletSource"; 
+import WalletSource from "../../../components/valasHome/shared/WalletSource";
 
 import colors from "../../../theme/colors";
 import ConfirmationModal from "../../../components/valasHome/shared/ConfirmationModal";
 import { alertConfirmation, formatNumber } from "../../../config/SharedConfig";
+import CloseValasModal from "../../../components/valasHome/shared/CloseValasModal";
 
 const FirstTopUpScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const [inputError, setInputError] = useState("");
   const [isVisible, setIsVisible] = useState(false);
 
@@ -35,7 +39,21 @@ const FirstTopUpScreen = () => {
     inputValue: "",
     convertedValue: "",
   });
+  const [modalVisible, setModalVisible] = useState(false);
 
+  const handleModal = () => {
+    setModalVisible(true);
+    return true;
+  };
+  useEffect(() => {
+    if (isFocused) {
+      const backHandler = BackHandler.addEventListener(
+        "hardwareBackPress",
+        () => handleModal()
+      );
+      return () => backHandler.remove();
+    }
+  }, [isFocused]);
   const getMinimumDeposit = async () => {
     try {
       const minimumDeposit = await fetchMinimumDeposit(
@@ -51,13 +69,6 @@ const FirstTopUpScreen = () => {
 
   useEffect(() => {
     getMinimumDeposit();
-  }, []);
-
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener("hardwareBackPress", () =>
-      alertConfirmation(navigation)
-    );
-    return () => backHandler.remove();
   }, []);
 
   const toggleBottomSheet = () => {
@@ -124,8 +135,12 @@ const FirstTopUpScreen = () => {
 
   return (
     <View style={styles.container}>
+      <CloseValasModal
+        isModalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
       <View style={styles.topContainer}>
-        <ContentHeader title="Setoran Awal" />
+        <ContentHeader title="Setoran Awal" hasConfirmation={true} setModalVisible={()=> setModalVisible(!modalVisible)} />
       </View>
       <View style={styles.middleContainer}>
         <View style={styles.mainContent}>
@@ -187,7 +202,7 @@ const FirstTopUpScreen = () => {
             style={{ marginBottom: 20 }}
           />
         )} */}
-         <StyledButton
+        <StyledButton
           mode={isButtonDisabled() ? "primary-disabled" : "primary"}
           title="Lanjut"
           size={"lg"}

@@ -63,7 +63,7 @@ const CheckTargetAccountScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleModal = () => {
-    setModalVisible(!modalVisible);
+    setModalVisible(true);
     return true;
   };
   useEffect(() => {
@@ -178,7 +178,7 @@ const CheckTargetAccountScreen = () => {
         setModalVisible={setModalVisible}
       />
       <View style={styles.topContainer}>
-        <ContentHeader title={"Transfer Valas"} hasConfirmation={true} />
+        <ContentHeader title={"Transfer Valas"} hasConfirmation={true} setModalVisible={()=> setModalVisible(!modalVisible)} />
       </View>
 
       <View style={styles.middleContainer}>

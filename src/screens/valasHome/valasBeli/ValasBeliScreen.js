@@ -20,9 +20,7 @@ import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
 import WalletSource from "../../../components/valasHome/shared/WalletSource";
 import ValasConversion from "../../../components/valasHome/shared/ValasConversion";
 import ConfirmationModal from "../../../components/valasHome/shared/ConfirmationModal";
-import { 
-  fetchMinimumBuy, 
-} from "../../../config/ValasConfig";
+import { fetchMinimumBuy } from "../../../config/ValasConfig";
 import CloseValasModal from "../../../components/valasHome/shared/CloseValasModal";
 import { formatNumber } from "../../../config/SharedConfig";
 
@@ -39,8 +37,9 @@ export default function ValasBeliScreen() {
     selectedRekening: route.params?.selectedRekening,
     selectedCurrency: route.params?.selectedCurrency,
     inputValue: "",
-    convertedValue: "",
+    convertedValue: "", 
   });
+  const currentBuyLimit = route.params?.convertedCurrentBuy;
 
   const [isVisible, setIsVisible] = useState(false);
   const [inputError, setInputError] = useState("");
@@ -100,18 +99,20 @@ export default function ValasBeliScreen() {
   };
 
   const checkError = (data, kursResult) => {
-    if (kursResult > transactionData.selectedRekening.balance) {
-      setInputError("Jumlah melebihi Saldo Aktif Rupiah");
-    } else if (parseInt(data) < parseInt(minimumBuy)) {
+    console.log("Dataaaa 1 : ", kursResult);
+    console.log("Dataaaa 1 : ", transactionData.selectedRekening.balance);
+    if (parseInt(kursResult) > parseInt(currentBuyLimit)) {
+      setInputError(
+        `Anda melebihi pembelian maksimum valas Rp. ${formatNumber(currentBuyLimit)}`
+      );
+    } else if (parseInt(data) < parseInt(minimumBuy) || parseInt(data) <= 0) {
       setInputError(
         `Minimum pembelian valas ${transactionData.selectedCurrency.currencyCode} ${minimumBuy}`
       );
-    } else if (parseInt(data) > parseInt(minimumBuy * 25000)) {
-      setInputError(
-        `Maksimum pembelian valas ${
-          transactionData.selectedCurrency.currencyCode
-        } ${minimumBuy * 25000}`
-      );
+    } else if (
+      parseInt(kursResult) > parseInt(transactionData.selectedRekening.balance)
+    ) {
+      setInputError("Jumlah melebihi Saldo Aktif Rupiah");
     } else {
       setInputError("");
       setTransactionData((prevState) => ({
@@ -137,6 +138,7 @@ export default function ValasBeliScreen() {
 
     return (
       transactionData.inputValue === "" ||
+      inputValue <= 0 ||
       inputValue < minimumBuy ||
       balance < convertedValue
     );
@@ -164,7 +166,11 @@ export default function ValasBeliScreen() {
         transactionData={transactionData}
       />
       <View style={styles.topContainer}>
-        <ContentHeader title={"Beli Valas"} hasConfirmation={true} />
+        <ContentHeader
+          title={"Beli Valas"}
+          hasConfirmation={true}
+          setModalVisible={() => setModalVisible(!modalVisible)}
+        />
       </View>
 
       <View style={styles.middleContainer}>

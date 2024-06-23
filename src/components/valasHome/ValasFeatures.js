@@ -3,7 +3,7 @@ import { BodySmallText } from "../shared/StyledText";
 import colors from "../../theme/colors";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import { useState } from "react"; 
 
 const FeatureButton = ({ namaFitur, onPress }) => {
   return (
@@ -60,6 +60,7 @@ const FeatureButton = ({ namaFitur, onPress }) => {
 };
 
 const ValasFeatures = ({
+  dataCurrency,
   selectedRekening,
   selectedWallet,
   selectedCurrency,
@@ -69,15 +70,14 @@ const ValasFeatures = ({
   setModalVisibleBeli,
   modalVisibleReservation,
   setModalVisibleReservation,
-  currentBuy, 
+  convertedCurrentBuy, 
   reservation
 }) => {
   useState(() => {}, []);
-  const navigation = useNavigation();
-
-  const handleNavigateTarik = () => {
+  const navigation = useNavigation(); 
+  const handleNavigateTarik = () => { 
     //setModalVisibleTarik(!modalVisibleTarik);
-    if(reservation){
+    if(reservation.length > 0){
       setModalVisibleReservation(true);
     }
     else{
@@ -90,11 +90,13 @@ const ValasFeatures = ({
     
   };
   const handleNavigateBeli = () => {
-    if (currentBuy > 0) {
+    if (convertedCurrentBuy > 0) { 
+      console.log("Curbuy : "  ,convertedCurrentBuy);
       navigation.navigate("ValasBeli", {
         selectedRekening,
         selectedWallet,
         selectedCurrency,
+        convertedCurrentBuy
       });
     } else {
       setModalVisibleBeli(!modalVisibleBeli);

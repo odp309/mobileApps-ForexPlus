@@ -20,7 +20,8 @@ const ReservationDetectedModal = ({ modalVisible, setModalVisible}) => {
       <View style={styles.modalBackground}>
         <View style={styles.modalContainer}>
           <Image
-            source={require("../../../../assets/limit.png")}
+            source={require("../../../../assets/CalendarReservation.png")}
+            resizeMode="center"
             style={styles.icon}
           />
           <BodyRegularText style={styles.messageText}>
@@ -67,6 +68,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginTop: -70,
+    height:150,
+    width:150
   },
   messageText: {
     width: "90%",

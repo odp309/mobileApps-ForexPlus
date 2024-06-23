@@ -12,6 +12,7 @@ const ContentHeader = ({
   ignoreBackButton,
   hasConfirmation,
   hasRigtIcon,
+  setModalVisible
 }) => {
   const navigation = useNavigation();
   return (
@@ -21,6 +22,7 @@ const ContentHeader = ({
           <View style={{ flex: 0.2  }}>
             <BackButton
               hasConfirmation={hasConfirmation}
+              setModalVisible={setModalVisible}
               style={{ width: 50 }}
               onPress={() => navigation.goBack()}
               color={colors.color.black}
