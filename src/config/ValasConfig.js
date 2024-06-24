@@ -205,6 +205,18 @@ const fetchMinimumTransfer = async (currencyCode) => {
   }
 };
 
+const fetchMinimumWithdrawal = async (currencyCode) => {
+  try {
+    const dataMinimumTransfer = await axiosInstance.post(
+      "/v1/private/currency/minimum-withdrawal/get",
+      { currencyCode }
+    );
+    return dataMinimumTransfer.data.minimum;
+  } catch (error) {
+    console.log("gagal fetch minim transfer : ", error);
+  }
+};
+
 const findBankAccountInfo = async (
   senderAccountNumber,
   recipientAccountNumber,
@@ -264,7 +276,7 @@ const fetchHistoryDetail = async (trxId) => {
   try {
     console.log("trx ID : " + trxId);
     const response = await axiosInstance.post(
-      "/v2/private/history/get-detail",
+      "/v1/private/history/get-detail",
       {
         trxId,
       }
@@ -331,5 +343,6 @@ export {
   fetchHistoryDetail,
   fetchMinimumDeposit,
   fetchReservationList,
-  fetchCurrentBuyLimit
+  fetchCurrentBuyLimit,
+  fetchMinimumWithdrawal
 };

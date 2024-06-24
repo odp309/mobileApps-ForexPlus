@@ -103,10 +103,6 @@ const FirstTopUpScreen = () => {
       setInputError(
         `Minimum setoran valas ${transactionData.selectedCurrency.currencyCode} ${minDeposit}`
       );
-    } else if (parseInt(data) > parseInt(maxPurchase)) {
-      setInputError(
-        `Maksimum setoran valas ${transactionData.selectedCurrency.currencyCode} ${maxPurchase}`
-      );
     } else {
       setInputError("");
       setTransactionData((prevState) => ({

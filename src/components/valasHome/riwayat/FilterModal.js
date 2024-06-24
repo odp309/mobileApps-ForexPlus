@@ -17,6 +17,7 @@ import StyledButton from "../../shared/StyledButton";
 import colors from "../../../theme/colors";
 import RadioButton from "../../shared/RadioButton";
 import RangeOptions from "./RangeOptions";
+import { StatusBar } from "expo-status-bar";
 
 let today = new Date();
 
@@ -64,7 +65,9 @@ const FilterModal = ({ isModalShown, toggleBottomSheet, handleFilter }) => {
   };
 
   return (
-    <BottomSheet isVisible={isModalShown}>
+    <BottomSheet isVisible={isModalShown} onBackdropPress={toggleBottomSheet}>
+      <StatusBar style="dark"backgroundColor="rgba(0, 0, 0, 0.2)" 
+        translucent={true} />
       <View style={styles.container}>
         <View style={styles.topContainer}>
           <BodyLargeTextSemiBold>Kategori</BodyLargeTextSemiBold>
@@ -144,8 +147,7 @@ const FilterModal = ({ isModalShown, toggleBottomSheet, handleFilter }) => {
           />
         </View>
 
-        <View style={styles.bottomContainer}>
-          {/* JUAL BUTTON */}
+        <View style={styles.bottomContainer}> 
           <StyledButton
             mode={"primary"}
             title={"Terapkan"}

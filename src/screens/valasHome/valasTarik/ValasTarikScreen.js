@@ -16,13 +16,22 @@ import {
 } from "../../../components/shared/StyledText";
 import colors from "../../../theme/colors";
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
-import { useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import InputCurrency from "../../../components/valasHome/shared/InputCurrency";
 import WalletValasSource from "../../../components/valasHome/shared/WalletValasSource";
 import StyledButton from "../../../components/shared/StyledButton";
 import * as Location from "expo-location";
-import { fetchRelatedBranch } from "../../../config/ValasConfig";
+import {
+  fetchMinimumWithdrawal,
+  fetchRelatedBranch,
+} from "../../../config/ValasConfig";
 import CloseValasModal from "../../../components/valasHome/shared/CloseValasModal";
+import { formatNumber } from "../../../config/SharedConfig";
+import NominalTransactionLimitedModal from "../../../components/valasHome/shared/NominalTransactionLimitedModal";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
@@ -42,10 +51,19 @@ const ValasTarikScreen = () => {
   const [loading, setLoading] = useState(true);
   const [location, setLocation] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalMaxTarikVisible, setModalMaxTarikVisible] = useState(false);
+  const [minimumTarik, setMinimumTarik] = useState(0);
 
   const handleModal = () => {
     setModalVisible(true);
     return true;
+  };
+
+  const getMinimumTarik = async () => {
+    const data = await fetchMinimumWithdrawal(
+      transactionData.selectedWallet.currencyCode
+    );
+    setMinimumTarik(data);
   };
 
   useEffect(() => {
@@ -58,11 +76,17 @@ const ValasTarikScreen = () => {
     }
   }, [isFocused]);
 
+  useEffect(() => {
+    getMinimumTarik();
+  }, []);
   const getLocation = async () => {
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        Alert.alert("Akses lokasi telah ditolak","Silahkan buka peraturan untuk mengaktifkan");
+        Alert.alert(
+          "Akses lokasi telah ditolak",
+          "Silakan buka peraturan untuk mengaktifkan"
+        );
         return navigation.goBack();
       }
       const location = await Location.getCurrentPositionAsync({
@@ -85,9 +109,11 @@ const ValasTarikScreen = () => {
         transactionData.inputValue,
         transactionData.selectedWallet.currencyCode
       );
-      if (getBranch) {
+      if (getBranch.length > 0) {
         console.log(getBranch);
         navigation.navigate("ChooseBranch", { transactionData, getBranch });
+      } else {
+        setModalMaxTarikVisible(true);
       }
     } catch (error) {}
   };
@@ -118,8 +144,8 @@ const ValasTarikScreen = () => {
       return;
     }
 
-    if (parseInt(e) % 100 !== 0) {
-      setErrorText("Nominal penarikan harus dalam kelipatan 100");
+    if (parseInt(e) % minimumTarik !== 0) {
+      setErrorText("Nominal penarikan harus dalam kelipatan " + minimumTarik);
       return;
     }
   }
@@ -134,17 +160,26 @@ const ValasTarikScreen = () => {
   return (
     location && (
       <View style={styles.container}>
+        <NominalTransactionLimitedModal modalVisible={modalMaxTarikVisible} setModalVisible={setModalMaxTarikVisible} />
         <CloseValasModal
           isModalVisible={modalVisible}
           setModalVisible={setModalVisible}
         />
         <View style={styles.topContainer}>
-          <ContentHeader title={"Tarik Valas"} hasConfirmation={true} setModalVisible={()=> setModalVisible(!modalVisible)} />
+          <ContentHeader
+            title={"Tarik Valas"}
+            hasConfirmation={true}
+            setModalVisible={() => setModalVisible(!modalVisible)}
+          />
         </View>
 
         <View style={styles.middleContainer}>
           <BodyXLTextBold
-            style={{ color: colors.primary.primaryOne, marginHorizontal: "5%", fontSize:20 }}
+            style={{
+              color: colors.primary.primaryOne,
+              marginHorizontal: "5%",
+              fontSize: 20,
+            }}
           >
             Masukkan Jumlah Penarikan
           </BodyXLTextBold>
@@ -155,7 +190,8 @@ const ValasTarikScreen = () => {
                 style={{ fontSize: 15, color: colors.primary.primaryOne }}
               >
                 {" "}
-                minimum penarikan {selectedWallet.currencyCode} 100
+                minimum penarikan {selectedWallet.currencyCode}{" "}
+                {formatNumber(minimumTarik)}
               </BodySmallTextSemiBold>
               .
             </BodySmallText>
@@ -185,7 +221,7 @@ const ValasTarikScreen = () => {
         <View style={styles.bottomContainer}>
           {transactionData.inputValue === "" ||
           transactionData.inputValue <= 0 ||
-          transactionData.inputValue % 100 != 0 ||
+          transactionData.inputValue % minimumTarik != 0 ||
           transactionData.inputValue >
             transactionData.selectedWallet.balance ? (
             <StyledButton

@@ -13,6 +13,7 @@ import {
 import StyledButton from "../../../components/shared/StyledButton";
 import { useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
 import LottieView from "lottie-react-native";
+import { formatDate } from "../../../config/SharedConfig";
 
 const ValasReservationScreen = () => {
   const route = useRoute();
@@ -79,7 +80,7 @@ const ValasReservationScreen = () => {
                 {reservation.branchType} {reservation.branchName}
               </BodyMediumTextSemiBold>
               <BodyMediumTextSemiBold>
-                {reservation.reservationDate}
+                {formatDate(reservation.reservationDate.slice(0,10))}
               </BodyMediumTextSemiBold>
             </View>
           </View>

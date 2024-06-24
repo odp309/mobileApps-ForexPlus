@@ -41,6 +41,10 @@ const formattedDateCurrency = (lastUpdated) => {
   return formattedDate;
 };
 
+const formatDate = (date) => {
+  require('moment/locale/id');
+  return moment(date).locale("id").tz("Asia/Bangkok").format("DD MMMM YYYY");
+}
 const convertToGMT7 = (utcTime) => {
   const utcMoment = moment.utc(utcTime, "YYYY-MM-DD HH:mm:ss");
 
@@ -68,4 +72,5 @@ export {
   convertToGMT7,
   formattedDateCurrency,
   currentBuyValasIDR,
+  formatDate
 };

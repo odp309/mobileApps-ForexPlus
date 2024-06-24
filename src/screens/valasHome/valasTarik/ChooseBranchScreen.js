@@ -6,28 +6,37 @@ import {
   FlatList,
 } from "react-native";
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
-import { BodyMediumTextSemiBold, HeadingSixText } from "../../../components/shared/StyledText";
+import {
+  BodyMediumTextSemiBold,
+  HeadingSixText,
+} from "../../../components/shared/StyledText";
 import colors from "../../../theme/colors";
 import { FontAwesome } from "@expo/vector-icons";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import BranchItem from "../../../components/valasHome/valasTarik/BranchItem";
 import { useNavigation, useRoute } from "@react-navigation/native";
- 
 
 const ChooseBranchScreen = () => {
   const route = useRoute();
   const [inputBranch, setInputBranch] = useState("");
   const navigation = useNavigation();
-  const {transactionData,location,getBranch} = route.params;
+  const { transactionData, location, getBranch } = route.params;
 
-  const receiveBranchData = (branch) => {   
-    navigation.navigate('ChooseDate',{transactionData,selectedBranch:branch});
+  const receiveBranchData = (branch) => {
+    navigation.navigate("ChooseDate", {
+      transactionData,
+      selectedBranch: branch,
+    });
   };
 
-  // Branch Item for Flatlist
   const renderedView = ({ item }) => (
     <BranchItem data={item} handleOnPress={receiveBranchData} />
-  ); 
+  );
+  const filteredBranch = useMemo(() => {
+    return getBranch.filter((item) =>
+      item.name.toLowerCase().includes(inputBranch.toLowerCase())
+    );
+  }, [inputBranch, getBranch]);
 
   return (
     <View style={styles.container}>
@@ -36,7 +45,6 @@ const ChooseBranchScreen = () => {
       </View>
 
       <View style={styles.middleContainer}>
-        {/* Title and SearchBar */}
         <View style={styles.titleSearchContainer}>
           <HeadingSixText
             style={{
@@ -47,7 +55,6 @@ const ChooseBranchScreen = () => {
           >
             Pilih Cabang Penarikan
           </HeadingSixText>
-          {/* Searchbar */}
           <View style={styles.searchBar}>
             <View style={styles.searchIcon}>
               <FontAwesome name="search" size={24} color={colors.color.grey} />
@@ -56,22 +63,29 @@ const ChooseBranchScreen = () => {
               placeholder="Cari cabang..."
               value={inputBranch}
               onChangeText={setInputBranch}
+              style={{
+                fontFamily: "poppins-semibold",
+                paddingTop: 5,
+                width: "75%",
+                color: colors.color.grey,
+              }}
             />
           </View>
         </View>
 
-        {/* Bank Branch Flatlist */}
         <View>
-          {getBranch.length > 0 ? (
+          {filteredBranch.length > 0 ? (
             <FlatList
-            data={getBranch}
-            key={(item) => {
-              item.id;
-            }}
-            renderItem={renderedView}
-          />
-          ):(
-            <BodyMediumTextSemiBold style={{textAlign : "center"}}>DATA KOSONG</BodyMediumTextSemiBold>
+              data={filteredBranch}
+              key={(item) => {
+                item.code;
+              }}
+              renderItem={renderedView}
+            />
+          ) : (
+            <BodyMediumTextSemiBold style={{ textAlign: "center" }}>
+              DATA KOSONG
+            </BodyMediumTextSemiBold>
           )}
         </View>
       </View>
@@ -106,9 +120,10 @@ const styles = StyleSheet.create({
     width: "100%",
     minHeight: 40,
     borderRadius: 15,
-    backgroundColor: colors.color.lightGrey,
+    backgroundColor: colors.color.veryLightGrey,
     flexDirection: "row",
     alignItems: "center",
+    fontFamily: "poppins-semibold",
   },
   searchIcon: {
     paddingHorizontal: 20,

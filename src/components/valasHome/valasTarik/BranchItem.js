@@ -35,7 +35,7 @@ const BranchItem = ({ data, handleOnPress }) => {
         )}
 
         <BodySmallText style={{ fontWeight: "bold", color: colors.color.grey }}>
-          {data.address}
+          {data.province}, {data.city}
         </BodySmallText>
       </View>
     </TouchableOpacity>

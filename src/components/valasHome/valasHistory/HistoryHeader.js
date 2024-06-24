@@ -46,13 +46,13 @@ const HistoryHeader = ({
               color={colors.primary.primaryOne}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleDownloadPress}>
+          {/* <TouchableOpacity onPress={handleDownloadPress}>
             <MaterialIcons
               name="download"
               size={28}
               color={colors.primary.primaryOne}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     </View>
