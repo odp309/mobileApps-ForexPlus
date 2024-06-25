@@ -15,7 +15,6 @@ import ValasTarikScreen from "../screens/valasHome/valasTarik/ValasTarikScreen.j
 import HistoryScreen from "../screens/valasHome/riwayatTransaksi/HistoryScreen.js";
 import TransactionResultScreen from "../screens/valasHome/TransactionResultScreen";
 import ChooseBranchScreen from "../screens/valasHome/valasTarik/ChooseBranchScreen";
-import ValasRiwayatScreen from "../screens/valasHome/riwayat/ValasRiwayatScreen";
 import ChooseDateScreen from "../screens/valasHome/valasTarik/ChooseDateScreen";
 import ChooseWalletScreen from "../screens/valasHome/valasAddWallet/ChooseWalletScreen.js";
 import FirstTopUpScreen from "../screens/valasHome/valasAddWallet/FirstTopUpScreen.js";

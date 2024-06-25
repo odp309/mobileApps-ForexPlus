@@ -136,14 +136,21 @@ const FirstTopUpScreen = () => {
         setModalVisible={setModalVisible}
       />
       <View style={styles.topContainer}>
-        <ContentHeader title="Setoran Awal" hasConfirmation={true} setModalVisible={()=> setModalVisible(!modalVisible)} />
+        <ContentHeader
+          title="Setoran Awal"
+          hasConfirmation={true}
+          setModalVisible={() => setModalVisible(!modalVisible)}
+        />
       </View>
       <View style={styles.middleContainer}>
         <View style={styles.mainContent}>
           <BodySmallTextSemiBold style={{ textAlign: "center" }}>
-            Setor mulai dari {transactionData.selectedCurrency.currencyCode}{" "}
-            {minDeposit} atau lebih agar Dompet Valas bisa langsung digunakan
-            untuk transaksi
+            Setor{" "}
+            <BodySmallTextSemiBold style={{ color: colors.primary.primaryOne }}>
+              minimum {transactionData.selectedCurrency.currencyCode}{" "}
+              {minDeposit}{" "}
+            </BodySmallTextSemiBold>
+            atau lebih agar Dompet Valas bisa langsung digunakan untuk transaksi
           </BodySmallTextSemiBold>
           <View style={{ marginTop: 20 }}>
             <ValasConversion
