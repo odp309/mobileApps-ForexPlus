@@ -14,22 +14,6 @@ import ResultCard from "../../components/valasHome/ResultCard";
 import ResultTitleAndDate from "../../components/valasHome/shared/ResultTitleAndDate";
 import { country } from "../../config/CountryDataConfig";
 
-// FORMAT transactionData:
-// const transactionData = {
-//   // Must
-//   isSetoranAwal: false, //boolean
-//   isTransfer: false, //boolean
-//   isSellOrPurchase: true, //boolean
-//   date: "29 Juni 2024",
-//   noRek: "1811209312",
-//   saldo: "1000", // Saldo transaksi
-//   tipeValas: "jpy", //jpy,aud,usd, dan lain lainnya
-
-//   // Depends on the Type of Transaction
-//   transactionType: "Penjualan",  //Pembelian || Penjualan
-//   namaPenerima: 'Adelia Kinanti',
-// };
-
 const MONTHS_NAME = [
   "Januari",
   "Februari",
@@ -45,8 +29,6 @@ const MONTHS_NAME = [
   "Desember",
 ];
 
-
-
 const TransactionResultScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -58,21 +40,16 @@ const TransactionResultScreen = () => {
     navigation.navigate("ValasHome");
   };
 
-  // const getDate = () => {
-    const FINISH_TRANSACTION_TIME = new Date();
-    const month = FINISH_TRANSACTION_TIME.getMonth();
-    const monthName = MONTHS_NAME[month];
-    const day = FINISH_TRANSACTION_TIME.getDate();
-    const year = FINISH_TRANSACTION_TIME.getFullYear();
-    const hour = FINISH_TRANSACTION_TIME.getHours();
-    const minute = FINISH_TRANSACTION_TIME.getMinutes();
-  
-    const transactionDate = `${day} ${monthName} ${year} - ${hour}:${minute}`;
-    // console.log("message:");
-    // console.log(message);
-    
-    // return message;
-  // };
+  const FINISH_TRANSACTION_TIME = new Date();
+  const month = FINISH_TRANSACTION_TIME.getMonth();
+  const monthName = MONTHS_NAME[month];
+  const day = FINISH_TRANSACTION_TIME.getDate();
+  const year = FINISH_TRANSACTION_TIME.getFullYear();
+  const hour = FINISH_TRANSACTION_TIME.getHours();
+  const minute =
+    (FINISH_TRANSACTION_TIME.getMinutes() < 10 ? "0" : "") +
+    FINISH_TRANSACTION_TIME.getMinutes();
+  const transactionDate = `${day} ${monthName} ${year} - ${hour}:${minute}`;
 
   // Animation Function
   useEffect(() => {
@@ -114,7 +91,7 @@ const TransactionResultScreen = () => {
           ) : transactionType === "jual" ? (
             <ResultTitleAndDate
               title="Permintaan Penjualan Berhasil Terkirim"
-              date={transactionDate} //Fix Bagian ini harusnya make date baru bukan createdAt si currency nya.
+              date={transactionDate} 
             />
           ) : transactionType === "transfer" ? (
             <ResultTitleAndDate

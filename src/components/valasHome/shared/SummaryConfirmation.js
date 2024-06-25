@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { BodyRegularText } from "../../shared/StyledText"; 
-import { formatNumber } from "../../../config/SharedConfig";
+import { formatCurrencyNumber, formatNumber } from "../../../config/SharedConfig";
 
 const SummaryConfirmation = ({ transactionData, transactionType }) => {
   return (
@@ -27,8 +27,8 @@ const SummaryConfirmation = ({ transactionData, transactionType }) => {
         <BodyRegularText style={{ fontWeight: "bold" }}>
           {transactionData.selectedCurrency.currencyCode} 1 = RP.{" "}
           {transactionType === "jual"
-            ? formatNumber(transactionData.selectedCurrency.sellRate)
-            : formatNumber(transactionData.selectedCurrency.buyRate)}
+            ? formatCurrencyNumber(transactionData.selectedCurrency.sellRate)
+            : formatCurrencyNumber(transactionData.selectedCurrency.buyRate)}
         </BodyRegularText>
       </View>
       <View style={styles.confirmationText}>

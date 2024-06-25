@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import { BodyMediumText } from "../../shared/StyledText"; 
 import colors from "../../../theme/colors";
-import { formatNumber } from "../../../config/SharedConfig";
+import { formatCurrencyNumber, formatNumber } from "../../../config/SharedConfig";
 
 const MONTHS_NAME = [
   "Januari",
@@ -74,7 +74,7 @@ const JualBeliSecondContent = ({
             </View>
           )}
           <BodyMediumText>
-            {currencyCode} 1 = Rp {formatNumber(kurs)}
+            {currencyCode} 1 = Rp {formatCurrencyNumber(kurs)}
           </BodyMediumText>
         </View>
       </View>

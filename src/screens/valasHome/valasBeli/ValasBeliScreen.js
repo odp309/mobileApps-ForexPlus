@@ -22,7 +22,7 @@ import ValasConversion from "../../../components/valasHome/shared/ValasConversio
 import ConfirmationModal from "../../../components/valasHome/shared/ConfirmationModal";
 import { fetchMinimumBuy } from "../../../config/ValasConfig";
 import CloseValasModal from "../../../components/valasHome/shared/CloseValasModal";
-import { formatNumber } from "../../../config/SharedConfig";
+import { formatCurrencyNumber, formatNumber } from "../../../config/SharedConfig";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height * 1.05;
 
@@ -101,7 +101,7 @@ export default function ValasBeliScreen() {
   const checkError = (data, kursResult) => {
     console.log("Dataaaa 1 : ", kursResult);
     console.log("Dataaaa 1 : ", transactionData.selectedRekening.balance);
-    if (parseInt(kursResult) > parseInt(currentBuyLimit)) {
+    if (parseInt(data) > parseInt(currentBuyLimit)) {
       setInputError(
         `Anda melebihi pembelian maksimum valas ${transactionData.selectedWallet.currencyCode} ${formatNumber(currentBuyLimit)}`
       );
@@ -191,7 +191,7 @@ export default function ValasBeliScreen() {
             </BodyMediumText>
             <BodyLargeText style={styles.textStyle}>
               {transactionData.selectedCurrency.currencyCode} 1.00 = IDR{" "}
-              {formatNumber(transactionData.selectedCurrency.buyRate)}
+              {formatCurrencyNumber(transactionData.selectedCurrency.buyRate)}
             </BodyLargeText>
           </View>
         </View>

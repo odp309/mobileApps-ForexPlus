@@ -29,7 +29,7 @@ import {
 } from "@react-navigation/native";
 import WalletValasSource from "../../../components/valasHome/shared/WalletValasSource";
 import CloseValasModal from "../../../components/valasHome/shared/CloseValasModal";
-import { formatNumber } from "../../../config/SharedConfig";
+import { formatCurrencyNumber, formatNumber } from "../../../config/SharedConfig";
 
 const DIMENSION_HEIGHT = Dimensions.get("window").height;
 
@@ -187,7 +187,7 @@ const ValasJualScreen = () => {
             </BodyMediumText>
             <BodyLargeText style={styles.textStyle}>
               {transactionData.selectedCurrency.currencyCode} 1.00 = IDR{" "}
-              {formatNumber(transactionData.selectedCurrency.sellRate)}
+              {formatCurrencyNumber(transactionData.selectedCurrency.sellRate)}
             </BodyLargeText>
           </View>
         </View>

@@ -18,7 +18,7 @@ import WalletSource from "../../../components/valasHome/shared/WalletSource";
 
 import colors from "../../../theme/colors";
 import ConfirmationModal from "../../../components/valasHome/shared/ConfirmationModal";
-import { alertConfirmation, formatNumber } from "../../../config/SharedConfig";
+import { alertConfirmation, formatCurrencyNumber, formatNumber } from "../../../config/SharedConfig";
 import CloseValasModal from "../../../components/valasHome/shared/CloseValasModal";
 
 const FirstTopUpScreen = () => {
@@ -136,14 +136,21 @@ const FirstTopUpScreen = () => {
         setModalVisible={setModalVisible}
       />
       <View style={styles.topContainer}>
-        <ContentHeader title="Setoran Awal" hasConfirmation={true} setModalVisible={()=> setModalVisible(!modalVisible)} />
+        <ContentHeader
+          title="Setoran Awal"
+          hasConfirmation={true}
+          setModalVisible={() => setModalVisible(!modalVisible)}
+        />
       </View>
       <View style={styles.middleContainer}>
         <View style={styles.mainContent}>
           <BodySmallTextSemiBold style={{ textAlign: "center" }}>
-            Setor <BodySmallTextSemiBold style={{color:colors.primary.primaryOne}}>minimum {transactionData.selectedCurrency.currencyCode}{" "}{minDeposit}</BodySmallTextSemiBold> 
-            {" "}atau lebih agar Dompet Valas bisa langsung digunakan
-            untuk transaksi
+            Setor{" "}
+            <BodySmallTextSemiBold style={{ color: colors.primary.primaryOne }}>
+              minimum {transactionData.selectedCurrency.currencyCode}{" "}
+              {minDeposit}{" "}
+            </BodySmallTextSemiBold>
+            atau lebih agar Dompet Valas bisa langsung digunakan untuk transaksi
           </BodySmallTextSemiBold>
           <View style={{ marginTop: 20 }}>
             <ValasConversion
@@ -163,7 +170,7 @@ const FirstTopUpScreen = () => {
             </BodyMediumText>
             <BodyLargeText style={styles.textStyle}>
               {transactionData.selectedCurrency.currencyCode} 1.00 = Rp.{" "}
-              {formatNumber(transactionData.selectedCurrency.buyRate)}
+              {formatCurrencyNumber(transactionData.selectedCurrency.buyRate)}
             </BodyLargeText>
           </View>
         </View>
