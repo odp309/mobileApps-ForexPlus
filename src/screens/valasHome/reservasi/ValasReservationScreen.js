@@ -1,4 +1,4 @@
-import { BackHandler, Dimensions, Image, StyleSheet, Text, View } from "react-native";
+import { BackHandler, Dimensions, Image, Platform, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useRef } from "react";
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
 import colors from "../../../theme/colors";
@@ -80,7 +80,7 @@ const ValasReservationScreen = () => {
                 {reservation.branchType} {reservation.branchName}
               </BodyMediumTextSemiBold>
               <BodyMediumTextSemiBold>
-                {formatDate(reservation.reservationDate.slice(0,10))}
+                {reservation.reservationDate}
               </BodyMediumTextSemiBold>
             </View>
           </View>
@@ -97,6 +97,7 @@ const ValasReservationScreen = () => {
           title="Ke Halaman Utama"
           onPress={toHomeScreen}
           size={"lg"}
+          style={{marginBottom: Platform.OS=="ios" ? "15%" : 0}}
         />
       </View>
     </View>
@@ -112,18 +113,18 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     width: "100%", 
-    flex:0.1
+    flex:0.1, 
   },
   middleContainer: {
     width: "100%",
     flex: 0.75,
-    paddingHorizontal: 20,
+    paddingHorizontal: 20, 
   },
   bottomContainer: {
     width: "100%",
     justifyContent: "center",
     flex: 0.15,
-    paddingHorizontal: 20,
+    paddingHorizontal: 20, 
   },
   imageContainer: {
     width: "100%",

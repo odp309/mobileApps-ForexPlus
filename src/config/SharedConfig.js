@@ -55,14 +55,17 @@ const convertToGMT7 = (utcTime) => {
   return formattedTime;
 };
 
-const currentBuyValasIDR = (currLimit, kursList) => { 
-  console.log("CurrLimit : ",currLimit);
+const currentBuyValasIDR = (currLimit, kursList,selectedCurrency) => { 
+  console.log("CurrLimit : ",selectedCurrency);
   console.log("Kurs List : ",kursList); 
   const filtered = kursList.find((item)=> {
     return item.currencyCode.includes("USD");
   })
+  const indoResult = filtered.buyRate * currLimit;
+  console.log("Buyrate : ",selectedCurrency.buyRate)
+  const convertedCurrency = indoResult / selectedCurrency.buyRate;
   console.log("CurrentLimit in IDR : ",filtered.buyRate * currLimit);
-  return filtered.buyRate * currLimit
+  return convertedCurrency;
 };
 
 export {

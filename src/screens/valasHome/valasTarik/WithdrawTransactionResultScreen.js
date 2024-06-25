@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Dimensions, Image } from "react-native";
+import { StyleSheet, Text, View, Dimensions, Image, Platform } from "react-native";
 import React, { useRef } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import {
@@ -26,16 +26,7 @@ const WithdrawTransactionResultScreen = () => {
     <View style={styles.container}>
       <View style={styles.topContainer}></View>
       <View style={styles.middleContainer}>
-        <View style={{ width: "100%", alignItems: "center", marginTop:20 }}>
-          <LottieView
-            ref={animationRef}
-            source={require("../../../../assets/gif/Success_Animation.json")} // Replace with the JSON file for your GIF animation
-            autoPlay={true}
-            loop={false}
-            style={{ width: 100, height: 100 }}
-          />
-        </View>
-        <BodyLargeTextSemiBold style={{ textAlign: "center", lineHeight:24 }}>
+        <BodyLargeTextSemiBold style={{ textAlign: "center", fontSize:21 }}>
           Permintaan Reservasi Berhasil Terkirim
         </BodyLargeTextSemiBold>
         <BodySmallTextSemiBold style={{ textAlign: "center", marginTop:10 }}>
@@ -90,6 +81,7 @@ const WithdrawTransactionResultScreen = () => {
           title="Ke Halaman Utama"
           onPress={toHomeScreen}
           size={"lg"}
+          style={{marginBottom: Platform.OS=="ios" ? "15%" : 0}}
         />
       </View>
     </View>

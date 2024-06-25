@@ -11,7 +11,7 @@ import { ModalContext } from "../context/ModalContext";
 
 const BottomNavigator = () => {
   const navigation = useNavigation(); 
-  const { setShowModal } = useContext(ModalContext); // Use context
+  const { setShowModal } = useContext(ModalContext); 
   const navigationIconFormat = (focused, iconName) => {
     return (
       <View
@@ -122,7 +122,7 @@ const BottomNavigator = () => {
           tabBarButton: (props) => (
             <TouchableOpacity
               {...props}
-              onPress={() => handleLogoutPress()} // Show modal on logout press
+              onPress={() => handleLogoutPress()} 
               activeOpacity={0.7}
             />
           ),

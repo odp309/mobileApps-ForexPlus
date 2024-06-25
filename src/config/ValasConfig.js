@@ -1,6 +1,6 @@
 import axios from "axios";
 import axiosInstance from "../connectivity/AxiosConfigManager";
-import { url } from "../connectivity/ApiManager"; 
+import { url } from "../connectivity/ApiManager";
 
 const fetchNomorRekening = async (accountNumber) => {
   try {
@@ -299,7 +299,7 @@ const fetchReservationList = async () => {
       "/v2/private/reservation-list/user-get"
     );
     if (response) {
-      console.log("Reservation : ",response.data);
+      console.log("Reservation : ", response.data);
       return response.data;
     } else {
       return null;
@@ -309,13 +309,25 @@ const fetchReservationList = async () => {
   }
 };
 
+const fetchIsCooldown = async () => {
+  try {
+    const response = await axiosInstance.post(
+      "/v2/private/withdraw-valas/checker"
+    );
+    console.log("Checker : ", response.data);
+    return response.data;
+  } catch (error) {
+    return error.response.data.access_denied_reason;
+  }
+};
 const fetchCurrentBuyLimit = async (id) => {
   try {
     const response = await axiosInstance.post(
-      "/v2/private/buy-valas/limit-check",{id}
+      "/v2/private/buy-valas/limit-check",
+      { id }
     );
     if (response) {
-      console.log("Limit buy : ",response.data);
+      console.log("Limit buy : ", response.data);
       return response.data;
     } else {
       return null;
@@ -344,5 +356,6 @@ export {
   fetchMinimumDeposit,
   fetchReservationList,
   fetchCurrentBuyLimit,
-  fetchMinimumWithdrawal
+  fetchMinimumWithdrawal,
+  fetchIsCooldown,
 };

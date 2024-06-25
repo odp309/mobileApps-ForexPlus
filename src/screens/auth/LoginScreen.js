@@ -18,11 +18,16 @@ import React, { useCallback, useEffect, useState } from "react";
 import StyledButton from "../../components/shared/StyledButton";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { 
-  BodySmallText, 
-} from "../../components/shared/StyledText";
+import { BodySmallText } from "../../components/shared/StyledText";
 import Input from "../../components/shared/Input";
-import { JwtDecoder, cleanupToken, login, logout, userData } from "../../config/AuthConfig";
+import {
+  JwtDecoder,
+  checkTokenAvailibility,
+  cleanupToken,
+  login,
+  logout, 
+  userData,
+} from "../../config/AuthConfig";
 import colors from "../../theme/colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "expo-status-bar";
@@ -38,22 +43,16 @@ const LoginScreen = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const slideAnim = useState(new Animated.Value(screenHeight))[0];
   const [isLoading, setIsLoading] = useState(false);
-  const [wrongValidation, setWrongValidation] = useState(false);
-  const expiredTime = 60 * 10 * 1000; // 10 minutes in milliseconds
-  const [remainingTime, setRemainingTime] = useState(expiredTime);
+  const [wrongValidation, setWrongValidation] = useState(false); 
 
   useEffect(() => {
     cleanupToken();
   }, []);
-
-  useEffect(() => {
-    console.log("Expired Time:", expiredTime);
-  }, [expiredTime]);
-
+ 
   const handleLogin = async () => {
-    setIsLoading(true); 
+    setIsLoading(true);
     try {
-      const fetchLogin = await login(email, password);
+      const fetchLogin = await login(email, password,navigation);
       await handleSuccessfulLogin(fetchLogin);
     } catch (error) {
       handleLoginError(error);
@@ -62,33 +61,13 @@ const LoginScreen = () => {
     }
   };
 
-  const handleSuccessfulLogin = async (fetchLogin) => {  
-    console.log(fetchLogin.data)
+  const handleSuccessfulLogin = async (fetchLogin) => {
+    console.log(fetchLogin.data);
     if (userData) {
       setModalVisible(!modalVisible);
       navigation.navigate("HomePage");
     }
 
-    setTimeout(() => { 
-      Alert.alert("Token expired", "Your session has expired.", [
-        { onPress: () => logout(navigation) },
-      ]);
-    }, expiredTime);
-    // const intervalId = setInterval(() => {
-    //   setRemainingTime((prevRemainingTime) => {
-    //     if (prevRemainingTime <= 1000) {
-    //       clearInterval(intervalId);
-    //       cleanupToken();
-    //       Alert.alert("Token expired", "Your session has expired.", [
-    //         { onPress: () => navigation.navigate("Login") },
-    //       ]);
-    //       return 0;
-    //     } else {
-    //       console.log(`Remaining time: ${prevRemainingTime / 1000} seconds`);
-    //       return prevRemainingTime - 1000;
-    //     }
-    //   });
-    // }, 1000);
   };
 
   const handleLoginError = (error) => {

@@ -6,6 +6,7 @@ import { jwtDecode } from "jwt-decode";
 
 
 let userData =null;
+let tokenCheckTimeout = 0;
 
 const JwtDecoder = async (accessToken) => {
   let decodedHeader;
@@ -22,8 +23,10 @@ const JwtDecoder = async (accessToken) => {
 
 const login = async (
   email,
-  password
+  password,
+  navigation
 ) => {
+  const expiredTime = 60 * 15 * 1000; 
   try {
     email = email.toLowerCase();
     const response = await axiosInstance.post("/v1/public/user/login", {
@@ -34,6 +37,15 @@ const login = async (
     await AsyncStorage.setItem("accessToken", accessToken);
     userData = await JwtDecoder(accessToken);
     console.log("userdata : " ,userData);
+
+    tokenCheckTimeout = setTimeout(() => {
+      const checkToken = checkTokenAvailibility();
+      if (checkToken !== null) {
+        Alert.alert("Token expired", "Your session has expired.", [
+          { onPress: () => logout(navigation) },
+        ]);
+      }
+    }, expiredTime);
     return response; 
     
   } catch (error) {
@@ -42,6 +54,18 @@ const login = async (
     throw error;
   }
 };
+
+const checkTokenAvailibility = async () => {
+  const accessToken = await AsyncStorage.getItem("accessToken");
+  if (accessToken) { 
+    console.log("AKSES TOKEEN",accessToken);
+    return accessToken;
+  }
+  else{
+    console.log("AKSES TOKEEN",accessToken);
+    return null;
+  }
+}
 const cleanupToken = async () => {
   try {
     const accessToken = await AsyncStorage.getItem("accessToken");
@@ -57,10 +81,11 @@ const cleanupToken = async () => {
 };
 const logout = async (navigation) => {
   await cleanupToken();
+  clearTimeout(tokenCheckTimeout);
   navigation.navigate("Login");
 };
 
-const handleLogout = (navigation) => {
+const handleLogout = (navigation) => { 
   Alert.alert("Keluar", "Apakah anda yakin ingin keluar aplikasi ini?", [
     { text: 'Ya', onPress :() => logout(navigation) }, 
     { text: 'Tidak' }, 
@@ -68,4 +93,4 @@ const handleLogout = (navigation) => {
 };
 
 
-export { login, logout, cleanupToken, handleLogout,JwtDecoder,userData };
+export { login, logout, cleanupToken, handleLogout,JwtDecoder,userData,tokenCheckTimeout,checkTokenAvailibility };

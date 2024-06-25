@@ -141,8 +141,8 @@ const FirstTopUpScreen = () => {
       <View style={styles.middleContainer}>
         <View style={styles.mainContent}>
           <BodySmallTextSemiBold style={{ textAlign: "center" }}>
-            Setor mulai dari {transactionData.selectedCurrency.currencyCode}{" "}
-            {minDeposit} atau lebih agar Dompet Valas bisa langsung digunakan
+            Setor <BodySmallTextSemiBold style={{color:colors.primary.primaryOne}}>minimum {transactionData.selectedCurrency.currencyCode}{" "}{minDeposit}</BodySmallTextSemiBold> 
+            {" "}atau lebih agar Dompet Valas bisa langsung digunakan
             untuk transaksi
           </BodySmallTextSemiBold>
           <View style={{ marginTop: 20 }}>

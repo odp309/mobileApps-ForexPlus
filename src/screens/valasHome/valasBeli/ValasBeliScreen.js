@@ -103,7 +103,7 @@ export default function ValasBeliScreen() {
     console.log("Dataaaa 1 : ", transactionData.selectedRekening.balance);
     if (parseInt(kursResult) > parseInt(currentBuyLimit)) {
       setInputError(
-        `Anda melebihi pembelian maksimum valas Rp. ${formatNumber(currentBuyLimit)}`
+        `Anda melebihi pembelian maksimum valas ${transactionData.selectedWallet.currencyCode} ${formatNumber(currentBuyLimit)}`
       );
     } else if (parseInt(data) < parseInt(minimumBuy) || parseInt(data) <= 0) {
       setInputError(

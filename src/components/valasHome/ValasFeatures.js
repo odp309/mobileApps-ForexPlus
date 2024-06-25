@@ -3,7 +3,7 @@ import { BodySmallText } from "../shared/StyledText";
 import colors from "../../theme/colors";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react"; 
+import { useEffect, useState } from "react"; 
 
 const FeatureButton = ({ namaFitur, onPress }) => {
   return (
@@ -71,14 +71,21 @@ const ValasFeatures = ({
   modalVisibleReservation,
   setModalVisibleReservation,
   convertedCurrentBuy, 
-  reservation
+  reservation,
+  withdrawStatus
 }) => {
   useState(() => {}, []);
   const navigation = useNavigation(); 
+  useEffect(()=> {
+    console.log("COOOOL : ",withdrawStatus)
+  },[])
   const handleNavigateTarik = () => { 
     //setModalVisibleTarik(!modalVisibleTarik);
     if(reservation.length > 0){
       setModalVisibleReservation(true);
+    }
+    else if(withdrawStatus==="Cooldown"){
+      setModalVisibleTarik(true);
     }
     else{
       navigation.navigate("TarikValas", {

@@ -26,7 +26,7 @@ const WalletValasSource = ({ style,selectedWallet}) => {
                 <Image
                   resizeMode="contain"
                   source={{uri: selectedWallet.landmarkIcon}}
-                  style={{ width: 65, height: "90%",borderWidth:1}}
+                  style={{ width: 65, height: "90%"}}
                 />
             </View>
           </View>

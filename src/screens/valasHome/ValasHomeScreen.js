@@ -19,6 +19,7 @@ import CurrencyInformation from "../../components/valasHome/CurrencyInformation"
 import {
   fetchBankAccount,
   fetchCurrentBuyLimit,
+  fetchIsCooldown,
   fetchKurs,
   fetchLimitBuy,
   fetchReservationList,
@@ -50,6 +51,7 @@ const ValasHomeScreen = () => {
   const [currentBuy, setCurrentBuy] = useState(0);
   const [convertedCurrentBuy, setConvertedCurrentBuy] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
+  const [withdrawStatus, setWithdrawStatus] = useState("");
   const userId = userData.id;
 
   const getData = async () => {
@@ -122,8 +124,8 @@ const ValasHomeScreen = () => {
   };
 
   const getConvertedLimit = () => {
-    if (currentBuy && dataCurrency) {
-      const convertedBuy = currentBuyValasIDR(currentBuy, dataCurrency);
+    if (currentBuy && dataCurrency && selectedCurrency) {
+      const convertedBuy = currentBuyValasIDR(currentBuy, dataCurrency,selectedCurrency);
       setConvertedCurrentBuy(convertedBuy);
     }
   };
@@ -149,6 +151,20 @@ const ValasHomeScreen = () => {
       console.error("Error saving selected wallet: " + error);
     }
   };
+  const getIsCoolDown = async () => {
+   const data = await fetchIsCooldown();
+   console.log("Fetch is cooldown : ",data);
+   if(data==="Withdrawal can only be one at a time"){
+      setWithdrawStatus("On Process");
+   }
+   else if(data==="User in cooldown"){
+      setWithdrawStatus("Cooldown");
+   }
+   else {
+      setWithdrawStatus("OK");
+   } 
+   return data;
+  }
 
   const clearAsyncStorage = async () => {
     try {
@@ -166,6 +182,7 @@ const ValasHomeScreen = () => {
       getDataKurs();
       getReservation();
       getCurrentBuyLimit(); 
+      getIsCoolDown();
       console.log("Reservation : ", reservation);
     }, [])
   );
@@ -199,10 +216,10 @@ const ValasHomeScreen = () => {
   }, [selectedWallet]);
 
   useEffect(() => {
-    if (currentBuy !== 0 && dataCurrency !== null) {
+    if (currentBuy !== 0 && dataCurrency !== null && selectedCurrency !==null) {
       getConvertedLimit();
     }
-  }, [currentBuy, dataCurrency]);
+  }, [currentBuy, dataCurrency,selectedCurrency]);
   if (isLoading) {
     return (
       <View style={{ justifyContent: "center", flex: 1 }}>
@@ -273,6 +290,7 @@ const ValasHomeScreen = () => {
             setModalVisibleBeli={setModalVisibleBeli}
             convertedCurrentBuy={convertedCurrentBuy}
             reservation={reservation}
+            withdrawStatus={withdrawStatus}
           />
         ),
     },
