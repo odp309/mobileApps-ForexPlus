@@ -19,7 +19,7 @@ const ResultCard = ({ transactionType, transactionData }) => {
       {/* Summary Result Card Component */}
       <View style={styles.summaryResult}>
         <ImageBackground
-          source={{ uri: "https://i.imgur.com/EOkwhJu.png" }}
+          source={require("../../../assets/SummaryBackground.png")}
           resizeMode="cover"
           imageStyle={{ borderRadius: 20 }}
           style={styles.imageContainer}

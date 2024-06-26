@@ -11,18 +11,18 @@ const PromoInformasi = ({ user }) => {
   const dataPromo = [
     {
       id: "1",
-      imgResource: "https://i.imgur.com/qUsKMKd.png",
+      imgResource: require("../../../assets/iklan1.png"),
     },
     {
       id: "2",
-      imgResource: "https://i.imgur.com/1220BQA.png",
+      imgResource: require("../../../assets/iklan2.png"),
     },
   ];
   const ListPromoInformasi = ({ item }) => (
     <View> 
         <ImageBackground
           resizeMode="stretch"
-          source={{uri : item.imgResource}}
+          source={item.imgResource}
           style={styles.cardContainer}
         /> 
     </View>

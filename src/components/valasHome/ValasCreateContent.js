@@ -11,7 +11,7 @@ const ValasCreateContent = ({ selectedRekening }) => {
     <View style={styles.container}>
       <Image
         style={{ width: 200, height: 150 }}
-        source={{ uri: "https://imgur.com/rlCuYCA.png" }}
+        source={require("../../../assets/newValas.png")}
         resizeMode="contain"
       />
       <View style={{ alignItems: "center", width: "70%" }}>

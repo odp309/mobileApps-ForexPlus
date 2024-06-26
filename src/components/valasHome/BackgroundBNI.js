@@ -13,7 +13,7 @@ const BackgroundBNI = () => {
             borderBottomRightRadius: 50,
             borderBottomLeftRadius: 50,
           }}
-          source={{uri: "https://i.imgur.com/WD5nbpF.png"}}
+          source={require("../../../assets/Intersect.png")}
         />
       </View>
     );

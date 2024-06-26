@@ -9,7 +9,7 @@ const ExchangeResult = ({value}) => {
     <View style={styles.container}>
       <View style={styles.countryContainer}>
         <Image
-          source={{uri : "https://i.imgur.com/1ogMVPV.png"}}
+          source={require("../../../../assets/icons/flags/Indonesia.png")}
           style={{ width: 20, height: 20, marginRight: 10 }}
         />
         <BodyMediumText

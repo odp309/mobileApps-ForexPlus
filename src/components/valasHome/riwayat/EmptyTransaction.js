@@ -6,7 +6,7 @@ const EmptyTransaction = () => {
   return (
     <View style={styles.container}>
       <Image
-        source={{uri: "https://imgur.com/eOq6VvJ.png"}}
+        source={require("../../../../assets/amico.png")}
         style={{ width: 200, height: 200,marginBottom:20 }}
       />
       <BodySmallText style={{color:colors.color.grey}}>Anda belum memiliki riwayat transaksi</BodySmallText>

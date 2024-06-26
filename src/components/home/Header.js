@@ -9,12 +9,12 @@ const Header = ({ user }) => {
       <Image
         style={{ width: 90, height: 40, alignSelf: "center" }}
         resizeMode="center"
-        source={{ uri: "https://i.imgur.com/rkL9Et5.png" }}
+        source={require("../../../assets/icon-bni.png")}
       />
       <Image
         style={{ width: 22, height: 40, alignSelf: "center" }}
         resizeMode="center"
-        source={{ uri: "https://i.imgur.com/HXlTT4D.png" }}
+        source={require("../../../assets/icon-notif.png")}
       />
     </View>
   );

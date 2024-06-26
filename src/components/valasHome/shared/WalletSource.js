@@ -35,7 +35,7 @@ const WalletSource = ({ style,selectedRekening}) => {
               borderBottomRightRadius: 50,
               borderTopRightRadius: 50,
             }}
-            source={{uri:"https://imgur.com/WD5nbpF.png"}}
+            source={require("../../../../assets/Intersect.png")}
           />
         </View>
       </View>

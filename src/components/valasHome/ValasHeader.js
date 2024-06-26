@@ -37,7 +37,7 @@ function ValasHeader() {
 
         }}
       >
-        <Image style={{width:40,height:40}} source={{uri:"https://imgur.com/RWN31Y7.png"}} resizeMode="center"/>
+        <Image style={{width:40,height:40}} source={require("../../../assets/valas-plus.png")} resizeMode="center"/>
         <View style={{ flexDirection: "row", alignItems: "flex-start" }}> 
           <HeadingFiveText
             style={{ color: colors.color.white, fontWeight: "bold" }}
