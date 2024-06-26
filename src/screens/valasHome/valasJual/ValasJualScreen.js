@@ -102,7 +102,7 @@ const ValasJualScreen = () => {
 
   const kursCalculation = (data) => {
     const kursResult =
-      parseInt(data) * parseInt(transactionData.selectedCurrency.sellRate);
+      parseInt(data) * parseFloat(transactionData.selectedCurrency.sellRate);
     setTransactionData((prevState) => ({
       ...prevState,
       convertedValue:
@@ -110,7 +110,7 @@ const ValasJualScreen = () => {
           ? ""
           : (
               parseInt(data) *
-              parseInt(transactionData.selectedCurrency.sellRate)
+              parseFloat(transactionData.selectedCurrency.sellRate)
             ).toString(),
     }));
     checkError(data, kursResult);

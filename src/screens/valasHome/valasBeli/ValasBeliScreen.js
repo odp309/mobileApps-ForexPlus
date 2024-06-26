@@ -84,7 +84,7 @@ export default function ValasBeliScreen() {
 
   const kursCalculation = (data) => {
     const kursResult =
-      parseInt(data) * parseInt(transactionData.selectedCurrency.buyRate);
+      parseInt(data) * parseFloat(transactionData.selectedCurrency.buyRate);
     setTransactionData((prevState) => ({
       ...prevState,
       convertedValue:
@@ -92,7 +92,7 @@ export default function ValasBeliScreen() {
           ? ""
           : (
               parseInt(data) *
-              parseInt(transactionData.selectedCurrency.buyRate)
+              parseFloat(transactionData.selectedCurrency.buyRate)
             ).toString(),
     }));
     checkError(data, kursResult);
