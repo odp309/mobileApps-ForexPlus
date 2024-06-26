@@ -107,13 +107,13 @@ const LoginScreen = () => {
       />
       <ImageBackground
         style={{ flex: 1 }}
-        source={{ uri: "https://i.imgur.com/qPgwgw6.png" }}
+        source={require('../../../assets/bg-login.png')}
       >
         <View style={styles.topContainer}>
           <Image
             style={{ width: "40%", height: 50, marginBottom: 20 }}
             resizeMode="contain"
-            source={{ uri: "https://i.imgur.com/rkL9Et5.png" }}
+            source={require('../../../assets/icon-bni.png')}
           />
         </View>
         <View style={styles.bottomContainer}>
@@ -132,21 +132,21 @@ const LoginScreen = () => {
             <View style={styles.contentStyle}>
               <Image
                 style={styles.shortcutImage}
-                source={{ uri: "https://imgur.com/crW9dQK.png" }}
+                source={require('../../../assets/icon-qris.png')}
               />
               <BodySmallText style={{ marginTop: 5 }}>QRIS</BodySmallText>
             </View>
             <View style={styles.contentStyle}>
               <Image
                 style={styles.shortcutImage}
-                source={{ uri: "https://i.imgur.com/4HEOj3a.png" }}
+                source={require('../../../assets/icon-e-wallet.png')}
               />
               <BodySmallText style={{ marginTop: 5 }}>E-Wallet</BodySmallText>
             </View>
             <View style={styles.contentStyle}>
               <Image
                 style={styles.shortcutImage}
-                source={{ uri: "https://i.imgur.com/ZMivkWV.png" }}
+                source={require('../../../assets/icon-menu-lain.png')}
               />
               <BodySmallText style={{ marginTop: 5 }}>Menu Lain</BodySmallText>
             </View>

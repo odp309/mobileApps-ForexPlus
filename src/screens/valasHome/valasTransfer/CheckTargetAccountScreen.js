@@ -17,6 +17,7 @@ import {
   BodySmallText,
   BodySmallTextSemiBold,
   BodyXLTextBold,
+  BodyXLTextSemiBold,
 } from "../../../components/shared/StyledText";
 import colors from "../../../theme/colors";
 import Input from "../../../components/shared/Input";
@@ -146,7 +147,6 @@ const CheckTargetAccountScreen = () => {
       return () => clearTimeout(timer);
     }
   }, [accountFind, navigation]);
- 
 
   useEffect(() => {
     setIsLoading(true);
@@ -178,12 +178,18 @@ const CheckTargetAccountScreen = () => {
         setModalVisible={setModalVisible}
       />
       <View style={styles.topContainer}>
-        <ContentHeader title={"Transfer Valas"} hasConfirmation={true} setModalVisible={()=> setModalVisible(!modalVisible)} />
+        <ContentHeader
+          title={"Transfer Valas"}
+          hasConfirmation={true}
+          setModalVisible={() => setModalVisible(!modalVisible)}
+        />
       </View>
 
       <View style={styles.middleContainer}>
         <View style={{ marginLeft: "2%", marginVertical: "2%" }}>
-          <BodyXLTextBold style={{ color: colors.primary.primaryOne, fontSize:20 }}>
+          <BodyXLTextBold
+            style={{ color: colors.primary.primaryOne, fontSize: 20 }}
+          >
             Cek Rekening Tujuan
           </BodyXLTextBold>
           <BodySmallText style={{ fontSize: 16, marginTop: 5 }}>
@@ -207,7 +213,7 @@ const CheckTargetAccountScreen = () => {
           iconColor={colors.color.lightGrey}
           onPress={() => setInputRekening("")}
           rightIconStyle={{ position: "absolute", marginLeft: "89%" }}
-          style={{fontSize:16}}
+          style={{ fontSize: 16 }}
         />
 
         {hasChecked && (
@@ -266,13 +272,13 @@ const CheckTargetAccountScreen = () => {
           >
             <ImageBackground
               resizeMode="stretch"
-              source={{ uri: "https://i.imgur.com/qcbAgDD.png" }}
+              source={require("../../../../assets/card-account-2.png")}
               style={styles.cardContainer}
             >
               <View>
                 <Image
-                  source={{ uri: "https://i.imgur.com/o1jPFSo.png" }}
-                  style={{ width: 80, height: 80 }}
+                  source={require("../../../../assets/icon-user-he.png")}
+                  style={{ width: 80, height: 80, borderRadius: 99 }}
                 />
               </View>
               <View style={{ marginLeft: 15, justifyContent: "center" }}>

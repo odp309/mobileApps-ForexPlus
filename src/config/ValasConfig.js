@@ -244,7 +244,7 @@ const fetchValasWithdraw = async (
   console.log(walletId, amountToWithdraw, reservationDate, branchCode, pin);
   try {
     const dataWithdraw = await axiosInstance.post(
-      "/v1/private/withdraw-valas/withdraw",
+      "/v2/private/withdraw-valas/withdraw",
       { walletId, amountToWithdraw, reservationDate, branchCode, pin }
     );
     return dataWithdraw.data;

@@ -11,6 +11,7 @@ import StyledButton from "../../../components/shared/StyledButton";
 import colors from "../../../theme/colors";
 import LottieView from "lottie-react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { formatDate } from "../../../config/SharedConfig";
 
 const WithdrawTransactionResultScreen = () => {
   const route = useRoute();
@@ -35,7 +36,7 @@ const WithdrawTransactionResultScreen = () => {
         </BodySmallTextSemiBold>
         <View style={styles.imageContainer}>
           <Image
-            source={{ uri: "https://imgur.com/zKigxFJ.png" }}
+            source={require("../../../../assets/reservation-logo.png")}
             style={{ width: 200, height: 200, marginBottom: 20 }}
           />
         </View>
@@ -61,10 +62,10 @@ const WithdrawTransactionResultScreen = () => {
             </View>
             <View style={styles.locationTitleContainer}>
               <BodyMediumTextSemiBold>
-                {tarikData.branchName}
+              {tarikData.branchType} {tarikData.branchName}
               </BodyMediumTextSemiBold>
               <BodyMediumTextSemiBold>
-                {tarikData.reservationDate}
+                {formatDate(tarikData.reservationDate.slice(0,10))}
               </BodyMediumTextSemiBold>
             </View>
           </View>

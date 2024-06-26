@@ -1,4 +1,12 @@
-import { BackHandler, Dimensions, Image, Platform, StyleSheet, Text, View } from "react-native";
+import {
+  BackHandler,
+  Dimensions,
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React, { useEffect, useRef } from "react";
 import ContentHeader from "../../../components/valasHome/shared/ContentHeader";
 import colors from "../../../theme/colors";
@@ -11,7 +19,11 @@ import {
   BodySmallTextSemiBold,
 } from "../../../components/shared/StyledText";
 import StyledButton from "../../../components/shared/StyledButton";
-import { useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import LottieView from "lottie-react-native";
 import { formatDate } from "../../../config/SharedConfig";
 
@@ -28,13 +40,16 @@ const ValasReservationScreen = () => {
   const toHomeScreen = () => {
     navigation.navigate("ValasHome");
   };
-  
-  useEffect(()=>{
-    if(isFocused){
-      const backHandler = BackHandler.addEventListener("hardwareBackPress", () => true);
-      return () =>  backHandler.remove();
+
+  useEffect(() => {
+    if (isFocused) {
+      const backHandler = BackHandler.addEventListener(
+        "hardwareBackPress",
+        () => true
+      );
+      return () => backHandler.remove();
     }
-  },[])
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}></View>
@@ -51,7 +66,7 @@ const ValasReservationScreen = () => {
         </BodySmallTextSemiBold>
         <View style={styles.imageContainer}>
           <Image
-            source={{ uri: "https://imgur.com/zKigxFJ.png" }}
+            source={require("../../../../assets/reservation-logo.png")}
             style={{ width: 200, height: 200, marginBottom: 20 }}
           />
         </View>
@@ -80,7 +95,7 @@ const ValasReservationScreen = () => {
                 {reservation.branchType} {reservation.branchName}
               </BodyMediumTextSemiBold>
               <BodyMediumTextSemiBold>
-                {reservation.reservationDate}
+                {formatDate(reservation.reservationDate.slice(0, 10))}
               </BodyMediumTextSemiBold>
             </View>
           </View>
@@ -97,7 +112,7 @@ const ValasReservationScreen = () => {
           title="Ke Halaman Utama"
           onPress={toHomeScreen}
           size={"lg"}
-          style={{marginBottom: Platform.OS=="ios" ? "15%" : 0}}
+          style={{ marginBottom: Platform.OS == "ios" ? "15%" : 0 }}
         />
       </View>
     </View>
@@ -112,19 +127,19 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   topContainer: {
-    width: "100%", 
-    flex:0.1, 
+    width: "100%",
+    flex: 0.1,
   },
   middleContainer: {
     width: "100%",
     flex: 0.75,
-    paddingHorizontal: 20, 
+    paddingHorizontal: 20,
   },
   bottomContainer: {
     width: "100%",
     justifyContent: "center",
     flex: 0.15,
-    paddingHorizontal: 20, 
+    paddingHorizontal: 20,
   },
   imageContainer: {
     width: "100%",

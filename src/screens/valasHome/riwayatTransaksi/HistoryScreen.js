@@ -80,53 +80,30 @@ const HistoryScreen = () => {
       <View style={styles.iconContainer}>
         {item.trxType === "Jual" ? (
           <Image
-            source={{ uri: "https://imgur.com/BesM5FH.png" }}
+            source={require("../../../../assets/icon-histori-jual.png")}
             style={styles.icon}
           />
         ) : item.trxType === "Beli" ? (
           <Image
-            source={{ uri: "https://imgur.com/Z55cosA.png" }}
+            source={require("../../../../assets/icon-histori-beli.png")}
             style={styles.icon}
           />
         ) : item.trxType === "Tarik" ? (
           <Image
-            source={{ uri: "https://imgur.com/tnZmAqJ.png" }}
+            source={require("../../../../assets/icon-histori-tarik.png")}
             style={styles.icon}
           />
         ) : (
           //Transfer
           <Image
-            source={{ uri: "https://imgur.com/tnZmAqJ.png" }}
+            source={require("../../../../assets/icon-histori-transfer.png")}
             style={styles.icon}
           />
         )}
       </View>
       <View style={styles.textContainer}>
         <BodyMediumTextSemiBold style={styles.itemType}>
-          {item.trxType}
-          {/* {item.status === "Sukses" ? (
-            <BodySmallText style={{ color: colors.color.success }}>
-              {"("}
-              {item.status}
-              {")"}
-            </BodySmallText>
-          ) : item.status === "Terjadwal" ? (
-            <BodySmallText style={{ color: "#EB9647" }}>
-              {"("}
-              {item.status}
-              {")"}
-            </BodySmallText>
-          ) : item.status != null ? (
-            <BodySmallText style={{ color: colors.color.error }}>
-              {"("}
-              {item.status}
-              {")"}
-            </BodySmallText>
-          ) : (
-            <BodySmallText style={{ color: colors.color.error }}>
-              {item.status}
-            </BodySmallText>
-          )} */}
+          {item.trxType} 
         </BodyMediumTextSemiBold>
         <BodySmallText style={styles.itemDate}>
           {convertDate(item.createdDate)}

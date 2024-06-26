@@ -73,7 +73,7 @@ const TransactionResultScreen = () => {
         <View style={{ width: "100%", alignItems: "center" }}>
           <LottieView
             ref={animationRef}
-            source={require("../../../assets/gif/Success_Animation.json")} // Replace with the JSON file for your GIF animation
+            source={require("../../../assets/gif/Success_Animation.json")}
             autoPlay={false}
             loop={false}
             style={{ width: 100, height: 100 }}

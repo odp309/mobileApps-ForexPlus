@@ -24,13 +24,13 @@ const SplashScreen = () => {
     <SafeAreaView style={styles.container}>
       <ImageBackground
         style={{ flex: 1 }}
-        source={{ uri: "https://i.imgur.com/qPgwgw6.png" }}
+        source={require('../../../assets/bg-login.png')}
       >
         <View style={styles.topContainer}>
           <Image
             style={{ width: "40%", height: 50, marginBottom: 10 }}
             resizeMode="contain"
-            source={{ uri: "https://i.imgur.com/rkL9Et5.png" }}
+            source={require('../../../assets/icon-bni.png')}
           />
           <BodySmallText style={{marginBottom:"5%"}}>Melayani Negeri Kebanggaan Indonesia</BodySmallText>
         </View>
@@ -39,7 +39,7 @@ const SplashScreen = () => {
         <Image
             style={{ width: "40%", height: 40, marginBottom: 10 }}
             resizeMode="contain"
-            source={{ uri: "https://imgur.com/5difbZ0.png" }}
+            source={require('../../../assets/lembaga-penjamin-simpanan.png')}
           />
           <BodySmallText style={[styles.copyright, { marginBottom: 15, lineHeight:14 }]}>
             PT Bank Negara Indonesia (Persero) Tbk, berizin dan diawasi oleh

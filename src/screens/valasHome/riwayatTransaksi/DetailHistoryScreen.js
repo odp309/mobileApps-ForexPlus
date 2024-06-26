@@ -61,47 +61,29 @@ const DetailHistoryScreen = () => {
         <View style={styles.iconContainer}>
           {transactionDetails.trxType === "Jual" ? (
             <Image
-              source={{ uri: "https://imgur.com/BesM5FH.png" }}
+              source={require("../../../../assets/icon-histori-jual.png")}
               style={styles.icon}
             />
           ) : transactionDetails.trxType === "Beli" ? (
             <Image
-              source={{ uri: "https://imgur.com/Z55cosA.png" }}
+              source={require("../../../../assets/icon-histori-beli.png")}
               style={styles.icon}
             />
           ) : transactionDetails.trxType === "Tarik" ? (
             <Image
-              source={{ uri: "https://imgur.com/tnZmAqJ.png" }}
+              source={require("../../../../assets/icon-histori-tarik.png")}
               style={styles.icon}
             />
           ) : (
             //Transfer
             <Image
-              source={{ uri: "https://imgur.com/tnZmAqJ.png" }}
+              source={require("../../../../assets/icon-histori-transfer.png")}
               style={styles.icon}
             />
           )}
           <BodyLargeText style={{ marginLeft: 20 }}>
-            {transactionDetails.trxType}
-            {/* {transactionDetails.trxType === "Tarik" ? (
-              <BodyLargeText>
-                {"("}
-                {transactionDetails.status}
-                {")"}
-              </BodyLargeText>
-            ) : null} */}
-          </BodyLargeText>
-          {/* {
-            transactionDetails.status != null ?
-            <BodyRegularText style={{
-              color: colors.color.success,
-            }}>
-               {"("}
-               {transactionDetails.status}
-               {")"}
-            </BodyRegularText>
-            : null
-          } */}
+            {transactionDetails.trxType} 
+          </BodyLargeText> 
         </View>
 
         <View style={styles.contentContainer}>

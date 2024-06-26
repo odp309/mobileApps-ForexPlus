@@ -95,7 +95,7 @@ const EnterTransferScreen = () => {
         </BodyXLTextBold>
         <View style={styles.contentContainer}>
           <Image
-            source={{ uri: "https://imgur.com/o1jPFSo.png" }}
+            source={require("../../../../assets/icon-user-he.png")}
             style={{ width: 100, height: 100, borderRadius: 99 }}
           />
           <BodyLargeTextSemiBold style={{ marginTop: 10 }}>
